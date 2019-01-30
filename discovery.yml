@@ -1,0 +1,19 @@
+---
+# Original scan playbook found:
+#   https://github.com/ansible/awx-facts-playbooks/blob/master/scan_facts.yml
+- name: "Ansible Migration Factory - Discovery"
+  hosts: "all"
+  vars_files:
+    - "vars/discovery_vars.yml"
+  vars:
+    scan_use_checksum: false
+    scan_use_recursive: false
+  tasks:
+    - name: "Scan packages (Unix/Linux)"
+      scan_packages:
+        os_family: '{{ ansible_os_family }}'
+      when: ansible_os_family != "Windows"
+
+    - name: "Scan services (Unix/Linux)"
+      scan_services:
+      when: ansible_os_family != "Windows"
