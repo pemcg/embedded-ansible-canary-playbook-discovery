@@ -3,41 +3,43 @@
 #   https://github.com/ansible/awx-facts-playbooks/blob/master/scan_facts.yml
 - name: "Ansible Migration Factory - Discovery"
   hosts: "all"
+  gather_facts: True
   vars_files:
     - "vars/discovery_vars.yml"
   tasks:
-    - name: "Scan packages | Unix/Linux"
-      scan_packages:
-        os_family: '{{ ansible_os_family }}'
-      when: ansible_os_family != "Windows"
+    - name: "Unix/Linux"
+      block:
+        - name: "Scan packages | Unix/Linux"
+          scan_packages:
+            os_family: "{{ ansible_os_family }}"
 
-    - name: "Scan services | Unix/Linux"
-      scan_services:
-      when: ansible_os_family != "Windows"
+        - name: "Scan services | Unix/Linux"
+          scan_services:
 
-    # Plugable discovery role interface
-    - name: "Scan Custom | Unix/Linux"
-      include_role:
-        name: "discovery-{{ role }}"
-      with_items: "{{ discovery_roles }}"
-      loop_control:
-        loop_var: "role"
-      when: 'discovery_roles | length > 0'
+        # Plugable discovery role interface
+        - name: "Scan Custom | Unix/Linux"
+          include_role:
+            name: "discovery-{{ role }}"
+          with_items: "{{ discovery_roles }}"
+          loop_control:
+            loop_var: "role"
+          when: 'discovery_roles | length > 0'
 
-    # Plugable application signature interface
-    # Run application signature check (categorizer)
-    - name: "Check application signatures"
-      include_role:
-        name: "application-signature-{{ application }}"
-      with_items: "{{ discovery_app_signatures }}"
-      loop_control:
-        loop_var: "application"
-      when: 'discovery_app_signatures | length > 0'
+        # Plugable application signature interface
+        # Run application signature check (categorizer)
+        - name: "Check application signatures | Unix/Linux"
+          include_role:
+            name: "application-signature-{{ application }}"
+          with_items: "{{ discovery_app_signatures }}"
+          loop_control:
+            loop_var: "application"
+          when: 'discovery_app_signatures | length > 0'
 
-    # Create Ansible Tower "Discovered Inventory"
-    # Role pseudo-code:
-        # Ensure "Discovered Hosts" inventory exists in Tower
-        # Create host {{ inventory_hostname }}
-        # Attach host facts collected from discovery roles
-        # Ensure groups exist from discovered_apps_{{ inventory_hostname }} - set by app sigs
-        # Place host in group from discovered_apps_{{ inventory_hostname }} - set by app sigs
+        # Create Ansible Tower "Discovered Inventory"
+        # Role pseudo-code:
+            # Ensure "Discovered Hosts" inventory exists in Tower
+            # Create host {{ inventory_hostname }}
+            # Attach host facts collected from discovery roles
+            # Ensure groups exist from discovered_apps_{{ inventory_hostname }} - set by app sigs
+            # Place host in group from discovered_apps_{{ inventory_hostname }} - set by app sigs
+      when: 'ansible_os_family != "Windows"'
