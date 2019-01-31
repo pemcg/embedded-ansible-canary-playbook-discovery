@@ -34,5 +34,10 @@
         loop_var: "application"
       when: 'discovery_app_signatures | length > 0'
 
-
-    # Create Tower Discovered Inventory
+    # Create Ansible Tower "Discovered Inventory"
+    # Role pseudo-code:
+        # Ensure "Discovered Hosts" inventory exists in Tower
+        # Create host {{ inventory_hostname }}
+        # Attach host facts collected from discovery roles
+        # Ensure groups exist from discovered_apps_{{ inventory_hostname }} - set by app sigs
+        # Place host in group from discovered_apps_{{ inventory_hostname }} - set by app sigs
