@@ -1,6 +1,7 @@
 ---
-# Original scan playbook found:
-#   https://github.com/ansible/awx-facts-playbooks/blob/master/scan_facts.yml
+# Original awx project scan facts playbook and Ansible modules can be found:
+#   https://github.com/ansible/awx-facts-playbooks
+
 - name: "Ansible Migration Factory - Discovery"
   hosts: "all"
   gather_facts: True
