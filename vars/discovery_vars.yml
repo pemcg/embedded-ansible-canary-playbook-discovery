@@ -1,0 +1,8 @@
+discovery_roles:
+  - "cron-jobs"
+  - "listening-ports"
+  - "user-group"
+  - "processes"
+  - "yum-repos"
+
+discovery_app_signatures: []

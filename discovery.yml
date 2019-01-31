@@ -5,15 +5,34 @@
   hosts: "all"
   vars_files:
     - "vars/discovery_vars.yml"
-  vars:
-    scan_use_checksum: false
-    scan_use_recursive: false
   tasks:
-    - name: "Scan packages (Unix/Linux)"
+    - name: "Scan packages | Unix/Linux"
       scan_packages:
         os_family: '{{ ansible_os_family }}'
       when: ansible_os_family != "Windows"
 
-    - name: "Scan services (Unix/Linux)"
+    - name: "Scan services | Unix/Linux"
       scan_services:
       when: ansible_os_family != "Windows"
+
+    # Plugable discovery role interface
+    - name: "Scan Custom | Unix/Linux"
+      include_role:
+        name: "discovery-{{ role }}"
+      with_items: "{{ discovery_roles }}"
+      loop_control:
+        loop_var: "role"
+      when: 'discovery_roles | length > 0'
+
+    # Plugable application signature interface
+    # Run application signature check (categorizer)
+    - name: "Check application signatures"
+      include_role:
+        name: "application-signature-{{ application }}"
+      with_items: "{{ discovery_app_signatures }}"
+      loop_control:
+        loop_var: "application"
+      when: 'discovery_app_signatures | length > 0'
+
+
+    # Create Tower Discovered Inventory
