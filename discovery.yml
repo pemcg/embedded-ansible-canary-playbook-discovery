@@ -28,6 +28,25 @@
 
         # Plugable application signature interface
         # Run application signature check (categorizer)
+        - name: "Ensure discovered_apps list is initialized"
+          set_fact:
+            discovered_apps: []
+
+        - name: "Debug discovered_apps initialized value"
+          debug:
+            var: "hostvars[inventory_hostname]['discovered_apps']"
+            verbosity: "1"
+
+        - name: "Debug scanned packages"
+          debug:
+            var: "hostvars[inventory_hostname]['ansible_facts']['packages']"
+            verbosity: "1"
+
+        - name: "Debug scanned services"
+          debug:
+            var: "hostvars[inventory_hostname]['ansible_facts']['services']"
+            verbosity: "1"
+
         - name: "Check application signatures | Unix/Linux"
           include_role:
             name: "application-signature-{{ application }}"
