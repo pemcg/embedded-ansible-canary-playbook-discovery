@@ -47,6 +47,12 @@
             var: "hostvars[inventory_hostname]['ansible_facts']['services']"
             verbosity: "1"
 
+        # TODO:
+        # Based on what OS, take the baseline list for each fact type
+        #   Use unique jinja filter to get unique entries compared to a
+        #   default OS install
+        #   This helps ID running applications
+
         - name: "Check application signatures | Unix/Linux"
           include_role:
             name: "application-signature-{{ application }}"
@@ -60,6 +66,6 @@
             # Ensure "Discovered Hosts" inventory exists in Tower
             # Create host {{ inventory_hostname }}
             # Attach host facts collected from discovery roles
-            # Ensure groups exist from discovered_apps_{{ inventory_hostname }} - set by app sigs
-            # Place host in group from discovered_apps_{{ inventory_hostname }} - set by app sigs
+            # Ensure groups exist from "{{ hostvars[inventory_hostname]['discovered_apps'] }}" - set by app sigs if length > 0
+            # Place host in group from "{{ hostvars[inventory_hostname]['discovered_apps'] }}" - set by app sigs if length > 0
       when: 'ansible_os_family != "Windows"'
