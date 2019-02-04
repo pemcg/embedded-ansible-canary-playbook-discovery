@@ -10,6 +10,23 @@
   tasks:
     - name: "Unix/Linux"
       block:
+        - name: "Get list of Disovery Roles"
+          find:
+            recurse: False
+            paths:
+              - "{{ ansible_env.PWD }}/roles"
+            patterns: "^amf-discovery-.*$"
+            use_regex: True
+          register: "discovery_roles_found"
+
+        - debug:
+            var: "discovery_roles_found"
+            verbosity: "1"
+
+        - name: "Set list of discovery roles found"
+          set_fact:
+            discovery_roles: "{{ discovery_roles_found | json_query('files[*].path') }}"
+
         - name: "Scan packages | Unix/Linux"
           scan_packages:
             os_family: "{{ ansible_os_family }}"
@@ -20,7 +37,7 @@
         # Plugable discovery role interface
         - name: "Scan Custom | Unix/Linux"
           include_role:
-            name: "discovery-{{ role }}"
+            name: "{{ role }}"
           with_items: "{{ discovery_roles }}"
           loop_control:
             loop_var: "role"
@@ -47,6 +64,10 @@
             var: "hostvars[inventory_hostname]['ansible_facts']['services']"
             verbosity: "1"
 
+        - name: "Debug all facts"
+          debug:
+            var: "hostvars[inventory_hostname]['ansible_facts']"
+
         # TODO:
         # Based on what OS, take the baseline list for each fact type
         #   Use unique jinja filter to get unique entries compared to a
@@ -55,7 +76,7 @@
 
         - name: "Check application signatures | Unix/Linux"
           include_role:
-            name: "application-signature-{{ application }}"
+            name: "amf-application-signature-{{ application }}"
           with_items: "{{ discovery_app_signatures }}"
           loop_control:
             loop_var: "application"
