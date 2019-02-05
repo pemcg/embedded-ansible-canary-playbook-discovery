@@ -18,7 +18,7 @@
     tower_verify_ssl: "{{ tower_verify_ssl }}"
     description: "{{ discovered_host_inventory_description }}"
     organization: "{{ tower_org }}"
-    name: "discovered_host_inventory_name"
+    name: "{{ discovered_host_inventory_name }}"
     state: "present"
   delegate_to: "localhost"
   connection: "local"
