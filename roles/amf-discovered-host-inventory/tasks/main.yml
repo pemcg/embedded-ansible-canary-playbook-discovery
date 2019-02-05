@@ -66,10 +66,10 @@
     tower_password: "{{ tower_pass }}"
     tower_host: "{{ tower_url }}"
     tower_verify_ssl: "{{ tower_verify_ssl }}"
-    name: "{{ hostvars[inventory_hostname]['ansible_facts'].ansible_hostname }}.{{ hostvars[inventory_hostname]['ansible_facts'].ansible_domain }}"
+    name: "{{ ansible_fqdn }}"
     inventory: "{{ discovered_host_inventory_name }}"
     enabled: True
-    variables: "{{ hostvars[inventory_hostname]['ansible_facts'] }}"
+    variables: "{{ ansible_facts }}"
     state: "present"
   delegate_to: "localhost"
   connection: "local"
