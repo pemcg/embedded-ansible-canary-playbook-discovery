@@ -72,7 +72,7 @@
     inventory: "{{ discovered_host_inventory_name }}"
     enabled: True
     variables:
-      discovered_facts: "{{ ansible_facts }}"
+      discovered_facts: "{{ ansible_facts | to_nice_yaml(indent=2) }}"
     state: "present"
   delegate_to: "localhost"
   connection: "local"
