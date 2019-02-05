@@ -57,7 +57,6 @@
   when: "hostvars[inventory_hostname]['discovered_apps'] | length > 0"
   delegate_to: "localhost"
   connection: "local"
-  run_once: True
 
 #
 # - name: "Ensure discovered host exists in Ansible Tower inventory"
