@@ -62,6 +62,9 @@
   connection: "local"
   become: False
 
+# TODO:
+# need to do some custom work here to get this module to accept groups for the host
+# need to see what the tower_cli is capable of and compare
 - name: "Ensure discovered host exists in Ansible Tower inventory"
   tower_host:
     tower_username: "{{ tower_user }}"
