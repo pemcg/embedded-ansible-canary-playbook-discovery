@@ -22,6 +22,7 @@
     state: "present"
   delegate_to: "localhost"
   connection: "local"
+  become: False
 
 # - name: "Ensure discovered application inventory groups exist in Ansible Tower Inventory"
 #
