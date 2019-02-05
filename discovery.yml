@@ -96,6 +96,8 @@
           when: 'discovery_app_signatures | length > 0'
 
         - name: "Build discovered host inventory | Unix/Linux"
+          include_role:
+            name: "amf-discovered-host-inventory"
         # Create Ansible Tower "Discovered Inventory"
         # Role pseudo-code:
             # Ensure "Discovered Hosts" inventory exists in Tower
