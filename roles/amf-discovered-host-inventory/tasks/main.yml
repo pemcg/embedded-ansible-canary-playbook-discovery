@@ -8,7 +8,9 @@
     tower_venv_path:
       "/var/lib/awx/venv/ansible"
   delegate_to: "localhost"
+  connection: "local"
   run_once: True
+  when: 'discovered_host_install_prereqs'
 
 - name: "Ensure {{ discovered_host_inventory_name }} exists in Ansible Tower"
   tower_inventory:
