@@ -59,5 +59,18 @@
   delegate_to: "localhost"
   connection: "local"
   become: False
-#
-# - name: "Ensure discovered host exists in Ansible Tower inventory"
+
+- name: "Ensure discovered host exists in Ansible Tower inventory"
+  tower_host:
+    tower_username: "{{ tower_user }}"
+    tower_password: "{{ tower_pass }}"
+    tower_host: "{{ tower_url }}"
+    tower_verify_ssl: "{{ tower_verify_ssl }}"
+    name: "{{ hostvars[inventory_hostname]['ansible_facts.ansible_hostname'] }}.{{ hostvars[inventory_hostname]['ansible_facts.ansible_domain'] }}"
+    inventory: "{{ discovered_host_inventory_name }}"
+    enabled: True
+    variables: "{{ hostvars[inventory_hostname]['ansible_facts'] }}"
+    state: "present"
+  delegate_to: "localhost"
+  connection: "local"
+  become: False
