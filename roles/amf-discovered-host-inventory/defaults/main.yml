@@ -1,0 +1,4 @@
+---
+discovered_host_inventory_name: "Discovered Hosts"
+discovered_host_default_groups:
+  - "Unknown Application"

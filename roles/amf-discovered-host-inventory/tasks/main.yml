@@ -1,0 +1,17 @@
+---
+- name: "Ensure tower-cli is available in Ansible Tower virtual environment"
+  include_role:
+    name: "ansible_tower_genie_virtual_environments"
+  vars:
+    tower_venv_pylibs:
+      - "ansible-tower-cli"
+    tower_venv_path:
+      "/var/lib/awx/venv/ansible"
+
+# - name: "Ensure {{ discovered_host_inventory_name }} exists in Ansible Tower"
+#
+# - name: "Ensure discovered application inventory groups exist in Ansible Tower Inventory"
+#
+# - name: "Ensure uncategorized inventory group exists in Ansible Tower Inventory"
+#
+# - name: "Ensure discovered host exists in Ansible Tower inventory"
