@@ -12,11 +12,11 @@
       block:
         - name: "Get list of discovery roles installed"
           block:
-            - name: "Get present working directory"
+            - name: "Get present project playbook directory"
               command: "pwd"
               register: "pwd_result"
               changed_when: False
-              
+
             - name: "Get list of Disovery Roles"
               find:
                 recurse: False
