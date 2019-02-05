@@ -10,8 +10,19 @@
   delegate_to: "localhost"
   run_once: True
 
-# - name: "Ensure {{ discovered_host_inventory_name }} exists in Ansible Tower"
-#
+- name: "Ensure {{ discovered_host_inventory_name }} exists in Ansible Tower"
+  tower_inventory:
+    tower_host: "{{ tower_url }}"
+    tower_username: "{{ tower_user }}"
+    tower_password: "{{ tower_pass }}"
+    tower_verify_ssl: "{{ tower_verify_ssl }}"
+    description: "{{ discovered_host_inventory_description }}"
+    organization: "{{ tower_org }}"
+    name: "discovered_host_inventory_name"
+    state: "present"
+  delegate_to: "localhost"
+  connection: "local"
+
 # - name: "Ensure discovered application inventory groups exist in Ansible Tower Inventory"
 #
 # - name: "Ensure uncategorized inventory group exists in Ansible Tower Inventory"
