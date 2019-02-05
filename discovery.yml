@@ -79,6 +79,7 @@
         - name: "Debug all facts"
           debug:
             var: "hostvars[inventory_hostname]['ansible_facts']"
+            verbosity: "1"
 
         # TODO:
         # Based on what OS, take the baseline list for each fact type
