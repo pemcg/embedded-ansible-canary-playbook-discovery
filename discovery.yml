@@ -34,6 +34,7 @@
               set_fact:
                 discovery_roles: "{{ discovery_roles_found | json_query('files[*].path') }}"
           delegate_to: "localhost"
+          become: False
           connection: "local"
           run_once: True
 
