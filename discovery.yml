@@ -14,7 +14,7 @@
           find:
             recurse: False
             paths:
-              - "{{ playbook_dir }}/roles"
+              - "roles"
             patterns: "^amf-discovery-.*$"
             use_regex: True
           register: "discovery_roles_found"
