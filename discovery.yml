@@ -23,6 +23,7 @@
                 paths:
                   - "{{ pwd_result.stdout }}/roles"
                 patterns: "^amf-discovery-.*$"
+                file_type: "directory"
                 use_regex: True
               register: "discovery_roles_found"
 
