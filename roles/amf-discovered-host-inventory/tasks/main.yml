@@ -24,8 +24,40 @@
   connection: "local"
   become: False
 
-# - name: "Ensure discovered application inventory groups exist in Ansible Tower Inventory"
-#
-# - name: "Ensure uncategorized inventory group exists in Ansible Tower Inventory"
+- name: "Ensure default inventory groups exists in Ansible Tower Inventory"
+  tower_group:
+    tower_username: "{{ tower_user }}"
+    tower_password: "{{ tower_pass }}"
+    tower_host: "{{ tower_url }}"
+    tower_verify_ssl: "{{ tower_verify_ssl }}"
+    name: "{{ item.name }}"
+    description: "{{ item.desc }}"
+    inventory: "{{ discovered_host_inventory_name }}"
+    source: "manual"
+    state: "present"
+  with_items:
+    - "{{ discovered_host_inventory_default_groups }}"
+  delegate_to: "localhost"
+  connection: "local"
+  run_once: True
+
+- name: "Ensure discovered application inventory groups exist in Ansible Tower Inventory"
+  tower_group:
+    tower_username: "{{ tower_user }}"
+    tower_password: "{{ tower_pass }}"
+    tower_host: "{{ tower_url }}"
+    tower_verify_ssl: "{{ tower_verify_ssl }}"
+    name: "{{ item.name }}"
+    description: "{{ item.desc | default(omit) }}"
+    inventory: "{{ discovered_host_inventory_name }}"
+    source: "manual"
+    state: "present"
+  with_items:
+    - "{{ hostvars[inventory_hostname]['discovered_apps'] }}"
+  when: "hostvars[inventory_hostname]['discovered_apps'] | length > 0"
+  delegate_to: "localhost"
+  connection: "local"
+  run_once: True
+
 #
 # - name: "Ensure discovered host exists in Ansible Tower inventory"

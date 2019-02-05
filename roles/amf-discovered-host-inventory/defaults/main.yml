@@ -1,8 +1,9 @@
 ---
 discovered_host_inventory_name: "Discovered Hosts"
 discovered_host_inventory_description: "Inventory of hosts scanned by the Ansible Migration Factory Discovery playbook"
-discovered_host_default_groups:
-  - "Unknown Application"
+discovered_host_inventory_default_groups:
+  - name: "Unknown Application"
+    desc: "Hosts running applications or services that we could not identify"
 tower_user: ""
 tower_pass: ""
 tower_url: ""
