@@ -7,6 +7,8 @@
       - "ansible-tower-cli"
     tower_venv_path:
       "/var/lib/awx/venv/ansible"
+  delegate_to: "localhost"
+  run_once: True
 
 # - name: "Ensure {{ discovered_host_inventory_name }} exists in Ansible Tower"
 #

@@ -95,6 +95,7 @@
             loop_var: "application"
           when: 'discovery_app_signatures | length > 0'
 
+        - name: "Build discovered host inventory | Unix/Linux"
         # Create Ansible Tower "Discovered Inventory"
         # Role pseudo-code:
             # Ensure "Discovered Hosts" inventory exists in Tower
