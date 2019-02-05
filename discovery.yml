@@ -10,22 +10,32 @@
   tasks:
     - name: "Unix/Linux"
       block:
-        - name: "Get list of Disovery Roles"
-          find:
-            recurse: False
-            paths:
-              - "roles"
-            patterns: "^amf-discovery-.*$"
-            use_regex: True
-          register: "discovery_roles_found"
+        - name: "Get list of discovery roles installed"
+          block:
+            - name: "Get present working directory"
+              command: "pwd"
+              register: "pwd_result"
+              changed_when: False
+              
+            - name: "Get list of Disovery Roles"
+              find:
+                recurse: False
+                paths:
+                  - "{{ pwd_result.stdout }}/roles"
+                patterns: "^amf-discovery-.*$"
+                use_regex: True
+              register: "discovery_roles_found"
 
-        - debug:
-            var: "discovery_roles_found"
-            verbosity: "1"
+            - debug:
+                var: "discovery_roles_found"
+                verbosity: "1"
 
-        - name: "Set list of discovery roles found"
-          set_fact:
-            discovery_roles: "{{ discovery_roles_found | json_query('files[*].path') }}"
+            - name: "Set list of discovery roles found"
+              set_fact:
+                discovery_roles: "{{ discovery_roles_found | json_query('files[*].path') }}"
+          delegate_to: "localhost"
+          connection: "local"
+          run_once: True
 
         - name: "Scan packages | Unix/Linux"
           scan_packages:
