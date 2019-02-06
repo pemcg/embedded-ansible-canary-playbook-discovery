@@ -101,7 +101,7 @@
     name: "{{ ansible_fqdn }}"
     inventory: "{{ discovered_host_inventory_name }}"
     group: "{{ discovered_host_inventory_default_group.name }}"
-    state: "present"
+    state: "absent"
   delegate_to: "localhost"
   connection: "local"
   become: False
