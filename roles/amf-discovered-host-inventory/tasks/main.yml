@@ -12,7 +12,7 @@
   run_once: True
   when: 'discovered_host_install_prereqs'
 
-- name: "Ensure {{ discovered_host_inventory_name }} exists in Ansible Tower"
+- name: "Ensure {{ discovered_host_inventory_name }} inventory exists in Ansible Tower"
   tower_inventory:
     tower_host: "{{ tower_url }}"
     tower_username: "{{ tower_user }}"
@@ -26,19 +26,17 @@
   connection: "local"
   become: False
 
-- name: "Ensure default inventory groups exists in Ansible Tower Inventory"
+- name: "Ensure default inventory group exists in Ansible Tower Inventory"
   tower_group:
     tower_username: "{{ tower_user }}"
     tower_password: "{{ tower_pass }}"
     tower_host: "{{ tower_url }}"
     tower_verify_ssl: "{{ tower_verify_ssl }}"
-    name: "{{ item.name }}"
-    description: "{{ item.desc }}"
+    name: "{{ discovered_host_inventory_default_group.name }}"
+    description: "{{ discovered_host_inventory_default_group.desc }}"
     inventory: "{{ discovered_host_inventory_name }}"
     source: "manual"
     state: "present"
-  with_items:
-    - "{{ discovered_host_inventory_default_groups }}"
   delegate_to: "localhost"
   connection: "local"
   run_once: True
@@ -56,15 +54,12 @@
     source: "manual"
     state: "present"
   with_items:
-    - "{{ hostvars[inventory_hostname]['discovered_apps'] }}"
-  when: "hostvars[inventory_hostname]['discovered_apps'] | length > 0"
+    - "{{ discovered_apps }}"
+  when: "discovered_apps | length > 0"
   delegate_to: "localhost"
   connection: "local"
   become: False
 
-# TODO:
-# need to do some custom work here to get this module to accept groups for the host
-# need to see what the tower_cli is capable of and compare
 - name: "Ensure discovered host exists in Ansible Tower inventory"
   tower_host:
     tower_username: "{{ tower_user }}"
@@ -80,3 +75,34 @@
   delegate_to: "localhost"
   connection: "local"
   become: False
+
+- name: "Ensure discovered host is associated with discovered applications"
+  tower_host_manage_groups:
+    tower_username: "{{ tower_user }}"
+    tower_password: "{{ tower_pass }}"
+    tower_host: "{{ tower_url }}"
+    tower_verify_ssl: "{{ tower_verify_ssl }}"
+    name: "{{ ansible_fqdn }}"
+    inventory: "{{ discovered_host_inventory_name }}"
+    group: "{{ item }}"
+    state: "present"
+  delegate_to: "localhost"
+  connection: "local"
+  become: False
+  with_items: "{{ discovered_apps }}"
+  when: "discovered_apps | length > 0"
+
+- name: "Ensure discovered host is associated with {{ discovered_host_inventory_default_group.name }}"
+  tower_host_manage_groups:
+    tower_username: "{{ tower_user }}"
+    tower_password: "{{ tower_pass }}"
+    tower_host: "{{ tower_url }}"
+    tower_verify_ssl: "{{ tower_verify_ssl }}"
+    name: "{{ ansible_fqdn }}"
+    inventory: "{{ discovered_host_inventory_name }}"
+    group: "{{ discovered_host_inventory_default_group.name }}"
+    state: "present"
+  delegate_to: "localhost"
+  connection: "local"
+  become: False
+  when: "discovered_apps | length < 1"
