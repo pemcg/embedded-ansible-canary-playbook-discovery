@@ -90,7 +90,7 @@ def main():
 
     module = TowerModule(argument_spec=argument_spec, supports_check_mode=True)
 
-    name=module.params.get('name')
+    name = module.params.get('name')
     group = module.params.get('group')
     inventory = module.params.get('inventory')
     state = module.params.pop('state')
@@ -112,11 +112,11 @@ def main():
             inv = inventories.get(name=inventory)
 
             # Find specific host
-            host = hosts.get(name=name,inventory=inv['id'])
+            host = hosts.get(name=name, inventory=inv['id'])
             params['host'] = host['id']
 
             # Find specific group
-            grp = groups.get(name=group,inventory=inv['id'])
+            grp = groups.get(name=group, inventory=inv['id'])
             params['group'] = grp['id']
 
             if state == "present":
@@ -139,6 +139,7 @@ def main():
     json_output['changed'] = result['changed']
     json_output['msg'] = result['msg']
     module.exit_json(**json_output)
+
 
 if __name__ == '__main__':
     main()
