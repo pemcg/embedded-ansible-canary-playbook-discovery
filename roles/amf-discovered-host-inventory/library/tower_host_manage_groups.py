@@ -84,6 +84,7 @@ def main():
     argument_spec = dict(
         name=dict(required=True),
         group=dict(required=True),
+        inventory=dict(required=True),
         state=dict(choices=['present', 'absent'], default='present'),
     )
 
