@@ -120,13 +120,13 @@ def main():
             params['group'] = grp['id']
 
             if state == "present":
-                result = host.associate(**params)
+                result = hosts.associate(**params)
                 if result['changed']:
                     result['msg'] = 'Successfully associated ' + name + ' with ' + group
                 elif not result['changed']:
                     result['msg'] = name + ' is already associated with ' + group
             elif state == "absent":
-                result = host.disassociate(**params)
+                result = hosts.disassociate(**params)
                 if result['changed']:
                     result['msg'] = 'Successfully disassociated ' + name + ' with ' + group
                 elif not result['changed']:
