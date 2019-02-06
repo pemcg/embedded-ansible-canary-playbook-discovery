@@ -104,15 +104,19 @@ def main():
             params = module.params.copy()
 
             # Get existing resources
+            inventories = tower_cli.get_resource('inventory')
             hosts = tower_cli.get_resource('host')
             groups = tower_cli.get_resource('group')
 
+            # Find specific inventory
+            inv = inventories.get(name=inventory)
+
             # Find specific host
-            host = hosts.get(name=name,inventory=inventory)
+            host = hosts.get(name=name,inventory=inv['id'])
             params['host'] = host['id']
 
             # Find specific group
-            grp = groups.get(name=group,inventory=inventory)
+            grp = groups.get(name=group,inventory=inv['id'])
             params['group'] = grp['id']
 
             if state == "present":
