@@ -3,4 +3,4 @@
     msg: "Hello-world... I'm testing"
 
 - set_fact:
-    ansible_facts: "{{ ansible_facts | combine({demo_data: {demo1: 'demo_data'}{demo2: 'demo_data2'}}) }}"
+    ansible_facts: "{{ ansible_facts | combine({demo_data: {demo1: 'demo_data'},{demo2: 'demo_data2'}}) }}"
