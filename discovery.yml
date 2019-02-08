@@ -76,10 +76,11 @@
             var: "hostvars[inventory_hostname]['ansible_facts']['services']"
             verbosity: "1"
 
+#trying to figure out why my additional facts are not landing in the new inventory
         - name: "Debug all facts"
           debug:
             var: "hostvars[inventory_hostname]['ansible_facts']"
-            verbosity: "1"
+            #verbosity: "1"
 
         # TODO:
         # Based on what OS, take the baseline list for each fact type
