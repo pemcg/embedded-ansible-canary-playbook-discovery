@@ -98,11 +98,4 @@
         - name: "Build discovered host inventory | Unix/Linux"
           include_role:
             name: "amf-discovered-host-inventory"
-        # Create Ansible Tower "Discovered Inventory"
-        # Role pseudo-code:
-            # Ensure "Discovered Hosts" inventory exists in Tower
-            # Create host {{ inventory_hostname }}
-            # Attach host facts collected from discovery roles
-            # Ensure groups exist from "{{ hostvars[inventory_hostname]['discovered_apps'] }}" - set by app sigs if length > 0
-            # Place host in group from "{{ hostvars[inventory_hostname]['discovered_apps'] }}" - set by app sigs if length > 0
       when: 'ansible_os_family != "Windows"'
