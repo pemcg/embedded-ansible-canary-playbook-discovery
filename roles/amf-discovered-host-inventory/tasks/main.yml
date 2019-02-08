@@ -60,7 +60,7 @@
   connection: "local"
   become: False
 
-- name: "Ensure discovered host exists in Ansible Tower inventory"
+- name: "Ensure discovered host and facts exist in Ansible Tower inventory"
   tower_host:
     tower_username: "{{ tower_user }}"
     tower_password: "{{ tower_pass }}"
