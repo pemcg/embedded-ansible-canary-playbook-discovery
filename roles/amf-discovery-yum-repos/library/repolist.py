@@ -111,8 +111,9 @@ def main():
 
     data = parseRepoList(module.params['repolist'])
 
-    output = {"repo_list" : data}
-    results = {"ansible_facts":output}
+    output = {"yum_repo_list": data}
+    #results = {"ansible_facts":output}
+    results = dict(ansible_facts=dict(output))
     module.exit_json(**results)
 
 
