@@ -3,4 +3,4 @@
     msg: "Hello-world... I'm testing"
 
 - set_fact:
-    ansible_facts: "{{ ansible_facts | combine({'demo_data': 'demo1': 'demo_data','demo2': 'demo_data2','demo3': ['item1','item2','item3'],'demo4': [{'name': 'bob', data: 'bob'},{'name': 'ed', 'data': 'ed'}]}) }}"
+    ansible_facts: "{{ ansible_facts | combine({'amf_demo_data': {'demo1': 'dummy value', 'demo2': 'dummy value2', 'demo3': [{'name': 'value', 'account': 'value2'},{'name': 'value3','account': 'value4'},'3']}}) }}"
