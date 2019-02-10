@@ -113,7 +113,7 @@ def main():
 
     output = {"yum_repo_list": data}
     #results = {"ansible_facts":output}
-    results = dict(ansible_facts=dict(output))
+    results = dict(ansible_facts = output)
     module.exit_json(**results)
 
 
