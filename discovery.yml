@@ -50,6 +50,8 @@
         - name: "Scan Custom | Unix/Linux"
           include_role:
             name: "{{ role }}"
+            apply:
+              become: True
           with_items: "{{ discovery_roles }}"
           loop_control:
             loop_var: "role"
