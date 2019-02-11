@@ -4,9 +4,15 @@
 
 - name: "Ansible Migration Factory - Discovery"
   hosts: "all"
-  gather_facts: True
+  gather_facts: False
   vars_files:
     - "vars/discovery_vars.yml"
+  pre_tasks:
+    # ignore facter facts
+    - name: "Gather facts"
+      setup:
+        gather_subset: "!facter"
+        fact_path: "/tmp" #avoid grabbing ansible_local by fakeout
   tasks:
     - name: "Unix/Linux"
       block:
@@ -49,9 +55,7 @@
         # Plugable discovery role interface
         - name: "Scan Custom | Unix/Linux"
           include_role:
-            name: "{{ role }}"
-            apply:
-              become: True
+            name: "{{ role | basename }}"
           with_items: "{{ discovery_roles }}"
           loop_control:
             loop_var: "role"
@@ -65,24 +69,27 @@
 
         - name: "Debug discovered_apps initialized value"
           debug:
-            var: "hostvars[inventory_hostname]['discovered_apps']"
+            var: "discovered_apps"
             verbosity: "1"
+
+        - debug:
+            var: "listeners"
 
         - name: "Debug scanned packages"
           debug:
-            var: "hostvars[inventory_hostname]['ansible_facts']['packages']"
+            var: "packages"
             verbosity: "1"
 
         - name: "Debug scanned services"
           debug:
-            var: "hostvars[inventory_hostname]['ansible_facts']['services']"
+            var: "services"
             verbosity: "1"
 
 #trying to figure out why my additional facts are not landing in the new inventory
         - name: "Debug all facts"
           debug:
-            var: "hostvars[inventory_hostname]['ansible_facts']"
-            #verbosity: "1"
+            var: "ansible_facts"
+            verbosity: "1"
 
         # TODO:
         # Based on what OS, take the baseline list for each fact type
@@ -102,3 +109,4 @@
           include_role:
             name: "amf-discovered-host-inventory"
       when: 'ansible_os_family != "Windows"'
+      become: True
