@@ -28,7 +28,7 @@ def main():
     module = AnsibleModule(argument_spec=fields)
 
     output = parseGroups(module.params['groupData'])
-    results = {"ansible_facts":output}
+    results = {"ansible_facts": output}
     module.exit_json(**results)
 
 if __name__ == '__main__':

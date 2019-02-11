@@ -10,7 +10,5 @@
 - name: Convert ps_aux output to Json
   processes:
     processes: "{{ps_aux.stdout_lines | to_json}}"
-  register: result
 
-- set_fact:
-    processes: "{{ result }}"
+# proccesses module returns ansible_facts['processes'] json

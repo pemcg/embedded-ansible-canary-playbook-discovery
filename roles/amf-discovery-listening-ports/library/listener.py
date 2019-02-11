@@ -134,9 +134,8 @@ def main():
     module = AnsibleModule(argument_spec=fields)
 
     data = parseNetstat(module.params['netstat'])
-    output = {}
-    output['listeners'] = data
-    results = {"ansible_facts":output}
+    output = {"listeners": data}
+    results = {"ansible_facts": output}
     module.exit_json(**results)
 
 

@@ -115,11 +115,9 @@ def main():
     for i in range(len(json.loads(processes))):
         parserow((json.loads(processes)[i]).encode('utf-8'))
     # Exit module with JSON output
-    output = {}
-    output['processes'] = entryList
-    results = {"ansible_facts":output}
+    output = {"processes": entryList}
+    results = {"ansible_facts": output}
     module.exit_json(**results)
-
 
 if __name__ == '__main__':
     main()

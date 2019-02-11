@@ -29,13 +29,10 @@
     hash_result: "{{ hash_result2 }}"
   when: hash_result2.stdout is defined
 
-- name: parse local users, passwords, groups and merge for webservice format
+- name: parse local users, passwords, groups and merge
   usergroupparser:
     userData: "{{ user_result.stdout_lines | to_json }}"
     hashData: "{{ hash_result.stdout_lines | to_json }}"
     groupData: "{{ group_result.stdout_lines }}"
-  register: result
 
-- set_fact:
-    local_users_groups: "{{ result }}"
-    #ansible_facts: "{{ ansible_facts | combine({}) }}"
+# usergroupparser returns ansible_facts[user_group] json

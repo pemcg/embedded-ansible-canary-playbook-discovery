@@ -8,10 +8,9 @@
   register: repoList
   changed_when: false
 
+
 - name: Convert repolist output to Json
   repolist:
     repolist: "{{repoList.stdout_lines | to_json}}"
-  register: repoList
 
-- set_fact:
-    repoList: "{{ repoList }}"
+# repolist returns ansible_facts['yum_repo_list'] json

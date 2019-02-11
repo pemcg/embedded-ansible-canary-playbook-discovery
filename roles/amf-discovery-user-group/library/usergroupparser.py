@@ -95,7 +95,7 @@ def main():
     userHashResults = mergeUserHash(module.params['userData'], module.params['hashData'])
     groupResults = parseGroups(module.params['groupData'])
     output = mergeAll(userHashResults, groupResults)
-    results = {"ansible_facts":output}
+    results = {"ansible_facts": output}
     module.exit_json(**results)
 
 

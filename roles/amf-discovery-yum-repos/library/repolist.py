@@ -106,14 +106,10 @@ def main():
     fields = {
         "repolist": { "required": True, "type": "list" }
     }
-
     module = AnsibleModule(argument_spec=fields)
 
     data = parseRepoList(module.params['repolist'])
-
-    output = {"yum_repo_list": data}
-    #results = {"ansible_facts":output}
-    results = dict(ansible_facts = output)
+    results = {"ansible_facts": {"yum_repo_list": data}}
     module.exit_json(**results)
 
 

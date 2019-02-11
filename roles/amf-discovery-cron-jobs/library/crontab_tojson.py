@@ -126,7 +126,7 @@ def main():
 
     cronTabOutput = parseCronTab(module.params['crontab'])
     output = createOutputMap(cronTabOutput, module.params['cronfiles'], module.params['varSpool'])
-    results = {"ansible_facts":output}
+    results = {"ansible_facts": output}
     module.exit_json(**results)
 
 

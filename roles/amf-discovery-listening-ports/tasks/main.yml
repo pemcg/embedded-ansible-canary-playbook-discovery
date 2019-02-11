@@ -1,17 +1,11 @@
 ---
-#tasks for finding getting data into Json from netstat
-
-
-- name: Netstat output
+- name: "Capture Netstat output"
   shell: 'netstat -tulpn | awk "{if (NR>2) {print}}"'
-  register: netstat
-  changed_when: false
+  register: "netstat"
+  changed_when: False
 
-- name: Convert Netstat output to Json
+- name: "Process netstat output"
   listener:
-    netstat: "{{netstat.stdout_lines | to_json}}"
-  register: result
+    netstat: "{{ netstat.stdout_lines | to_json }}"
 
-- set_fact:
-    listeners: "{{ result }}"
-
+# listener module returns ansible_facts['listeners'] json

@@ -1,5 +1,5 @@
 ---
-- name: Find the cron dirs
+- name: "Find the cron dirs"
   find:
     paths: /etc/cron.hourly,/etc/cron.daily,/etc/cron.weekly,/etc/cron.monthly
     recurse: yes
@@ -8,26 +8,24 @@
 - set_fact:
     cronFiles: "{{ cronFiles.files | map(attribute='path') | list }}"
 
-- name: Collect /etc/crontab data
+- name: "Collect /etc/crontab data"
   shell: 'cat /etc/crontab'
-  register: cronTab
-  changed_when: false
+  register: "cronTab"
+  changed_when: False
 
-- name: Collect /var/spool/cron files
+- name: "Collect /var/spool/cron files"
   find:
-    paths: /var/spool/cron/
-    recurse: yes
-  register: varSpoolCron
+    paths: "/var/spool/cron/"
+    recurse: True
+  register: "varSpoolCron"
 
 - set_fact:
     varSpoolCron: "{{ varSpoolCron.files | map(attribute='path') | list }}"
 
-- name: parse cron data
+- name: "Parse collected cron data"
   crontab_tojson:
     cronfiles: "{{ cronFiles }}"
     crontab: "{{ cronTab.stdout_lines }}"
     varSpool: "{{ varSpoolCron }}"
-  register: cronData
 
-- set_fact:
-    cron_jobs: "{{ cronData }}"
+# crontab_tojson module returns ansible_facts['cron_jobs'] json

@@ -2,5 +2,7 @@
 - debug:
     msg: "Hello-world... I'm testing"
 
-- set_fact:
-    ansible_facts: "{{ ansible_facts | combine({'amf_demo_data': {'demo1': 'dummy value', 'demo2': 'dummy value2', 'demo3': [{'name': 'value', 'account': 'value2'},{'name': 'value3','account': 'value4'},'3']}}) }}"
+# Doing the following will break all the discovery roles from getting into the
+#  ansible_facts dictionary for some reason during the looping
+# - set_fact:
+#     ansible_facts: "{{ ansible_facts | combine({'amf_demo_data': {'demo1': 'dummy value', 'demo2': 'dummy value2', 'demo3': [{'name': 'value', 'account': 'value2'},{'name': 'value3','account': 'value4'},'3']}}) }}"
