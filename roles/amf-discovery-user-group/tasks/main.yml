@@ -14,7 +14,7 @@
 - name: get local passwords | /etc/shadow-
   shell: 'cat /etc/shadow-'
   register: hash_result2
-  when: hash_result|failed
+  when: hash_result is failed
   ignore_errors: true
   changed_when: false
 
