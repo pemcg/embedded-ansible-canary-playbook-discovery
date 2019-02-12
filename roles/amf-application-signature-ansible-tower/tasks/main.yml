@@ -58,7 +58,7 @@
 
 - name: "Identify application as Ansible Tower"
   set_fact:
-    discovered_apps: "{{ discovered_apps | join('["Ansible Tower"]') }}"
+    discovered_apps: "{{ discovered_apps | union(["Ansible Tower"]) }}"
   when:
     - 'amf_as_ansible_tower_svc_count >= 3'
     - 'amf_as_ansible_tower_usr_count >= 1'
