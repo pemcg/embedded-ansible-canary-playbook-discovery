@@ -11,10 +11,10 @@
 - name: "Check if Ansible Tower services match running"
   set_fact:
     amf_as_ansible_tower_svc_count: "{{ amf_as_ansible_tower_svc_count | int + 1 }}"
+  with_items: "{{ amf_as_ansible_tower_services }}"
   when:
     - 'ansible_facts["services"][service]'
     - 'ansible_facts["services"][service]["state"] == "running"'
-  with_items: "amf_as_ansible_tower_services"
   loop_control:
     loop_var: "service"
 
