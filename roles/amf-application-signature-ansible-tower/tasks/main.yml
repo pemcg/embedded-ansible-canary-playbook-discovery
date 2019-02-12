@@ -18,6 +18,10 @@
   loop_control:
     loop_var: "service"
 
+- debug:
+    var: "ansible_facts.user_group | json_query(users[*].username)"
+    #verbosity: "1"
+
 - name: "Check if Ansible Tower user exists"
   set_fact:
     amf_as_ansible_tower_usr_count: "{{ amf_as_ansible_tower_usr_count | int + 1 }}"
