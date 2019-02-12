@@ -12,8 +12,8 @@
   set_fact:
     amf_as_ansible_tower_svc_count: "{{ amf_as_ansible_tower_svc_count | int + 1 }}"
   when:
-    - 'ansible_facts.services[service]'
-    - 'ansible_facts.services[service].state == "running"'
+    - 'ansible_facts['services'][service]'
+    - 'ansible_facts['services'][service]['state'] == "running"'
   with_items: "amf_as_ansible_tower_services"
   loop_control:
     loop_var: "service"
@@ -50,7 +50,7 @@
   set_fact:
     amf_as_ansible_tower_pkg_count: "{{ amf_as_ansible_tower_pkg_count | int + 1 }}"
   with_items: "{{ amf_as_ansible_tower_packages }}"
-  when: 'ansible_facts.packages[package]'
+  when: 'ansible_facts['packages'][package]'
   loop_control:
     loop_var: "package"
 
