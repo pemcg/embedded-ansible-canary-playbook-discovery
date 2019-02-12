@@ -74,7 +74,7 @@
   set_fact:
     discovered_apps: "{{ discovered_apps | union(['Ansible Tower']) }}"
   when:
-    - 'amf_as_ansible_tower_svc_count | int >= 3'amf_as_ansible_tower_proc_count
+    - 'amf_as_ansible_tower_svc_count | int >= 3'
 #    - 'amf_as_ansible_tower_usr_count | int >= 1'
     - 'amf_as_ansible_tower_grp_count | int >= 1'
     - 'amf_as_ansible_tower_path_count | int == 1'
