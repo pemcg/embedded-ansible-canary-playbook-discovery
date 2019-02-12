@@ -1,16 +1,16 @@
 ---
 - name: "Initialize signature scoring"
   set_fact:
-    amf_as_ansible_tower_svc_count: 0
-    amf_as_ansible_tower_usr_count: 0
-    amf_as_ansible_tower_grp_count: 0
-    amf_as_ansible_tower_path_count: 0
-    amf_as_ansible_tower_proc_count: 0
-    amf_as_ansible_tower_pkg_count: 0
+    amf_as_ansible_tower_svc_count: "0"
+    amf_as_ansible_tower_usr_count: "0"
+    amf_as_ansible_tower_grp_count: "0"
+    amf_as_ansible_tower_path_count: "0"
+    amf_as_ansible_tower_proc_count: "0"
+    amf_as_ansible_tower_pkg_count: "0"
 
 - name: "Check if Ansible Tower services match running"
   set_fact:
-    amf_as_ansible_tower_svc_count: "{{ amf_as_ansible_tower_svc_count + 1 }}"
+    amf_as_ansible_tower_svc_count: "{{ amf_as_ansible_tower_svc_count | int + 1 }}"
   when:
     - 'ansible_facts.services.service'
     - 'ansible_facts.services.service.state == "running"'
@@ -18,17 +18,15 @@
   loop_control:
     loop_var: "service"
 
-- debug:
-    var: "amf_as_ansible_tower_svc_count"
-
 - name: "Check if Ansible Tower user exists"
   set_fact:
-    amf_as_ansible_tower_usr_count: {{ amf_as_ansible_tower_usr_count + 1 }}
+    amf_as_ansible_tower_usr_count: "{{ amf_as_ansible_tower_usr_count | int + 1 }}"
   when:
     - 'amf_as_ansible_tower_user_group.user in ansible_facts.user_group.users[*].username'
 
 - name: "Check if Ansible Tower group exists"
   set_fact:
+    amf_as_ansible_tower_grp_count: "{{ amf_as_ansible_tower_grp_count | int + 1 }}"
   when:
     - 'amf_as_ansible_tower_user_group.group in ansible_facts.user_group.groups[*].group_name'
 
@@ -45,12 +43,12 @@
 
     - name: "Check if Ansible Tower application path exists"
       set_fact:
-        amf_as_ansible_tower_path_count: "{{ amf_as_ansible_tower_path_count + 1 }}"
+        amf_as_ansible_tower_path_count: "{{ amf_as_ansible_tower_path_count | int + 1 }}"
       when: "amf_as_ansible_tower_path_check.stat.exists"
 
 - name: "Check if Ansible Tower packages are installed"
   set_fact:
-    amf_as_ansible_tower_pkg_count: "{{ amf_as_ansible_tower_pkg_count + 1 }}"
+    amf_as_ansible_tower_pkg_count: "{{ amf_as_ansible_tower_pkg_count | int + 1 }}"
   with_items: "{{ amf_as_ansible_tower_packages }}"
   when: 'ansible_facts.packages.package'
   loop_control:
