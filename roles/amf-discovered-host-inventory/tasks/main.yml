@@ -83,7 +83,7 @@
     tower_verify_ssl: "{{ tower_verify_ssl }}"
     name: "{{ ansible_fqdn }}"
     inventory: "{{ discovered_host_inventory_name }}"
-    group: "{{ item }}"
+    group: "{{ item.name }}"
     state: "present"
   delegate_to: "localhost"
   connection: "local"
