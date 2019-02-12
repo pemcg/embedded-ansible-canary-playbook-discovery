@@ -56,6 +56,18 @@
   loop_control:
     loop_var: "package"
 
+- name: "Output values of signature scoring"
+  debug:
+    var: "item"
+    verbosity: "1"
+  with_items:
+    - "amf_as_ansible_tower_svc_count"
+    - "amf_as_ansible_tower_usr_count"
+    - "amf_as_ansible_tower_grp_count"
+    - "amf_as_ansible_tower_path_count"
+    - "amf_as_ansible_tower_pkg_count"
+    - "amf_as_ansible_tower_proc_count"
+
 - name: "Identify application as Ansible Tower"
   set_fact:
     discovered_apps: "{{ discovered_apps | union(["Ansible Tower"]) }}"
