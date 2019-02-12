@@ -19,20 +19,20 @@
     loop_var: "service"
 
 - debug:
-    var: "ansible_facts | json_query(user_group.users[*].username)"
+    var: "ansible_facts | json_query('user_group.users[*].username')"
     #verbosity: "1"
 
 - name: "Check if Ansible Tower user exists"
   set_fact:
     amf_as_ansible_tower_usr_count: "{{ amf_as_ansible_tower_usr_count | int + 1 }}"
   when:
-    - 'amf_as_ansible_tower_user_group.user in ansible_facts | json_query(user_group.users[*].username)'
+    - 'amf_as_ansible_tower_user_group.user in ansible_facts | json_query('user_group.users[*].username')'
 
 - name: "Check if Ansible Tower group exists"
   set_fact:
     amf_as_ansible_tower_grp_count: "{{ amf_as_ansible_tower_grp_count | int + 1 }}"
   when:
-    - 'amf_as_ansible_tower_user_group.group in ansible_facts.user_group | json_query(groups[*].group_name)'
+    - 'amf_as_ansible_tower_user_group.group in ansible_facts | json_query('user_group.groups[*].group_name')'
 
 - name: "Check if Ansible Tower application path exists"
   block:
