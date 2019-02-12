@@ -1,0 +1,21 @@
+---
+amf_as_ansible_tower_services:
+  - "postgresql-9.6.service"
+  - "rabbitmq-server.service"
+  - "nginx.service"
+  - "supervisord.service"
+
+amf_as_ansible_tower_user_group:
+  user: "awx"
+  group: "awx"
+
+amf_as_ansible_tower_path: "/var/lib/awx"
+
+# built for 3.4.1-1
+amf_as_ansible_tower_packages:
+  - "rabbitmq-server"
+  - "ansible-tower-server"
+  - "postgresql96-contrib"
+  - "postgresql96-libs"
+  - "supervisor"
+  - "nginx"

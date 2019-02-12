@@ -33,13 +33,28 @@
                 use_regex: True
               register: "discovery_roles_found"
 
+            - name: "Get list of Disovery Application Signature Roles"
+              find:
+                recurse: False
+                paths:
+                  - "{{ pwd_result.stdout }}/roles"
+                patterns: "^amf-application-signature-.*$"
+                file_type: "directory"
+                use_regex: True
+              register: "app_sig_roles_found"
+
             - debug:
                 var: "discovery_roles_found"
                 verbosity: "1"
 
-            - name: "Set list of discovery roles found"
+            - debug:
+                var: "app_sig_roles_found"
+                verbosity: "1"
+
+            - name: "Set list of discovery and application signature roles found"
               set_fact:
                 discovery_roles: "{{ discovery_roles_found | json_query('files[*].path') }}"
+                application_signature_roles: "{{ app_sig_roles_found | json_query('files[*].path') }}"
           delegate_to: "localhost"
           become: False
           connection: "local"
@@ -96,11 +111,11 @@
 
         - name: "Check application signatures | Unix/Linux"
           include_role:
-            name: "amf-application-signature-{{ application }}"
+            name: "{{ application_signature | basename }}"
           with_items: "{{ discovery_app_signatures }}"
           loop_control:
-            loop_var: "application"
-          when: 'discovery_app_signatures | length > 0'
+            loop_var: "application_signature"
+          when: 'application_signature_roles | length > 0'
 
         - name: "Build discovered host inventory | Unix/Linux"
           include_role:
