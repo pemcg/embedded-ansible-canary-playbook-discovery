@@ -12,8 +12,8 @@
   set_fact:
     amf_as_ansible_tower_svc_count: "{{ amf_as_ansible_tower_svc_count | int + 1 }}"
   when:
-    - 'ansible_facts.services.service'
-    - 'ansible_facts.services.service.state == "running"'
+    - 'ansible_facts.services[service]'
+    - 'ansible_facts.services[service].state == "running"'
   with_items: "amf_as_ansible_tower_services"
   loop_control:
     loop_var: "service"
@@ -22,13 +22,13 @@
   set_fact:
     amf_as_ansible_tower_usr_count: "{{ amf_as_ansible_tower_usr_count | int + 1 }}"
   when:
-    - 'amf_as_ansible_tower_user_group.user in ansible_facts.user_group.users[*].username'
+    - 'amf_as_ansible_tower_user_group.user in ansible_facts.user_group.users | json_query([*].username)'
 
 - name: "Check if Ansible Tower group exists"
   set_fact:
     amf_as_ansible_tower_grp_count: "{{ amf_as_ansible_tower_grp_count | int + 1 }}"
   when:
-    - 'amf_as_ansible_tower_user_group.group in ansible_facts.user_group.groups[*].group_name'
+    - 'amf_as_ansible_tower_user_group.group in ansible_facts.user_group.groups | json_query([*].group_name)'
 
 - name: "Check if Ansible Tower application path exists"
   block:
@@ -50,14 +50,14 @@
   set_fact:
     amf_as_ansible_tower_pkg_count: "{{ amf_as_ansible_tower_pkg_count | int + 1 }}"
   with_items: "{{ amf_as_ansible_tower_packages }}"
-  when: 'ansible_facts.packages.package'
+  when: 'ansible_facts.packages[package]'
   loop_control:
     loop_var: "package"
 
-- name: "Output values of signature scoring"
+- name: "Output values of signature scores"
   debug:
     var: "item"
-    verbosity: "1"
+    #verbosity: "1"
   with_items:
     - "amf_as_ansible_tower_svc_count"
     - "amf_as_ansible_tower_usr_count"
