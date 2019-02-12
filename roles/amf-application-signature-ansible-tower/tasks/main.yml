@@ -22,13 +22,13 @@
   set_fact:
     amf_as_ansible_tower_usr_count: "{{ amf_as_ansible_tower_usr_count | int + 1 }}"
   when:
-    - 'amf_as_ansible_tower_user_group.user in ansible_facts.user_group.users | json_query([*].username)'
+    - 'amf_as_ansible_tower_user_group.user in ansible_facts.user_group | json_query(users[*].username)'
 
 - name: "Check if Ansible Tower group exists"
   set_fact:
     amf_as_ansible_tower_grp_count: "{{ amf_as_ansible_tower_grp_count | int + 1 }}"
   when:
-    - 'amf_as_ansible_tower_user_group.group in ansible_facts.user_group.groups | json_query([*].group_name)'
+    - 'amf_as_ansible_tower_user_group.group in ansible_facts.user_group | json_query(groups[*].group_name)'
 
 - name: "Check if Ansible Tower application path exists"
   block:
