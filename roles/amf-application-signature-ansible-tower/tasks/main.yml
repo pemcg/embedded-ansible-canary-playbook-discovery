@@ -13,14 +13,9 @@
     amf_as_ansible_tower_svc_count: "{{ amf_as_ansible_tower_svc_count | int + 1 }}"
   with_items: "{{ amf_as_ansible_tower_services }}"
   when:
-    - 'ansible_facts["services"][service]'
-    - 'ansible_facts["services"][service]["state"] == "running"'
+    - 'ansible_facts["services"][service] is defined'
   loop_control:
     loop_var: "service"
-
-- debug:
-    var: "ansible_facts | json_query('user_group.users[*].username')"
-    #verbosity: "1"
 
 - name: "Check if Ansible Tower user exists"
   set_fact:
@@ -54,7 +49,7 @@
   set_fact:
     amf_as_ansible_tower_pkg_count: "{{ amf_as_ansible_tower_pkg_count | int + 1 }}"
   with_items: "{{ amf_as_ansible_tower_packages }}"
-  when: 'ansible_facts["packages"][package]'
+  when: 'ansible_facts["packages"][package] is defined'
   loop_control:
     loop_var: "package"
 
@@ -75,6 +70,7 @@
     discovered_apps: "{{ discovered_apps | union([{'name': 'Ansible Tower', 'desc': 'Hosts identified as Ansible Tower Servers'}]) }}"
   when:
     - 'amf_as_ansible_tower_svc_count | int >= 3'
+# TODO: See issue #1 in ansible-canary-role-discovery-user-group
 #    - 'amf_as_ansible_tower_usr_count | int >= 1'
     - 'amf_as_ansible_tower_grp_count | int >= 1'
     - 'amf_as_ansible_tower_path_count | int == 1'
