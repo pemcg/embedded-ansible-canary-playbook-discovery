@@ -112,7 +112,7 @@
         - name: "Check application signatures | Unix/Linux"
           include_role:
             name: "{{ application_signature | basename }}"
-          with_items: "{{ discovery_app_signatures }}"
+          with_items: "{{ application_signature_roles }}"
           loop_control:
             loop_var: "application_signature"
           when: 'application_signature_roles | length > 0'
