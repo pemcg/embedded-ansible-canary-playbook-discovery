@@ -72,7 +72,7 @@
 
 - name: "Identify application as Ansible Tower"
   set_fact:
-    discovered_apps: "{{ discovered_apps | union(['Ansible Tower']) }}"
+    discovered_apps: "{{ discovered_apps | union([{'name': 'Ansible Tower', 'desc': 'Hosts identified as Ansible Tower Servers'}]) }}"
   when:
     - 'amf_as_ansible_tower_svc_count | int >= 3'
 #    - 'amf_as_ansible_tower_usr_count | int >= 1'

@@ -53,8 +53,7 @@
     inventory: "{{ discovered_host_inventory_name }}"
     source: "manual"
     state: "present"
-  with_items:
-    - "{{ discovered_apps }}"
+  with_items: "{{ discovered_apps }}"
   when: "discovered_apps | length > 0"
   delegate_to: "localhost"
   connection: "local"
