@@ -76,8 +76,6 @@
             loop_var: "role"
           when: 'discovery_roles | length > 0'
 
-        # Plugable application signature interface
-        # Run application signature check (categorizer)
         - name: "Ensure discovered_apps list is initialized"
           set_fact:
             discovered_apps: []
@@ -97,7 +95,6 @@
             var: "services"
             verbosity: "1"
 
-#trying to figure out why my additional facts are not landing in the new inventory
         - name: "Debug all facts"
           debug:
             var: "ansible_facts"
@@ -105,10 +102,11 @@
 
         # TODO:
         # Based on what OS, take the baseline list for each fact type
-        #   Use unique jinja filter to get unique entries compared to a
+        #   Use 'unique' jinja filter to get unique entries compared to a
         #   default OS install
-        #   This helps ID running applications
+        #   This helps ID running applications by getting only a difference
 
+        # Plugable application signature interface
         - name: "Check application signatures | Unix/Linux"
           include_role:
             name: "{{ application_signature | basename }}"
@@ -116,6 +114,11 @@
           loop_control:
             loop_var: "application_signature"
           when: 'application_signature_roles | length > 0'
+
+        - name: "Debug discovered_apps value | post application signatures"
+          debug:
+            var: "discovered_apps"
+            verbosity: "1"
 
         - name: "Build discovered host inventory | Unix/Linux"
           include_role:
