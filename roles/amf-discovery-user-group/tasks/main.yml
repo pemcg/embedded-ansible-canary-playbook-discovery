@@ -1,38 +1,5 @@
 ---
-- name: get local users
-  shell: 'cat /etc/passwd'
-  register: user_result
-  changed_when: false
+- name: "Get local user and local group facts"
+  scan_user_group:
 
-- name: get local passwords | /etc/shadow
-  shell: 'cat /etc/shadow'
-  register: hash_result
-  ignore_errors: true
-  changed_when: false
-
-#Handling edge case where /etc/shadow doesn't exist but /etc/shadow- exists
-- name: get local passwords | /etc/shadow-
-  shell: 'cat /etc/shadow-'
-  register: hash_result2
-  when: hash_result is failed
-  ignore_errors: true
-  changed_when: false
-
-- name: get local groups
-  shell: 'cat /etc/group'
-  register: group_result
-  changed_when: false
-
-#Handling edge case where we need to set /etc/shadow- output to hash_result
-- name: Set hash_result when hash_result2 exists
-  set_fact:
-    hash_result: "{{ hash_result2 }}"
-  when: hash_result2.stdout is defined
-
-- name: parse local users, passwords, groups and merge
-  usergroupparser:
-    userData: "{{ user_result.stdout_lines | to_json }}"
-    hashData: "{{ hash_result.stdout_lines | to_json }}"
-    groupData: "{{ group_result.stdout_lines }}"
-
-# usergroupparser returns ansible_facts[user_group] json
+# usergroupparser returns ansible_facts[local_users] and ansible_facts[local_groups] json
