@@ -1,78 +1,58 @@
 ---
 - name: "Initialize signature scoring"
   set_fact:
-    amf_as_ansible_tower_svc_count: "0"
-    amf_as_ansible_tower_usr_count: "0"
-    amf_as_ansible_tower_grp_count: "0"
-    amf_as_ansible_tower_path_count: "0"
-    amf_as_ansible_tower_proc_count: "0"
-    amf_as_ansible_tower_pkg_count: "0"
+    amf_as_svc_count: "0"
+    amf_as_usr_count: "0"
+    amf_as_grp_count: "0"
+    amf_as_path_count: "0"
+    amf_as_proc_count: "0"
+    amf_as_pkg_count: "0"
 
-- name: "Check if Ansible Tower services match running"
+- name: "Check for {{ amf_as_discovered_app.name }} services"
   set_fact:
-    amf_as_ansible_tower_svc_count: "{{ amf_as_ansible_tower_svc_count | int + 1 }}"
-  with_items: "{{ amf_as_ansible_tower_services }}"
+    amf_as_svc_count: "{{ amf_as_svc_count | int + 1 }}"
+  with_items: "{{ amf_as_services }}"
   when:
-    - 'ansible_facts["services"][service] is defined'
+    - "ansible_facts['services'][service] is defined"
   loop_control:
     loop_var: "service"
 
-- name: "Check if Ansible Tower user exists"
+- name: "Check if {{ amf_as_discovered_app.name }} user(s) exist"
   set_fact:
-    amf_as_ansible_tower_usr_count: "{{ amf_as_ansible_tower_usr_count | int + 1 }}"
+    amf_as_usr_count: "{{ amf_as_usr_count | int + 1 }}"
+  with_items: "{{ amf_as_user_group.users }}"
   when:
-    - 'amf_as_ansible_tower_user_group.user in ansible_facts | json_query("local_users[*].user")'
+    - 'item in ansible_facts | json_query("local_users[*].user")'
 
-- name: "Check if Ansible Tower group exists"
+- name: "Check if {{ amf_as_discovered_app.name }} group(s) exist"
   set_fact:
-    amf_as_ansible_tower_grp_count: "{{ amf_as_ansible_tower_grp_count | int + 1 }}"
+    amf_as_grp_count: "{{ amf_as_grp_count | int + 1 }}"
+  with_items: "{{ amf_as_user_group.groups }}"
   when:
-    - 'amf_as_ansible_tower_user_group.group in ansible_facts | json_query("local_groups[*].group")'
+    - 'item in ansible_facts | json_query("local_groups[*].group")'
 
-- name: "Check if Ansible Tower application path exists"
-  block:
-    - stat:
-        path: "{{ amf_as_ansible_tower_path }}"
-        follow: False
-        get_attributes: False
-        get_checksum: False
-        get_md5: False
-        get_mime: False
-      register: "amf_as_ansible_tower_path_check"
+- name: "Check if {{ amf_as_discovered_app.name }} application path(s) exist"
+  include_tasks: "check_paths.yml"
+  with_items: "{{ amf_as_paths }}"
+  loop_control:
+    loop_var: "path"
 
-    - name: "Check if Ansible Tower application path exists"
-      set_fact:
-        amf_as_ansible_tower_path_count: "{{ amf_as_ansible_tower_path_count | int + 1 }}"
-      when: "amf_as_ansible_tower_path_check.stat.exists"
-
-- name: "Check if Ansible Tower packages are installed"
+- name: "Check for {{ amf_as_discovered_app.name }} packages"
   set_fact:
-    amf_as_ansible_tower_pkg_count: "{{ amf_as_ansible_tower_pkg_count | int + 1 }}"
-  with_items: "{{ amf_as_ansible_tower_packages }}"
-  when: 'ansible_facts["packages"][package] is defined'
+    amf_as_pkg_count: "{{ amf_as_pkg_count | int + 1 }}"
+  with_items: "{{ amf_as_packages }}"
+  when: "ansible_facts['packages'][package] is defined"
   loop_control:
     loop_var: "package"
 
-- name: "Output values of signature scores"
-  debug:
-    var: "item"
-    verbosity: "1"
-  with_items:
-    - "{{ amf_as_ansible_tower_svc_count }}"
-    - "{{ amf_as_ansible_tower_usr_count }}"
-    - "{{ amf_as_ansible_tower_grp_count }}"
-    - "{{ amf_as_ansible_tower_path_count }}"
-    - "{{ amf_as_ansible_tower_pkg_count }}"
-    - "{{ amf_as_ansible_tower_proc_count }}"
-
-- name: "Identify application as Ansible Tower"
+# Only thing we may want to add is a check for running processes
+- name: "Identify application as {{ amf_as_discovered_app.name }}"
   set_fact:
-    discovered_apps: "{{ discovered_apps | union([{'name': 'Ansible Tower', 'desc': 'Hosts identified as Ansible Tower Servers'}]) }}"
+    discovered_apps: "{{ discovered_apps | union([amf_as_discovered_app]) }}"
   when:
-    - 'amf_as_ansible_tower_svc_count | int >= 3'
-# TODO: See issue #1 in ansible-canary-role-discovery-user-group
-    - 'amf_as_ansible_tower_usr_count | int >= 1'
-    - 'amf_as_ansible_tower_grp_count | int >= 1'
-    - 'amf_as_ansible_tower_path_count | int == 1'
-    - 'amf_as_ansible_tower_pkg_count | int >= 4'
-#    - 'amf_as_ansible_tower_proc_count: 0'
+    - 'amf_as_svc_count | int >= 3'
+    - 'amf_as_usr_count | int >= 1'
+    - 'amf_as_grp_count | int >= 1'
+    - 'amf_as_path_count | int == 1'
+    - 'amf_as_pkg_count | int >= 4'
+#    - 'amf_as_proc_count | int > 0'

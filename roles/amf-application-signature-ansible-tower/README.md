@@ -1,38 +1,31 @@
-Role Name
-=========
+# amf-application-signature-ansible-tower
+An Ansible Role that identifies an Ansible Tower server as part of the Ansible Migration Factory Discovery process.  Use this Role as an example for developing further application signatures.
 
-A brief description of the role goes here.
+## Variables
+| Variable Name | Description | Type |
+| --- | --- | :---: |
+| amf_as_services | List of services to check ansible_facts.services for | list |
+| amf_as_user_group | Users and groups to check ansible_facts.local_users and ansible_facts.local_groups for. | dictionary |
+| amf_as_user_group.users | List of users to check ansible_facts.local_users for | list |
+| amf_as_user_group.groups | List of groups to check ansible_facts.local_groups for | list |
+| amf_as_paths | List of paths to check the system for | list |
+| amf_as_packages | List of packages to check ansible_facts.packages for. | list |
+| amf_as_discovered_app | Dictionary containing the name of the application we are identifying and a description of the classification. The dictionary should contain a `name` and `desc` key | dictionary |
+## Dependencies
+This Role depends on the Ansible Migration Factory Discovery playbook and its custom discovery roles to properly obtain data identifying an application.
 
-Requirements
-------------
+## Returned Data
+The Role assumes that the fact discovered_apps has been initialized.  This Role will append a dictionary to the `discovered_apps` list with the keys `name` and `desc` (description).
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+These values are defined in [defaults/main.yml](defaults/main.yml) in the amf_as_discovered_app dictionary.
 
-Role Variables
---------------
+```yaml
+discovered_apps: "{{ discovered_apps | union([amf_as_discovered_app]) }}"
+```
+This is only returned when the defined conditions are met.
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+## License
+[MIT](LICENSE)
 
-Dependencies
-------------
-
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
-
-Example Playbook
-----------------
-
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
-
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
-
-License
--------
-
-BSD
-
-Author Information
-------------------
-
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+## Author Information
+[Andrew J. Huffman](mailto:ahuffman@redhat.com)
