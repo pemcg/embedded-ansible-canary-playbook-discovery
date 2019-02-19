@@ -30,5 +30,5 @@ To automatically provide Application Signature Roles to the Ansible Migration Fa
 ```
 ### Developing a new Application Signature Role
 * It is recommended to use the Application Signature Role Skeleton to easily get your Application Signature started.  
-* Simply clone the [ansible-canary-role-development-application-signature-skeleton](https://gitlab.consulting.redhat.com/Canary/ansible-canary-role-development-application-signature-skeleton) repository
-* Follow the guide in the [ansible-canary-role-development-application-signature-skeleton](https://gitlab.consulting.redhat.com/Canary/ansible-canary-role-development-application-signature-skeleton) repository's README.md to initialize a new Application Signature with the skeleton
+* Simply clone the [ansible-canary-role-development-application-signature-skeleton](https://gitlab.consulting.redhat.com/Canary/ansible-canary-role-development-application-signature-skeleton) repository.
+* Follow the guide in the [ansible-canary-role-development-application-signature-skeleton](https://gitlab.consulting.redhat.com/Canary/ansible-canary-role-development-application-signature-skeleton) repository's README.md to initialize a new Application Signature with the skeleton.
