@@ -57,9 +57,20 @@ def main():
         sudoer_file = dict()
         comment_re = re.compile(r'^#+')
         for l in all_lines:
-            line = l.replace('\n', '')
+            line = l.replace('\n', '').replace('\t', '    ')
             if comment_re.search(line) is None and line != '' and line != None:
                 config_lines.append(line)
+            # Parser for defaults
+
+            # Parser for User
+
+            # Parser for RunAs
+
+            # Parser for Host
+
+            # Parser for Command
+
+            # WIP...
         sudoer_file['path'] = path
         sudoer_file['configuration'] = config_lines
         all_lines.close()
@@ -70,7 +81,7 @@ def main():
         sudoers_file = open(path, 'r')
         include_re = re.compile(r'(^#includedir)(\s)+(.*$)')
         for l in sudoers_file:
-            line = l.replace('\n', '')
+            line = l.replace('\n', '').replace('\t', '    ')
             if include_re.search(line):
                 include_dir = include_re.search(line).group(3)
         sudoers_file.close()
@@ -83,7 +94,7 @@ def main():
         # Get list of all included sudoers files
         sudoers['included_files'] = [ join(include_dir, filename) for filename in os.listdir(include_dir) if isfile(join(include_dir, filename))]
         # Capture each included sudoer file
-        for file in sudoers['include_files']:
+        for file in sudoers['included_files']:
             sudoers['sudoers_files'].append(get_config_lines(file))
         return sudoers
 
