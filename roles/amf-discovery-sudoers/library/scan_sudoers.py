@@ -54,8 +54,14 @@ def main():
     def get_config_lines(path):
         # Read sudoers file
         all_lines = open(path, 'r')
-        # Initialize empty dict
+        # Initialize empty return dict
         sudoer_file = dict()
+        # Initialize aliases vars
+        sudoer_aliases = dict()
+        user_aliases = list()
+        runas_aliases = list()
+        host_aliases = list()
+        command_aliases = list()
         # Raw config lines output
         config_lines = list()
         # Regex for Parsers
@@ -64,7 +70,7 @@ def main():
         # Defaults Parsing vars
         config_defaults = list()
         env_keep_opts = list()
-        
+
         # Work on each line of sudoers file
         for l in all_lines:
             # All raw (non-comment) config lines out
@@ -102,9 +108,12 @@ def main():
         # Build the sudoer file's dict output
         sudoer_file['path'] = path
         sudoer_file['configuration'] = config_lines
-        # Build env_keep dict and append to the rest of the config_defaults list
+        # Build defaults env_keep dict and append to the rest of the config_defaults list
         config_defaults.append({'env_keep': env_keep_opts})
         sudoer_file['defaults'] = config_defaults
+        # Build aliases output dictionary
+        sudoer_aliases = {'user_alias': user_aliases, 'runas_alias': runas_aliases, 'command_alias': command_aliases, 'host_alias': host_aliases}
+        sudoer_file['aliases'] = sudoer_aliases
 
         # done working on the file
         all_lines.close()
