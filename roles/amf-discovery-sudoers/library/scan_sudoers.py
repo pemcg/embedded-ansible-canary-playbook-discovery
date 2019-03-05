@@ -56,12 +56,32 @@ def main():
         config_lines = list()
         sudoer_file = dict()
         comment_re = re.compile(r'^#+')
+        defaults_re = re.compile(r'^(Defaults)+(\s)+(.*$)')
+        config_defaults = list()
+        env_keep_opts = list()
         for l in all_lines:
+            # All raw (non-comment) config lines out
             line = l.replace('\n', '').replace('\t', '    ')
             if comment_re.search(line) is None and line != '' and line != None:
                 config_lines.append(line)
             # Parser for defaults
-
+            if defaults_re.search(line):
+                defaults_config_line = defaults_re.search(line).group(3)
+                defaults_env_keep_re = re.compile(r'^(env_keep)+((\s\=)|(\s\+\=))+(\s)+(.*$)')
+                defaults_sec_path_re = re.compile(r'^(secure_path)+(\s)+(\=)+(\s)+(.*$)')
+                # Break up multi-line defaults config lines into single config options
+                if defaults_env_keep_re.search(defaults_config_line):
+                    defaults_multi = defaults_env_keep_re.search(defaults_config_line).group(6).split()
+                    # env_keep default options
+                    for i in defaults_multi:
+                        env_keep_opts.append(i.replace('"', ''))
+                # build secure path dict and append to defaults list
+                elif defaults_sec_path_re.search(defaults_config_line):
+                    config_defaults.append({defaults_sec_path_re.search(defaults_config_line).group(1): defaults_sec_path_re.search(defaults_config_line).group(5)})
+                # single defaults option case
+                else:
+                    config_defaults.append(defaults_config_line)
+            # TODO Aliases:
             # Parser for User
 
             # Parser for RunAs
@@ -73,6 +93,10 @@ def main():
             # WIP...
         sudoer_file['path'] = path
         sudoer_file['configuration'] = config_lines
+        # build sudoers defaults dict
+        #   build env_keep dict and append to defaults list
+        config_defaults.append({'env_keep': env_keep_opts})
+        sudoer_file['defaults'] = config_defaults
         all_lines.close()
         return sudoer_file
 
