@@ -1,0 +1,40 @@
+---
+- name: "Seed coalmine webservice database"
+  block:
+    - name: "Get target inventory data"
+      uri:
+        url: "{{ tower_url }}/api/v2/inventories/?name={{ tower_legacy_inventory_name }}"
+        user: "{{ tower_user }}"
+        password: "{{ tower_pass }}"
+        force_basic_auth: True
+        method: "GET"
+        status_code: "200"
+        validate_certs: "{{ tower_verify_ssl }}"
+      register: "legacy_inventory_obj"
+
+    - debug:
+        var: "legacy_inventory_obj.json.results[0].related.hosts"
+
+    - name: "Get target inventory hosts"
+      uri:
+        url: "{{ tower_url }}{{ legacy_inventory_obj.json.results[0].related.hosts }}"
+        user: "{{ tower_user }}"
+        password: "{{ tower_pass }}"
+        force_basic_auth: True
+        method: "GET"
+        status_code: "200"
+        validate_certs: "{{ tower_verify_ssl }}"
+      register: "legacy_inventory_hosts"
+
+    - name: "Set list of legacy inventory hosts"
+        legacy_hosts: "legacy_inventory_hosts.json | json_query('results[*].name')"
+  delegate_to: "localhost"
+
+- name: "Build coalmine SQL"
+  template:
+    src: "seed_coalmine.sql.j2"
+    dest: "/home/{{ ws_user }}/seed_coalmine.sql"
+    mode: "0600"
+    group: "{{ ws_group }}"
+    owner: "{{ ws_user }}"
+  delegate_to: "amf_webservice_host"

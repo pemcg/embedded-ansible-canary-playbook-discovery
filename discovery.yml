@@ -125,3 +125,7 @@
             name: "amf-discovered-host-inventory"
       when: 'ansible_os_family != "Windows"'
       become: True
+
+    - name: "Seed coalmine"
+      include_role:
+        name: "amf-seed-coalmine"

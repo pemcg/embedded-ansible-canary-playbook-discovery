@@ -1,0 +1,20 @@
+truncate parent_app CASCADE;
+# seed apps
+{% set app_code = namespace(app_code=1) %}
+{% for app in discovered_apps %}
+INSERT INTO parent_app(parent_app_name,eai_code,in_scope) VALUES ('{{ app }}', '{{ app_code.app_code }}', 't')
+{% set app_code.app_code = app_code.app_code + 1 %}
+{% endfor %}
+
+# seed hosts
+{% for host in legacy_hosts %}
+INSERT INTO server
+    (hostname, fqdn, sat_ipv4_addr, sat_name, parent_app_id)
+SELECT
+    '{{ host }}' as hostname,
+    '{{ host }}' as fqdn,
+    '{{ host }}' as sat_ipv4_addr,
+    '{{ host }}' as sat_name,
+    '1' as parent_app_id;
+
+{% endfor %}

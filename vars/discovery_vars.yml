@@ -1,1 +1,5 @@
 ---
+tower_legacy_inventory_name: ""
+amf_webservice_host: ""
+ws_group: "canary"
+ws_user: "canary"
