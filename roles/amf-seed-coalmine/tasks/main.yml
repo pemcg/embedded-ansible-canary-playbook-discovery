@@ -24,7 +24,14 @@
         method: "GET"
         status_code: "200"
         validate_certs: "{{ tower_verify_ssl }}"
-      register: "legacy_inventory_hosts"
+      register: "legacy_inventory_- name: "Build coalmine SQL"
+  template:
+    src: "seed_coalmine.sql.j2"
+    dest: "/home/{{ ws_user }}/seed_coalmine.sql"
+    mode: "0600"
+    group: "{{ ws_group }}"
+    owner: "{{ ws_user }}"
+  delegate_to: "amf_webservice_host"hosts"
 
     - name: "Set list of legacy inventory hosts"
         legacy_hosts: "legacy_inventory_hosts.json | json_query('results[*].name')"
@@ -37,4 +44,4 @@
     mode: "0600"
     group: "{{ ws_group }}"
     owner: "{{ ws_user }}"
-  delegate_to: "amf_webservice_host"
+  delegate_to: "{{ amf_webservice_host }}"
