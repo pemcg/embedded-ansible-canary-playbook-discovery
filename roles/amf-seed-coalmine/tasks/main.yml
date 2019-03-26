@@ -44,5 +44,5 @@
     mode: "0600"
     group: "{{ ws_group }}"
     owner: "{{ ws_user }}"
-  delegate_to: "amf_webservice_host"
+  delegate_to: "{{ amf_webservice_host }}"
   run_once: True
