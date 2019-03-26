@@ -126,6 +126,6 @@
       when: 'ansible_os_family != "Windows"'
       become: True
 
-    - name: "Seed coalmine"
+    - name: "Seed Coalmine web-service"
       include_role:
         name: "amf-seed-coalmine"
