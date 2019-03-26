@@ -1,5 +1,5 @@
 ---
-- name: "Seed coalmine webservice database"
+- name: "Query Tower server for legacy inventory data"
   block:
     - name: "Get target inventory data"
       uri:
@@ -11,9 +11,11 @@
         status_code: "200"
         validate_certs: "{{ tower_verify_ssl }}"
       register: "legacy_inventory_obj"
+      changed_when: False
 
     - debug:
         var: "legacy_inventory_obj.json.results[0].related.hosts"
+        verbosity: "1"
 
     - name: "Get target inventory hosts"
       uri:
@@ -25,6 +27,7 @@
         status_code: "200"
         validate_certs: "{{ tower_verify_ssl }}"
       register: "legacy_inventory_hosts"
+      changed_when: False
 
     - name: "Set list of legacy inventory hosts"
       set_fact:
@@ -33,7 +36,6 @@
   become: False
   connection: "local"
   run_once: True
-  changed_when: False
 
 - name: "Build coalmine SQL"
   template:
@@ -43,3 +45,4 @@
     group: "{{ ws_group }}"
     owner: "{{ ws_user }}"
   delegate_to: "amf_webservice_host"
+  run_once: True
