@@ -46,3 +46,5 @@
     owner: "{{ ws_user }}"
   delegate_to: "{{ amf_webservice_host }}"
   run_once: True
+  notify:
+    - "Seed postgresql"
