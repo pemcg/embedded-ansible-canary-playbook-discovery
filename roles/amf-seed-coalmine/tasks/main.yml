@@ -27,6 +27,7 @@
       register: "legacy_inventory_hosts"
 
     - name: "Set list of legacy inventory hosts"
+      set_fact:
         legacy_hosts: "legacy_inventory_hosts.json | json_query('results[*].name')"
   delegate_to: "localhost"
 
