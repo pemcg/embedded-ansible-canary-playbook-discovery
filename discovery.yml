@@ -129,4 +129,3 @@
     - name: "Seed coalmine"
       include_role:
         name: "amf-seed-coalmine"
-      become: False

@@ -30,6 +30,10 @@
       set_fact:
         legacy_hosts: "legacy_inventory_hosts.json | json_query('results[*].name')"
   delegate_to: "localhost"
+  become: False
+  connection: "local"
+  run_once: True
+  changed_when: False
 
 - name: "Build coalmine SQL"
   template:
