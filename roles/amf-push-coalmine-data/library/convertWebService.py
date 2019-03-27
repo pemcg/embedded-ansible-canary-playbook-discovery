@@ -30,7 +30,7 @@ def addCustomFacts(custom_facts, webServiceOutput):
 def main():
 
     fields = {
-        "ansible_facts": { "required": True, "type": "list" },
+        "ansible_facts": { "required": True, "type": "dict" },
         "hostname" : {"required": True, "type": "str"},
         "parent_app_name": {"required": True, "type": "str"},
         "custom_facts_list" : {"required": False, "type": "list"}
