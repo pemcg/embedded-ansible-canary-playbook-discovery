@@ -129,3 +129,7 @@
     - name: "Seed Coalmine web-service"
       include_role:
         name: "amf-seed-coalmine"
+
+    - name: "Push data to Coalmine"
+      include_role:
+        name: "amf-push-coalmine-data"
