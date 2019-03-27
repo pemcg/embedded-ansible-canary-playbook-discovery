@@ -22,7 +22,8 @@ def addCustomFacts(custom_facts, webServiceOutput):
     for fact in custom_facts:
         # data = fact['meta']
         # for subkey in data.keys():
-        webServiceOutput[fact] = fact
+        keys = fact.keys()
+        webServiceOutput[keys[0]] = fact
     return webServiceOutput
 
 def main():
