@@ -1,5 +1,5 @@
 ---
-- name: "Build Custom Facts"
+- name: "Build custom facts"
   set_fact:
     custom_facts_formatted:
       - "{{ sudoers }}"
@@ -9,6 +9,12 @@
       - "{{ processes }}"
       - "{{ yum_repo_list }}"
       - "{{ cron_jobs }}"
+
+- debug:
+    var: "sudoers"
+
+- debug:
+    var: "custom_facts_formatted"
 
 - name: "Ensure data is prepared for Coalmine"
   convertWebService:
