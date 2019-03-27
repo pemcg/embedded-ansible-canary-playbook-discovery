@@ -9,14 +9,10 @@
       - "{{ processes }}"
       - "{{ yum_repo_list }}"
       - "{{ cron_jobs }}"
-    facts_formatted:
-      - "{{ ansible_facts }}"
-      - "{{ packages }}"
-      - "{{ services }}"
 
 - name: "Ensure data is prepared for Coalmine"
   convertWebService:
-    ansible_facts: "{{ facts_formatted }}"
+    ansible_facts: "{{ ansible_facts }}"
     parent_app_name: "Unknown Application"
     hostname: "{{ inventory_hostname }}"
     custom_facts_list: '{{ custom_facts_formatted }}'
