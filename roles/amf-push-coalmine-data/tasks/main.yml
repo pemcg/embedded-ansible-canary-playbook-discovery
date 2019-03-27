@@ -21,5 +21,19 @@
     custom_facts_list: "{{ custom_facts_formatted }}"
   register: "coalmine_data"
 
-- debug:
+- name: "Debug formatted Coalmine data"
+  debug:
     var: "coalmine_data"
+    verbosity: "1"
+
+- name: "Push data to Coalmine web-service"
+  uri:
+    url: "https://{{ amf_webservice_host }}:8080/v1/ansible/web/servers/{{ inventory_hostname | lower }}/insertAnsibleData"
+    method: "POST"
+    body_format: "json"
+    body: "{{ coalmine_data.meta }}"
+    validate_certs: False
+  register: "coalmine_push_results"
+
+- debug:
+    var: "coalmine_push_results"
