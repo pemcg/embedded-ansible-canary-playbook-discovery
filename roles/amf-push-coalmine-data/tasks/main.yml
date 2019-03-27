@@ -15,7 +15,7 @@
     ansible_facts: "{{ ansible_facts }}"
     parent_app_name: "Unknown Application"
     hostname: "{{ inventory_hostname }}"
-    custom_facts_list: '{{ custom_facts_formatted }}'
+    custom_facts_list: "{{ custom_facts_formatted }}"
   register: "coalmine_data"
 
 - debug:
