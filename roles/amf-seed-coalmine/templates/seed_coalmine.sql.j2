@@ -15,6 +15,7 @@ SELECT
     '{{ host }}' as fqdn,
     '{{ host }}' as sat_ipv4_addr,
     '{{ host }}' as sat_name,
-    '1' as parent_app_id;
+    parent_app.id as parent_app_id
+        FROM parent_app WHERE parent_app.eai_code = '1';
 
 {% endfor %}
