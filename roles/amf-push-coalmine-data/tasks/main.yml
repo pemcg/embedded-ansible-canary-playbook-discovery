@@ -10,8 +10,10 @@
       - {yum_repo_list: "{{ yum_repo_list }}"}
       - {cron_jobs: "{{ cron_jobs }}"}
 
-- debug:
+- name: "Debug Custom formatted facts"
+  debug:
     var: "custom_facts_formatted"
+    verbosity: "1"
 
 - name: "Ensure data is prepared for Coalmine"
   convertWebService:
