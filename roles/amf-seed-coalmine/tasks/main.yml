@@ -40,10 +40,10 @@
 - name: "Build coalmine SQL"
   template:
     src: "seed_coalmine.sql.j2"
-    dest: "/home/{{ ws_user }}/seed_coalmine.sql"
+    dest: "{{ pg_home }}/seed_coalmine.sql"
     mode: "0600"
-    group: "{{ ws_group }}"
-    owner: "{{ ws_user }}"
+    group: "{{ pg_group }}"
+    owner: "{{ pg_user }}"
   delegate_to: "{{ amf_webservice_host }}"
   run_once: True
   notify:

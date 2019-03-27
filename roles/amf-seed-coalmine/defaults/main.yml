@@ -4,3 +4,6 @@ tower_pass: ""
 tower_url: ""
 tower_verify_ssl: False
 tower_legacy_inventory_name: ""
+pg_user: "postgres"
+pg_group: "postgres"
+pg_home: "/var/lib/postgres"
