@@ -1,7 +1,12 @@
 ---
 - name: "Build Custom Facts"
   set_fact:
-    custom_facts_formatted: "{{{ sudoers }}, {{ local_users }}, {{ local_groups }}, {{ listeners }}, {{ processes }}}"
+    custom_facts_formatted:
+      "{{ sudoers }}"
+      "{{ local_users }}"
+      "{{ local_groups }}"
+      "{{ listeners }}"
+      "{{ processes }}"
 
 - name: "Ensure data is prepared for Coalmine"
   convertWebService:
