@@ -2,12 +2,13 @@
 - name: "Build Custom Facts"
   set_fact:
     custom_facts_formatted:
-      "{{ sudoers }}
-      {{ local_users }}
-      {{ local_groups }}
-      {{ listeners }}
-      {{ processes }}
-      {{ yum_repo_list }}"
+      - "{{ sudoers }}"
+      - "{{ local_users }}"
+      - "{{ local_groups }}"
+      - "{{ listeners }}"
+      - "{{ processes }}"
+      - "{{ yum_repo_list }}"
+      - "{{ cron_jobs }}"
 
 - name: "Ensure data is prepared for Coalmine"
   convertWebService:
