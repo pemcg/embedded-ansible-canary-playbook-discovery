@@ -126,3 +126,6 @@
   set_fact:
     discovered_apps: "[{{ discovered_host_inventory_default_group.name }}]"
   when: "discovered_apps | length < 1"
+
+- debug:
+    var: "discovered_apps"
