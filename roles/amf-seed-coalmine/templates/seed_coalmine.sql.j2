@@ -2,7 +2,7 @@ truncate parent_app CASCADE;
 
 {% set app_code = 1 %}
 {% for app in discovered_apps %}
-INSERT INTO parent_app(parent_app_name, eai_code, in_scope) VALUES ('{{ app }}', '{{ app_code }}', 't');
+INSERT INTO parent_app(parent_app_name, eai_code, in_scope) VALUES ('{{ app.name }}', '{{ app_code }}', 't');
 {% set app_code = app_code + 1 %}
 {% endfor %}
 
