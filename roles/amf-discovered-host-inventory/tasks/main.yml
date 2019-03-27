@@ -120,3 +120,8 @@
   connection: "local"
   become: False
   when: "discovered_apps | length > 0"
+
+- name: "Ensure discovered host is associated with {{ discovered_host_inventory_default_group.name }}"
+  set_fact:
+    discovered_apps: "[{{ discovered_host_inventory_default_group.name }}]"
+  when: "discovered_apps | length < 1"
