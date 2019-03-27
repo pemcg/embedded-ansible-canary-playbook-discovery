@@ -13,15 +13,15 @@ def convertAnsibleFacts (ansible_facts, parent_app_name, hostname):
     webServiceOutput = {}
     webServiceOutput['parent_app_name'] = parent_app_name
     webServiceOutput['hostname'] = hostname.lower()
-    webServiceOutput['facts']=ansible_facts
-    webServiceOutput['packages']=ansible_facts[packages]
-    webServiceOutput['services']=ansible_facts[services]
+    webServiceOutput['facts'] = ansible_facts
+    webServiceOutput['packages'] = ansible_facts['packages']
+    webServiceOutput['services'] = ansible_facts['services']
 
     return (webServiceOutput)
 
 def addCustomFacts(custom_facts, webServiceOutput):
 
-    for fact in custom_facts:
+    for fact in custom_facts.keys():
         # data = fact['meta']
         # for subkey in data.keys():
         webServiceOutput[subkey] = data[fact]
