@@ -1,5 +1,4 @@
 ---
-tower_legacy_inventory_name: ""
 amf_webservice_host: ""
 ws_db_name: "canary"
 pg_user: "postgres"
