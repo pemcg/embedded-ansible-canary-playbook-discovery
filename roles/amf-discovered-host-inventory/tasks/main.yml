@@ -124,7 +124,7 @@
 # The following makes sure we have an app list for seeding the coalmine web-service
 - name: "Ensure discovered host is associated with {{ discovered_host_inventory_default_group.name }}"
   set_fact:
-    discovered_apps: "[{{ discovered_host_inventory_default_group.name }}]"
+    discovered_apps: "[{{ discovered_host_inventory_default_group }}]"
   when: "discovered_apps | length < 1"
 
 - debug:
