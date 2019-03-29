@@ -27,7 +27,7 @@
 - name: "Debug formatted Coalmine data"
   debug:
     var: "coalmine_data"
-    verbosity: "1"
+    # verbosity: "1"
 
 - name: "Push data to Coalmine web-service"
   uri:
