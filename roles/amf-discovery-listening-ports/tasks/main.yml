@@ -1,4 +1,11 @@
 ---
+- name: "Ensure netstat is available on RHEL"
+  package:
+    name: "net-tools"
+    state: "installed"
+  become: True
+  when: 'ansible_os_family == "RedHat"'
+
 - name: "Capture Netstat output"
   shell: 'netstat -tulpn | awk "{if (NR>2) {print}}"'
   register: "netstat"
