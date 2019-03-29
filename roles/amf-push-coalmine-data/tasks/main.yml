@@ -2,8 +2,8 @@
 - name: "Build custom facts"
   set_fact:
     custom_facts_formatted:
-      - {sudoers: "{{ sudoers }}"}
-      - {user_group: {users: "{{ local_users }}", groups: "{{ local_groups }}"}}
+      # - {sudoers: "{{ sudoers }}"}
+      # - {user_group: {users: "{{ local_users }}", groups: "{{ local_groups }}"}}
       # - {local_users: "{{ local_users }}"}
       # - {local_groups: "{{ local_groups }}"}
       - {listeners: "{{ listeners }}"}
