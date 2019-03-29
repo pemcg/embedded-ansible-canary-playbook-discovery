@@ -3,11 +3,12 @@
   set_fact:
     custom_facts_formatted:
       - {sudoers: "{{ sudoers }}"}
-      - {local_users: "{{ local_users }}"}
-      - {local_groups: "{{ local_groups }}"}
+      - {user_group: {users: "{{ local_users }}", groups: "{{ local_groups }}"}}
+      # - {local_users: "{{ local_users }}"}
+      # - {local_groups: "{{ local_groups }}"}
       - {listeners: "{{ listeners }}"}
       - {processes: "{{ processes }}"}
-      - {yum_repo_list: "{{ yum_repo_list }}"}
+      - {repo_list: "{{ yum_repo_list }}"}
       - {cron_jobs: "{{ cron_jobs }}"}
 
 - name: "Debug Custom formatted facts"
