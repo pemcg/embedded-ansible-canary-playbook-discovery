@@ -10,3 +10,7 @@
   run_once: True
   notify:
     - "Seed postgresql"
+
+# Make sure we run the role's handlers before moving on to other roles
+- name: "Run Coalmine handlers"
+  meta: "flush_handlers"
