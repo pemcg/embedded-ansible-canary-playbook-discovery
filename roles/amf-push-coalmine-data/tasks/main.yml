@@ -10,6 +10,7 @@
       - {processes: "{{ processes }}"}
       - {repo_list: "{{ yum_repo_list }}"}
       - {cron_jobs: "{{ cron_jobs }}"}
+      - {local_users_groups: "{{ local_users_groups }}"}
 
 - name: "Debug Custom formatted facts"
   debug:
