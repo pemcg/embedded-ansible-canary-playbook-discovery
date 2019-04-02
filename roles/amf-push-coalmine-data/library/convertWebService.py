@@ -18,7 +18,11 @@ def convertAnsibleFacts (ansible_facts, parent_app_name, hostname):
     for key in ansible_facts.keys():
         facts_formatted['ansible_' + key] = ansible_facts[key]
     webServiceOutput['facts'] = facts_formatted
-    webServiceOutput['packages'] = ansible_facts['packages']
+    # fix formatting of packages for coalmine webservice
+    pkgs_formatted = list()
+    for pkg in ansible_facts['packages'].keys():
+        pkgs_formatted.append(ansible_facts['packages'][pkg])
+    webServiceOutput['packages'] = pkgs_formatted
     # fix formatting of services for coalmine webservice
     svcs_formatted = list()
     for svc in ansible_facts['services'].keys():
