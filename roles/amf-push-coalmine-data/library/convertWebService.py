@@ -32,8 +32,6 @@ def convertAnsibleFacts (ansible_facts, parent_app_name, hostname):
 
 def addCustomFacts(custom_facts, webServiceOutput):
     for fact in custom_facts:
-        # data = fact['meta']
-        # for subkey in data.keys():
         keys = fact.keys()
         webServiceOutput[keys[0]] = fact[keys[0]]
     return webServiceOutput
