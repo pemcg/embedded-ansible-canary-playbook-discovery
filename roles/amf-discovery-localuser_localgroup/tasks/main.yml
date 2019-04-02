@@ -25,7 +25,7 @@
   register: hash_result
   when:
     - shadow_changed.stat.exists
-    - not shadow_exists.stat.exists
+    - not shadow_exist.stat.exists
 
 - name: get local groups
   shell: 'cat /etc/group'
