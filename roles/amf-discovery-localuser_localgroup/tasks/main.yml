@@ -3,22 +3,26 @@
   shell: 'cat /etc/passwd'
   register: user_result
   changed_when: false
+  become: True
 
 - name: check if /etc/shadow exists
   stat:
     path: '/etc/shadow'
   register: shadow_exist
+  become: True
 
 - name: check if /etc/shadow- exists
   stat:
     path: '/etc/shadow-'
   register: shadow_changed
+  become: True
 
 - name: get local passwords
   shell: 'cat /etc/shadow'
   register: hash_result
   when:
     - shadow_exist.stat.exists
+  become: True
 
 - name: get local passwords
   shell: 'cat /etc/shadow-'
@@ -26,11 +30,22 @@
   when:
     - shadow_changed.stat.exists
     - not shadow_exist.stat.exists
+  become: True
 
 - name: get local groups
   shell: 'cat /etc/group'
   register: group_result
   changed_when: False
+  become: True
+
+- debug:
+    var: "userData"
+
+- debug:
+    var: "hashData"
+
+- debug:
+    var: "groupData"
 
 - name: parse local users, passwords, groups and merge for webservice format
   usergroupparser:
