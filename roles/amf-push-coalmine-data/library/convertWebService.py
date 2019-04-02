@@ -21,7 +21,7 @@ def convertAnsibleFacts (ansible_facts, parent_app_name, hostname):
     # fix formatting of packages for coalmine webservice
     pkgs_formatted = list()
     for pkg in ansible_facts['packages'].keys():
-        pkgs_formatted.append(ansible_facts['packages'][pkg])
+        pkgs_formatted.append(ansible_facts['packages'][pkg][0])
     webServiceOutput['packages'] = pkgs_formatted
     # fix formatting of services for coalmine webservice
     svcs_formatted = list()
