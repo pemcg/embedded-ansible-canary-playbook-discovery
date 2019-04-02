@@ -18,19 +18,19 @@
   shell: 'cat /etc/shadow'
   register: hash_result
   when:
-    - shadow_exist.stat.exists == True
+    - shadow_exist.stat.exists
 
 - name: get local passwords
   shell: 'cat /etc/shadow-'
   register: hash_result
   when:
-    - shadow_changed.stat.exists == True
-    - shadow_exists.stat.exists == False
+    - shadow_changed.stat.exists
+    - not shadow_exists.stat.exists
 
 - name: get local groups
   shell: 'cat /etc/group'
   register: group_result
-  changed_when: false
+  changed_when: False
 
 - name: parse local users, passwords, groups and merge for webservice format
   usergroupparser:
