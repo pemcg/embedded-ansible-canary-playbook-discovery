@@ -39,13 +39,13 @@
   become: True
 
 - debug:
-    var: "userData"
+    var: "user_result"
 
 - debug:
-    var: "hashData"
+    var: "hash_result"
 
 - debug:
-    var: "groupData"
+    var: "group_result"
 
 - name: parse local users, passwords, groups and merge for webservice format
   usergroupparser:
