@@ -49,8 +49,8 @@
 
 - name: parse local users, passwords, groups and merge for webservice format
   usergroupparser:
-    userData: "{{ user_result.stdout_lines }}"
-    hashData: "{{ hash_result.stdout_lines | default([]) }}"
+    userData: "{{ user_result.stdout_lines | default([]) | to_json }}"
+    hashData: "{{ hash_result.stdout_lines | default([]) | to_json }}"
     groupData: "{{ group_result.stdout_lines }}"
   register: result
 
