@@ -31,7 +31,7 @@
 
 - name: "Push data to Coalmine web-service"
   uri:
-    url: "http://{{ amf_webservice_host }}:8080/ansible/web/servers/{{ inventory_hostname | lower }}/insertAnsibleData"
+    url: "http://{{ amf_webservice_host }}:8080/v1/ansible/web/servers/{{ inventory_hostname | lower }}/insertAnsibleData"
     method: "POST"
     body_format: "json"
     body: "{{ coalmine_data.meta }}"
