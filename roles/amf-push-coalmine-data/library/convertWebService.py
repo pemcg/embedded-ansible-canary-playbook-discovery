@@ -14,11 +14,16 @@ def convertAnsibleFacts (ansible_facts, parent_app_name, hostname):
     webServiceOutput['parent_app_name'] = parent_app_name
     webServiceOutput['hostname'] = hostname.lower()
     facts_formatted = dict()
+    # coalmine webservice requires ansible_ fact prefixes from pre ansible 2.5
     for key in ansible_facts.keys():
         facts_formatted['ansible_' + key] = ansible_facts[key]
     webServiceOutput['facts'] = facts_formatted
     webServiceOutput['packages'] = ansible_facts['packages']
-    webServiceOutput['services'] = ansible_facts['services']
+    # fix formatting of services for coalmine webservice
+    svcs_formatted = list()
+    for svc in ansible_facts['services'].keys():
+        svcs_formatted.append(ansible_facts['services'][svc])
+    webServiceOutput['services'] = svcs_formatted
     return (webServiceOutput)
 
 def addCustomFacts(custom_facts, webServiceOutput):
