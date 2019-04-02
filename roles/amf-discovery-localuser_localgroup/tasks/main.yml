@@ -11,11 +11,11 @@
   register: shadow_exist
   become: True
 
-- name: check if /etc/shadow- exists
-  stat:
-    path: '/etc/shadow-'
-  register: shadow_changed
-  become: True
+# - name: check if /etc/shadow- exists
+#   stat:
+#     path: '/etc/shadow-'
+#   register: shadow_changed
+#   become: True
 
 - name: get local passwords
   shell: 'cat /etc/shadow'
@@ -24,13 +24,13 @@
     - shadow_exist.stat.exists
   become: True
 
-- name: get local passwords
-  shell: 'cat /etc/shadow-'
-  register: hash_result
-  when:
-    - shadow_changed.stat.exists
-    - not shadow_exist.stat.exists
-  become: True
+# - name: get local passwords
+#   shell: 'cat /etc/shadow-'
+#   register: hash_result
+#   when:
+#     - shadow_changed.stat.exists
+#     - not shadow_exist.stat.exists
+#   become: True
 
 - name: get local groups
   shell: 'cat /etc/group'
