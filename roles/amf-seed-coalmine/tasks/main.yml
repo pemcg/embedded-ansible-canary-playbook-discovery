@@ -1,4 +1,13 @@
 ---
+- name: "Converge data"
+  set_fact:
+    all_discovered_apps: {{ json_query('ansible_play_hosts_all[*]['discovered_apps']') }}
+  delegate_to: "localhost"
+
+- name: "Debug all discovered apps"
+  debug:
+    var: "all_discovered_apps"
+
 - name: "Build coalmine SQL"
   template:
     src: "seed_coalmine.sql.j2"
