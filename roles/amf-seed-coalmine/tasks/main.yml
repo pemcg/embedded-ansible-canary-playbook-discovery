@@ -1,7 +1,7 @@
 ---
 - name: "Converge data"
   set_fact:
-    all_discovered_apps: {{ json_query('ansible_play_hosts_all[*]['discovered_apps']') }}
+    all_discovered_apps: {{ ansible_play_hosts_all | json_query('[*]['discovered_apps']') }}
   delegate_to: "localhost"
 
 - name: "Debug all discovered apps"
