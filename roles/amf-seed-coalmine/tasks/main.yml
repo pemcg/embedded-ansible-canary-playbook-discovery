@@ -1,10 +1,10 @@
 ---
 - debug:
-    var: "hostvars.keys()"
+    var: "hostvars | json_query('*.keys()')"
 
 - name: "Converge data"
   set_fact:
-    all_discovered_apps: "{{ hostvars | json_query('[*].discovered_apps') }}"
+    all_discovered_apps: "{{ hostvars | json_query('*.discovered_apps') }}"
   run_once: True
   delegate_to: "localhost"
 
