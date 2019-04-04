@@ -1,6 +1,6 @@
 ---
 - debug:
-    var: "hostvars[*]['discovered_apps']"
+    var: "hostvars| json_query([*]['discovered_apps'])"
 
 - name: "Converge data"
   set_fact:
