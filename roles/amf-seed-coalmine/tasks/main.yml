@@ -1,6 +1,6 @@
 ---
 - debug:
-    var: "hostvars | json_query('*.keys()')"
+    var: "hostvars | json_query('[*].*')"
 
 - name: "Converge data"
   set_fact:
