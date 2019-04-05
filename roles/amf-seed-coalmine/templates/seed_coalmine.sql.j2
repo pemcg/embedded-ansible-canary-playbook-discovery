@@ -17,6 +17,6 @@ SELECT
     '{{ hostvars[host]["ansible_facts"].default_ipv4.address }}' as sat_ipv4_addr,
     '{{ host }}' as sat_name,
     parent_app.id as parent_app_id
-        FROM parent_app WHERE parent_app.parent_appname = '{{ hostvars[host]["discovered_apps"][0] }}';
+        FROM parent_app WHERE parent_app.parent_appname = '{{ hostvars[host]["discovered_apps"][0].name }}';
 
 {% endfor %}
