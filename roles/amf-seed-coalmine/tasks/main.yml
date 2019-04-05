@@ -1,7 +1,4 @@
 ---
-- debug:
-    var: "hostvars | json_query('[*].*')"
-
 - name: "Converge data"
   set_fact:
     all_discovered_apps: "{{ hostvars | json_query('*.discovered_apps') }}"
@@ -11,6 +8,7 @@
 - name: "Debug all discovered apps"
   debug:
     var: "all_discovered_apps"
+    verbosity: "1"
 
 - name: "Build coalmine SQL"
   template:
