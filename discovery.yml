@@ -133,4 +133,3 @@
     - name: "Push data to Coalmine"
       include_role:
         name: "amf-push-coalmine-data"
-      delegate_to: "localhost"
