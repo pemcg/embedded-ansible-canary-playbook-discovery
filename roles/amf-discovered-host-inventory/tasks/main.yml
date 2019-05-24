@@ -6,7 +6,8 @@
     tower_venv_pylibs:
       - "ansible-tower-cli"
     tower_venv_path: "/var/lib/awx/venv/ansible"
-  delegate_to: "localhost"
+  apply:
+    delegate_to: "localhost"
   connection: "local"
   run_once: True
   when: 'discovered_host_install_prereqs'
