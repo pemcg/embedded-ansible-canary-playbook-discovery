@@ -5,8 +5,7 @@
   vars:
     tower_venv_pylibs:
       - "ansible-tower-cli"
-    tower_venv_path:
-      "/var/lib/awx/venv/ansible"
+    tower_venv_path: "/var/lib/awx/venv/ansible"
   delegate_to: "localhost"
   connection: "local"
   run_once: True
