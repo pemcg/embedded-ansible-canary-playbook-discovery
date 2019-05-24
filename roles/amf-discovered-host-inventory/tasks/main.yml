@@ -2,13 +2,13 @@
 - name: "Ensure tower-cli is available in Ansible Tower virtual environment"
   include_role:
     name: "ansible_tower_genie_virtual_environments"
+    apply:
+      delegate_to: "localhost"
+      connection: "local"
   vars:
     tower_venv_pylibs:
       - "ansible-tower-cli"
     tower_venv_path: "/var/lib/awx/venv/ansible"
-  apply:
-    delegate_to: "localhost"
-  connection: "local"
   run_once: True
   when: 'discovered_host_install_prereqs'
 
