@@ -1,6 +1,6 @@
 ---
 amf_webservice_host: ""
-ws_db_name: "canary"
+ws_db_name: "coalmine"
 pg_user: "postgres"
 pg_group: "postgres"
-pg_home: "/var/lib/pgsql"
+pg_home: "/var/opt/rh/rh-postgresql96/lib/pgsql/data"
