@@ -59,7 +59,7 @@
   connection: "local"
   become: False
 
-- name: "Pre-set Ansible Tower host's variables"
+- name: "Pre-set Ansible Tower inventory host's variables"
   set_fact:
     tower_host_vars: {discovered_facts: "{{ ansible_facts | to_json }}"}
 
@@ -72,7 +72,7 @@
     name: "{{ ansible_fqdn }}"
     inventory: "{{ discovered_host_inventory_name }}"
     enabled: True
-    variables: "{{ tower_host_vars }}"
+    variables: "{{ tower_host_vars | string }}"
     state: "present"
   delegate_to: "localhost"
   connection: "local"
