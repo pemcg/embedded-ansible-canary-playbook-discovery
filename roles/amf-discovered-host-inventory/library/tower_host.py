@@ -102,7 +102,7 @@ def main():
             with open(filename, 'r') as f:
                 variables = f.read()
         else:
-            variables = json.dumps(variables)
+            variables = str(json.dumps(variables))
 
     json_output = {'host': name, 'state': state}
 
