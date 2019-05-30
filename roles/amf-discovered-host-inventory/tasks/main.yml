@@ -69,7 +69,7 @@
     inventory: "{{ discovered_host_inventory_name }}"
     enabled: True
     variables:
-      discovered_facts: "{{ ansible_facts | to_nice_json }}"
+      discovered_facts: "{{ ansible_facts }}"
     state: "present"
   delegate_to: "localhost"
   connection: "local"

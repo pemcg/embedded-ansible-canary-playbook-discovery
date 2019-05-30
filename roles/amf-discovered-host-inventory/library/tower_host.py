@@ -65,6 +65,7 @@ EXAMPLES = '''
 
 
 import os
+import json
 
 from ansible.module_utils.ansible_tower import TowerModule, tower_auth_config, tower_check_mode, HAS_TOWER_CLI
 
@@ -94,12 +95,14 @@ def main():
     enabled = module.params.get('enabled')
     state = module.params.get('state')
 
-    variables = str(module.params.get('variables'))
+    variables = module.params.get('variables')
     if variables:
         if variables.startswith('@'):
             filename = os.path.expanduser(variables[1:])
             with open(filename, 'r') as f:
                 variables = f.read()
+        else:
+            variables = json.dumps(variables)
 
     json_output = {'host': name, 'state': state}
 
