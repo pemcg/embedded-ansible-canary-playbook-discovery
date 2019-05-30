@@ -65,7 +65,6 @@ EXAMPLES = '''
 
 
 import os
-import json
 
 from ansible.module_utils.ansible_tower import TowerModule, tower_auth_config, tower_check_mode, HAS_TOWER_CLI
 
@@ -84,7 +83,7 @@ def main():
         description=dict(),
         inventory=dict(required=True),
         enabled=dict(type='bool', default=True),
-        variables=dict(),
+        variables=dict(type='str'),
         state=dict(choices=['present', 'absent'], default='present'),
     )
     module = TowerModule(argument_spec=argument_spec, supports_check_mode=True)
@@ -101,8 +100,6 @@ def main():
             filename = os.path.expanduser(variables[1:])
             with open(filename, 'r') as f:
                 variables = f.read()
-        else:
-            variables = str(json.dumps(variables))
 
     json_output = {'host': name, 'state': state}
 
