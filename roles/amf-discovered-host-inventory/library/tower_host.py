@@ -94,14 +94,12 @@ def main():
     enabled = module.params.get('enabled')
     state = module.params.get('state')
 
-    variables = module.params.get('variables')
+    variables = str(module.params.get('variables'))
     if variables:
         if variables.startswith('@'):
             filename = os.path.expanduser(variables[1:])
             with open(filename, 'r') as f:
                 variables = f.read()
-        else:
-            variables = str(variables)
 
     json_output = {'host': name, 'state': state}
 
