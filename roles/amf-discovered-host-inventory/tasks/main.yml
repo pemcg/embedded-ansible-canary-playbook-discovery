@@ -61,7 +61,7 @@
 
 - name: "Pre-set Ansible Tower inventory host's variables"
   set_fact:
-    tower_host_vars: {discovered_facts: \"{{ ansible_facts }}\"}
+    tower_host_vars: {discovered_facts: \""{{ ansible_facts }}"\"}
 
 - name: "Ensure discovered host and collected facts exist in Ansible Tower inventory"
   tower_host:
