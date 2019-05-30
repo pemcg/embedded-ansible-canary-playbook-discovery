@@ -72,7 +72,7 @@
     name: "{{ ansible_fqdn }}"
     inventory: "{{ discovered_host_inventory_name }}"
     enabled: True
-    variables: "{{ tower_host_vars | string }}"
+    variables: "{{ tower_host_vars }}"
     state: "present"
   delegate_to: "localhost"
   connection: "local"
