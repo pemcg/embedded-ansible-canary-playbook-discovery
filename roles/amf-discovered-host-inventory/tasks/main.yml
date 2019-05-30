@@ -59,7 +59,11 @@
   connection: "local"
   become: False
 
-- name: "Ensure discovered host and facts exist in Ansible Tower inventory"
+- name: "Pre-set Ansible Tower host's variables"
+  set_fact:
+    tower_host_vars: {discovered_facts: "{{ ansible_facts }}"}
+
+- name: "Ensure discovered host and collected facts exist in Ansible Tower inventory"
   tower_host:
     tower_username: "{{ tower_user }}"
     tower_password: "{{ tower_pass }}"
@@ -68,8 +72,7 @@
     name: "{{ ansible_fqdn }}"
     inventory: "{{ discovered_host_inventory_name }}"
     enabled: True
-    variables:
-      discovered_facts: "{{ ansible_facts }}"
+    variables: "{{ tower_host_vars }}"
     state: "present"
   delegate_to: "localhost"
   connection: "local"
