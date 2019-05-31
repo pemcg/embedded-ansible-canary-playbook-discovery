@@ -5,6 +5,8 @@
 # Remove the head portion to make work with dnf command
 - name: get repolist
   shell: 'yum repolist all | head -n -1'
+  args:
+    warn: False
   register: repoList
   changed_when: false
 
