@@ -61,7 +61,7 @@
 
 - name: "Pre-set Ansible Tower inventory host's variables"
   set_fact:
-    tower_host_vars: {'discovered_facts': "{{ ansible_facts | to_json }}"}
+    tower_host_vars: {\"discovered_facts\": "{{ ansible_facts | to_json }}"}
 
 - name: "Ensure discovered host and collected facts exist in Ansible Tower inventory"
   tower_host:
@@ -70,13 +70,18 @@
     tower_host: "{{ tower_url }}"
     tower_verify_ssl: "{{ tower_verify_ssl }}"
     name: "{{ ansible_fqdn }}"
-    inventory: "{{ discovered_host_inventory_name | quote }}"
+    inventory: "{{ discovered_host_inventory_name }}"
     enabled: True
     variables: "{{ tower_host_vars }}"
     state: "present"
   delegate_to: "localhost"
   connection: "local"
+  register: "create_inv_host_result"
   become: False
+
+- debug:
+    var: "create_inv_host_result"
+    # verbosity: "1"
 
 - name: "Ensure discovered host is associated with discovered applications"
   tower_host_manage_groups:
