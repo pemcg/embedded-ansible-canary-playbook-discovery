@@ -72,7 +72,9 @@
     name: "{{ ansible_fqdn }}"
     inventory: "{{ discovered_host_inventory_name }}"
     enabled: True
-    variables: "{{ tower_host_vars }}"
+    variables:
+      test: "123"
+      test2: {test: "testing",test2: "testing2"}
     state: "present"
   delegate_to: "localhost"
   connection: "local"
