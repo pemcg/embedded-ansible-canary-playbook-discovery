@@ -10,7 +10,7 @@
       - "ansible-tower-cli"
     tower_venv_path: "/var/lib/awx/venv/ansible"
   run_once: True
-  when: 'discovered_host_install_prereqs'
+  when: 'discovered_host_install_prereqs | bool'
 
 - name: "Ensure {{ discovered_host_inventory_name }} inventory exists in Ansible Tower"
   tower_inventory:
