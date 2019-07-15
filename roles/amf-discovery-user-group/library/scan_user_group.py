@@ -97,7 +97,7 @@ def main():
 
     def get_passwd(path):
         # conditional for OS type and set path if diverges from Linux
-        passwd_file = open(path, 'rb')
+        passwd_file = open(path, 'rt')
         users = list()
         for u in passwd_file:
             user = dict()
@@ -120,7 +120,7 @@ def main():
 
     def get_shadow(path):
         # conditional for OS type and set path if diverges from Linux
-        shadow_file = open(path, 'rb')
+        shadow_file = open(path, 'rt')
         susers = list()
         for u in shadow_file:
             user = dict()
@@ -141,7 +141,7 @@ def main():
 
     def get_group(path):
         # conditional for OS type and set path if diverges from Linux
-        group_file = open(path, 'rb')
+        group_file = open(path, 'rt')
         groups = list()
         for g in group_file:
             group = dict()
@@ -165,7 +165,7 @@ def main():
 
     def get_gshadow(path):
         # conditional for OS type and set path if diverges from Linux
-        gshadow_file = open(path, 'rb')
+        gshadow_file = open(path, 'rt')
         sgroups = list()
         for g in gshadow_file:
             sgroup = dict()
