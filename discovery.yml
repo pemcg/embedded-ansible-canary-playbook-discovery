@@ -13,6 +13,9 @@
       setup:
         gather_subset: "!all,!min,hardware,network,virtual,ohai"
         fact_path: "/tmp" #avoid grabbing ansible_local by fakeout
+
+    - debug:
+        var: "ansible_facts"
   tasks:
     - name: "Unix/Linux"
       block:
