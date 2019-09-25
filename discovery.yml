@@ -17,6 +17,7 @@
 
     - debug:
         var: "ansible_facts"
+        verbosity: "1"
   tasks:
     - name: "Unix/Linux"
       block:
