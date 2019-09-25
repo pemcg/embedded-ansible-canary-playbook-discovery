@@ -11,7 +11,8 @@
     # ignore facter facts
     - name: "Gather facts"
       setup:
-        #gather_subset: "!all,!min,hardware,network,virtual,ohai"
+#        gather_subset: "!all,!min,hardware,network,virtual,ohai"
+        gather_subset: "!all,hardware,network,virtual,ohai"
         fact_path: "/tmp" #avoid grabbing ansible_local by fakeout
 
     - debug:
