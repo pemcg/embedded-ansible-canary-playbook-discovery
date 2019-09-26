@@ -12,6 +12,34 @@
   run_once: True
   when: 'discovered_host_install_prereqs | bool'
 
+- debug:
+    var: "tower_user"
+    verbosity: "1"
+
+- debug:
+    var: "tower_url"
+    verbosity: "1"
+
+- debug:
+    var: "tower_pass"
+    verbosity: "1"
+
+- debug:
+    var: "tower_verify_ssl"
+    verbosity: "1"
+
+- debug:
+    var: "tower_org"
+    verbosity: "1"
+
+- debug:
+    var: "discovered_host_inventory_name"
+    verbosity: "1"
+
+- debug:
+    var: "discovered_host_inventory_description"
+    verbosity: "1"
+
 - name: "Ensure {{ discovered_host_inventory_name }} inventory exists in Ansible Tower"
   tower_inventory:
     tower_host: "{{ tower_url }}"
