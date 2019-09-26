@@ -120,23 +120,40 @@ def main():
 
     def get_shadow(path):
         # conditional for OS type and set path if diverges from Linux
-        shadow_file = open(path, 'rt')
-        susers = list()
-        for u in shadow_file:
-            user = dict()
-            field = u.replace('\n', '').split(':')
-            if len(field) > 0:
-                user['user'] = field[0]
-                user['encrypted_password'] = field[1]
-                user['last_pw_change'] = field[2]
-                user['min_pw_age'] = field[3]
-                user['max_pw_age'] = field[4]
-                user['pw_warning_days'] = field[5]
-                user['pw_inactive_days'] = field[6]
-                user['account_expiration'] = field[7]
-                user['reserved'] = field[8]
-            susers.append(user)
-        shadow_file.close()
+        try:
+            shadow_file = open(path, 'rt')
+            susers = list()
+            for u in shadow_file:
+                user = dict()
+                field = u.replace('\n', '').split(':')
+                if len(field) > 0:
+                    user['user'] = field[0]
+                    user['encrypted_password'] = field[1]
+                    user['last_pw_change'] = field[2]
+                    user['min_pw_age'] = field[3]
+                    user['max_pw_age'] = field[4]
+                    user['pw_warning_days'] = field[5]
+                    user['pw_inactive_days'] = field[6]
+                    user['account_expiration'] = field[7]
+                    user['reserved'] = field[8]
+                susers.append(user)
+            shadow_file.close()
+        except:
+            # can't read file, return empty data
+            susers = [
+                {
+                'user' = '',
+                'encrypted_password' = '',
+                'last_pw_change' = '',
+                'min_pw_age' = '',
+                'max_pw_age' = '',
+                'pw_warning_days' = '',
+                'pw_inactive_days' = '',
+                'account_expiration' = '',
+                'reserved' = ''
+                }
+            ]
+            pass
         return susers
 
     def get_group(path):
@@ -165,26 +182,38 @@ def main():
 
     def get_gshadow(path):
         # conditional for OS type and set path if diverges from Linux
-        gshadow_file = open(path, 'rt')
-        sgroups = list()
-        for g in gshadow_file:
-            sgroup = dict()
-            field = g.replace('\n', '').split(':')
-            if len(field) > 0:
-                sgroup['group'] = field[0]
-                sgroup['encrypted_password'] = field[1]
-                if field[2] != '':
-                    administrators = field[2].split(',')
-                else:
-                    administrators = list()
-                sgroup['administrators'] = administrators
-                if field[3] != '':
-                    members = field[3].split(',')
-                else:
-                    members = list()
-                sgroup['members'] = members
-            sgroups.append(sgroup)
-        gshadow_file.close()
+        try:
+            gshadow_file = open(path, 'rt')
+            sgroups = list()
+            for g in gshadow_file:
+                sgroup = dict()
+                field = g.replace('\n', '').split(':')
+                if len(field) > 0:
+                    sgroup['group'] = field[0]
+                    sgroup['encrypted_password'] = field[1]
+                    if field[2] != '':
+                        administrators = field[2].split(',')
+                    else:
+                        administrators = list()
+                    sgroup['administrators'] = administrators
+                    if field[3] != '':
+                        members = field[3].split(',')
+                    else:
+                        members = list()
+                    sgroup['members'] = members
+                sgroups.append(sgroup)
+            gshadow_file.close()
+        except:
+            # can't read file, return empty data
+            sgroups = [
+                {
+                'group': '',
+                'encrypted_password': '',
+                'administrators': [],
+                'members': []
+                }
+            ]
+            pass
         return sgroups
 
     def merge_group_data(groups, gshadow):
