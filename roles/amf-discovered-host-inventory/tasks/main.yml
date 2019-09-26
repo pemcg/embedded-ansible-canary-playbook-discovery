@@ -21,10 +21,6 @@
     verbosity: "1"
 
 - debug:
-    var: "tower_pass"
-    verbosity: "1"
-
-- debug:
     var: "tower_verify_ssl"
     verbosity: "1"
 
@@ -87,10 +83,6 @@
   connection: "local"
   become: False
 
-- name: "Pre-set Ansible Tower inventory host's variables"
-  set_fact:
-    tower_host_vars: {discovered_facts: "{{ ansible_facts }}"}
-
 - name: "Ensure discovered host and collected facts exist in Ansible Tower inventory"
   tower_host:
     tower_username: "{{ tower_user }}"
@@ -101,8 +93,7 @@
     inventory: "{{ discovered_host_inventory_name }}"
     enabled: True
     variables:
-      test: "123"
-      test2: {test: "testing",test2: "testing2"}
+      discovered_facts: "{{ ansible_facts }}"
     state: "present"
   delegate_to: "localhost"
   connection: "local"
@@ -111,7 +102,7 @@
 
 - debug:
     var: "create_inv_host_result"
-    # verbosity: "1"
+    verbosity: "1"
 
 - name: "Ensure discovered host is associated with discovered applications"
   tower_host_manage_groups:
