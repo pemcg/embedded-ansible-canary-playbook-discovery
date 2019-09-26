@@ -83,6 +83,25 @@
   connection: "local"
   become: False
 
+- name: "Create temporary directory to store host variables"
+  tempfile:
+    state: "directory"
+  register: "temp_vars_dir"
+  delegate_to: "localhost"
+  connection: "local"
+  run_once: True
+
+- name: "Set temporary directory path"
+  set_fact:
+    vars_dir: "{{ temp_vars_dir.path }}"
+
+- name: "Dump collected facts to temporary directory"
+  template:
+    src: "vars_file.j2"
+    dest: "{{ vars_dir }}/{{ inventory_hostname }}.txt"
+  delegate_to: "localhost"
+  connection: "local"
+
 - name: "Ensure discovered host and collected facts exist in Ansible Tower inventory"
   tower_host:
     tower_username: "{{ tower_user }}"
@@ -92,8 +111,7 @@
     name: "{{ ansible_fqdn }}"
     inventory: "{{ discovered_host_inventory_name }}"
     enabled: True
-    variables:
-      discovered_facts: "{{ ansible_facts }}"
+    variables: "@{{ vars_dir }}/{{ inventory_hostname }}.txt"
     state: "present"
   delegate_to: "localhost"
   connection: "local"
@@ -160,3 +178,9 @@
   debug:
     var: "discovered_apps"
     verbosity: "1"
+
+- name: "Cleanup temporary variables directory"
+  file:
+    path: "{{ vars_dir }}"
+    state: "absent"
+  become: True
