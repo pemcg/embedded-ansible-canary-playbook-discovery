@@ -1,3 +1,3 @@
 ---
 discovered_facts:
-{{ ansible_facts | to_nice_yaml(indent=4) | indent(width=2,first=True,blank=False) }}
+{{ ansible_facts | to_nice_yaml | indent(width=2,first=True,blank=False) }}
