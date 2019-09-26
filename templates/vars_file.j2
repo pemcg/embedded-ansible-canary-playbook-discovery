@@ -1,5 +1,3 @@
 ---
 discovered_facts:
-{% for line in ansible_facts | to_nice_yaml %}
-  {{ line }}
-{% endfor %}
+{{ ansible_facts | to_nice_yaml(indent=2) }}
