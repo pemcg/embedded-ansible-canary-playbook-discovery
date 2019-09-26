@@ -140,7 +140,18 @@ def main():
             shadow_file.close()
         except:
             # can't read file, return empty data
-            susers = [{'user' = '', 'encrypted_password' = '', 'last_pw_change' = '', 'min_pw_age' = '', 'max_pw_age' = '', 'pw_warning_days' = '', 'pw_inactive_days' = '', 'account_expiration' = '', 'reserved' = ''}]
+            susers = list()
+            user = dict()
+            user['user'] = ''
+            user['encrypted_password'] = ''
+            user['last_pw_change'] = ''
+            user['min_pw_age'] = ''
+            user['max_pw_age'] = ''
+            user['pw_warning_days'] = ''
+            user['pw_inactive_days'] = ''
+            user['account_expiration'] = ''
+            user['reserved'] = ''
+            susers.append(user)
             pass
         return susers
 
@@ -193,7 +204,13 @@ def main():
             gshadow_file.close()
         except:
             # can't read file, return empty data
-            sgroups = [{'group': '', 'encrypted_password': '', 'administrators': [], 'members': []}]
+            sgroups = list()
+            sgroup = dict()
+            sgroup['group'] = ''
+            sgroup['encrypted_password'] = ''
+            sgroup['administrators'] = list()
+            sgroup['members'] = list()
+            sgroups.append(sgroup)
             pass
         return sgroups
 
