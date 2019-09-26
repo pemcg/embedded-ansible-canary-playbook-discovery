@@ -1,14 +1,5 @@
 ---
-#tasks for finding getting data into Json from netstat
+- name: "Collect running process facts"
+  process_facts:
 
-
-- name: PS Aux output
-  shell: "ps aux | awk '{if (NR!=1) {print}}'"
-  register: ps_aux
-  changed_when: false
-
-- name: Convert ps_aux output to Json
-  processes:
-    processes: "{{ps_aux.stdout_lines | to_json}}"
-
-# proccesses module returns ansible_facts['processes'] json
+# proccess_facts module returns ansible_facts['processes'] json

@@ -1,0 +1,5 @@
+---
+- name: "Collect cron facts"
+  scan_cron:
+
+# returns ansible_facts['cron']
