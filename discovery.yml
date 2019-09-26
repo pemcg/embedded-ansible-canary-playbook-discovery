@@ -27,6 +27,7 @@
               command: "pwd"
               register: "pwd_result"
               changed_when: False
+              run_once: True
 
             - name: "Get list of Disovery Roles"
               find:
@@ -37,6 +38,7 @@
                 file_type: "directory"
                 use_regex: True
               register: "discovery_roles_found"
+              run_once: True
 
             - name: "Get list of Disovery Application Signature Roles"
               find:
@@ -47,6 +49,7 @@
                 file_type: "directory"
                 use_regex: True
               register: "app_sig_roles_found"
+              run_once: True
 
             - debug:
                 var: "discovery_roles_found"
@@ -60,10 +63,10 @@
               set_fact:
                 discovery_roles: "{{ discovery_roles_found | json_query('files[*].path') }}"
                 application_signature_roles: "{{ app_sig_roles_found | json_query('files[*].path') }}"
+              run_once: True
           delegate_to: "localhost"
           become: False
           connection: "local"
-          run_once: True
 
         - name: "Scan packages | Unix/Linux"
           scan_packages:
