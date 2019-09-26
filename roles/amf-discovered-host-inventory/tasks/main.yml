@@ -90,6 +90,7 @@
   delegate_to: "localhost"
   connection: "local"
   run_once: True
+  become: False
 
 - name: "Set temporary directory path"
   set_fact:
@@ -101,6 +102,7 @@
     dest: "{{ vars_dir }}/{{ inventory_hostname }}.txt"
   delegate_to: "localhost"
   connection: "local"
+  become: False
 
 - name: "Ensure discovered host and collected facts exist in Ansible Tower inventory"
   tower_host:
@@ -183,4 +185,6 @@
   file:
     path: "{{ vars_dir }}"
     state: "absent"
-  become: True
+  delegate_to: "localhost"
+  run_once: True
+  become: False
