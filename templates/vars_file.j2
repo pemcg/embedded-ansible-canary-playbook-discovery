@@ -1,3 +1,2 @@
 ---
-discovered_facts:
-{{ ansible_facts | to_nice_yaml | indent(width=2,first=True,blank=False) }}
+discovered_facts: {{ '{' }}{{ ansible_facts | to_yaml }}{{ '}' }}
