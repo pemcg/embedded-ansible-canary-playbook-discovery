@@ -100,23 +100,22 @@ def main():
         passwd_file = open(path, 'rt')
         users = list()
         for u in passwd_file:
-            # condition where someone put a blank line in the middle of a file
-            if not u.strip():
-                user = dict()
-                field = u.replace('\n', '').split(':')
-                if len(field) > 0:
-                    user['user'] = field[0]
-                    if field[1] and (field[1] == 'x' or field[1] == '!'):
-                        user['shadow'] = True
-                    else:
-                        user['shadow'] = False
-                        user['encrypted_password'] = field[1]
-                    user['uid'] = field[2]
-                    user['gid'] = field[3]
-                    user['comment'] = field[4]
-                    user['home'] = field[5]
-                    user['shell'] = field[6]
-                users.append(user)
+            user = dict()
+            field = u.replace('\n', '').split(':')
+            # if len(field) > 0:
+            if isinstance(field, list):
+                user['user'] = field[0]
+                if field[1] == 'x' or field[1] == '!':
+                    user['shadow'] = True
+                else:
+                    user['shadow'] = False
+                    user['encrypted_password'] = field[1]
+                user['uid'] = field[2]
+                user['gid'] = field[3]
+                user['comment'] = field[4]
+                user['home'] = field[5]
+                user['shell'] = field[6]
+            users.append(user)
         passwd_file.close()
         return users
 
