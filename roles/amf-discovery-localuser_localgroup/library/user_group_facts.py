@@ -200,29 +200,31 @@ def main():
     def merge_group_data(groups, gshadow):
         # takes list of group dictionaries (groups) and
         #   list of shadow group dictionaries (gshadow)
-        groups_merged = list()
-        for g in groups:
-            key = g['group']
-            for s in gshadow:
-                if s['group'] == key:
-                    s.update(g)
-                    groups_merged.append(s)
-                else:
-                    groups_merged.append(g)
+        if len(gshadow) > 0:
+            groups_merged = list()
+            for g in groups:
+                key = g['group']
+                for s in gshadow:
+                    if s['group'] == key:
+                        s.update(g)
+                        groups_merged.append(s)
+        else:
+            groups_merged = groups
         return groups_merged
 
     def merge_user_data(users, shadow):
         # takes list of user dictionaries (users) and
         #   list of shadow user dictionaries (shadow)
-        users_merged = list()
-        for u in users:
-            key = u['user']
-            for s in shadow:
-                if s['user'] == key:
-                    s.update(u)
-                    users_merged.append(s)
-                else:
-                    users_merged.append(u)
+        if len(shadow) > 0:
+            users_merged = list()
+            for u in users:
+                key = u['user']
+                for s in shadow:
+                    if s['user'] == key:
+                        s.update(u)
+                        users_merged.append(s)
+        else:
+            users_merged = users
         return users_merged
 
     groups = merge_group_data(get_group(module.params['group_path']), get_gshadow(module.params['gshadow_path']))
