@@ -207,6 +207,8 @@ def main():
                 if s['group'] == key:
                     s.update(g)
                     groups_merged.append(s)
+                else:
+                    groups_merged.append(g)
         return groups_merged
 
     def merge_user_data(users, shadow):
@@ -219,6 +221,8 @@ def main():
                 if s['user'] == key:
                     s.update(u)
                     users_merged.append(s)
+                else:
+                    users_merged.append(u)
         return users_merged
 
     groups = merge_group_data(get_group(module.params['group_path']), get_gshadow(module.params['gshadow_path']))
