@@ -105,6 +105,9 @@
       template:
         src: "vars_file.j2"
         dest: "{{ vars_dir }}{{ inventory_hostname }}.txt"
+        mode: "0777"
+        owner: "awx"
+        group: "awx"
       delegate_to: "localhost"
       connection: "local"
       become: False
@@ -123,7 +126,7 @@
       delegate_to: "localhost"
       connection: "local"
       register: "create_inv_host_result"
-      # become: False
+      become: False
 
     - debug:
         var: "create_inv_host_result"
