@@ -104,7 +104,7 @@
     - name: "Dump collected facts to temporary directory"
       template:
         src: "vars_file.j2"
-        dest: "{{ vars_dir }}{{ inventory_hostname }}.txt"
+        dest: "{{ vars_dir }}/{{ inventory_hostname }}.txt"
         mode: "0777"
         owner: "awx"
         group: "awx"
