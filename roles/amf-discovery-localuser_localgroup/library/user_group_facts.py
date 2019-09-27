@@ -104,7 +104,7 @@ def main():
             field = u.replace('\n', '').split(':')
             if len(field) > 0:
                 user['user'] = field[0]
-                if field[1] == 'x':
+                if field[1] and (field[1] == 'x' or field[1] == '!'):
                     user['shadow'] = True
                 else:
                     user['shadow'] = False
