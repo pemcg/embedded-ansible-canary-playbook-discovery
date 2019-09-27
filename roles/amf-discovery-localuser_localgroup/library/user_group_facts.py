@@ -101,7 +101,7 @@ def main():
         users = list()
         for u in passwd_file:
             # condition where someone put a blank line in the middle of a file
-            if u != '' or u != None:
+            if not u.strip():
                 user = dict()
                 field = u.replace('\n', '').split(':')
                 if len(field) > 0:
