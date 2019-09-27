@@ -189,11 +189,11 @@
         var: "discovered_apps"
         verbosity: "1"
 
-  # always:
-  #   - name: "Cleanup temporary variables directory"
-  #     file:
-  #       path: "{{ vars_dir }}"
-  #       state: "absent"
-  #     delegate_to: "localhost"
-  #     run_once: True
-  #     become: False
+  always:
+    - name: "Cleanup temporary variables directory"
+      file:
+        path: "{{ vars_dir }}"
+        state: "absent"
+      delegate_to: "localhost"
+      run_once: True
+      become: False
