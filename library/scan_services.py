@@ -150,7 +150,7 @@ class ServiceScanService(BaseService):
                         service_group = srvc.group('group')
                     else:
                         service_group = None
-                    service_data = {"name": service_name, "state": service_state, "source": "inittab", "pid": service_pid, "group": service_group}
+                    service_data = {"name": service_name, "state": service_state, "source": "src", "pid": service_pid, "group": service_group}
                     services[service_name] = service_data
 
         return services
