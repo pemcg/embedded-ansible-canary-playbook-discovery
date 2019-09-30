@@ -49,7 +49,7 @@
   set_fact:
     amf_as_proc_count: "{{ amf_as_proc_count | int + 1 }}"
   with_items: "{{ amf_as_processes }}"
-  when: 'process in ansible_facts | json_query("running_processes.processes[*].command")'
+  when: '"process" in ansible_facts | json_query("running_processes.processes[*].command")'
   loop_control:
     loop_var: "process"
 
@@ -62,6 +62,6 @@
     - 'amf_as_svc_count | int >= 0'
     - 'amf_as_usr_count | int >= 1'
     - 'amf_as_grp_count | int >= 1'
-    - 'amf_as_path_count | int == 0'
+    - 'amf_as_path_count | int >= 1'
     - 'amf_as_pkg_count | int >= 0'
     - 'amf_as_proc_count | int > 3'
