@@ -52,6 +52,8 @@ class ServiceScanService(BaseService):
             return None
         initctl_path = self.module.get_bin_path("initctl")
         chkconfig_path = self.module.get_bin_path("chkconfig")
+        # AIX support
+        lssrc_path = self.module.get_bin_path("lssrc")
 
         # sysvinit
         if service_path is not None and chkconfig_path is None:
@@ -87,7 +89,7 @@ class ServiceScanService(BaseService):
                 services[service_name] = payload
 
         # RH sysvinit
-        elif chkconfig_path is not None:
+        if chkconfig_path is not None:
             #print '%s --status-all | grep -E "is (running|stopped)"' % service_path
             p = re.compile(
                 '(?P<service>.*?)\s+[0-9]:(?P<rl0>on|off)\s+[0-9]:(?P<rl1>on|off)\s+[0-9]:(?P<rl2>on|off)\s+'
@@ -129,6 +131,30 @@ class ServiceScanService(BaseService):
                                 service_state = 'stopped'
                     service_data = {"name": service_name, "state": service_state, "source": "sysv"}
                     services[service_name] = service_data
+        # AIX
+        elif lssrc_path is not None:
+            lssrc_re = re.compile(r'^\s(?P<subsystem>\b[\w\d\-\_]+\b)\s+(?P<group>[\w\d]*)\s+(?P<pid>\d*)\s+(?P<status>\bactive|inoperative\b)$')
+            rc, stdout, stderr = self.module.run_command('%s -a' % lssrc_path, use_unsafe_shell=True)
+            for line in stdout.split('\n'):
+                if lssrc_re.search(line):
+                    srvc = lssrc_re.search(line)
+                    service_name = srvc.group('subsystem')
+                    if srvc.group('status') == 'active':
+                        service_state = 'running'
+                    else:
+                        service_state = 'stopped'
+                    if service_state == 'running':
+                        service_pid = srvc.group('pid')
+                    else:
+                        service_pid = None
+                    # group is sometimes empty here
+                    if srvc.group('group'):
+                        service_group = srvc.group('group')
+                    else:
+                        service_group = None
+                    service_data = {"name": service_name, "state": service_state, "source": "inittab", "pid": service_pid, "group": service_group}
+                    services[service_name] = service_data
+
         return services
 
 
