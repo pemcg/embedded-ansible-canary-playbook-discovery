@@ -4,3 +4,4 @@ ws_db_name: "coalmine"
 pg_user: "postgres"
 pg_group: "postgres"
 pg_home: "/var/opt/rh/rh-postgresql96/lib/pgsql/data"
+proc_stdout: False
