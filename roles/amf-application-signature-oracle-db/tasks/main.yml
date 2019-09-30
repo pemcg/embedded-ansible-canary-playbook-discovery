@@ -45,11 +45,15 @@
   loop_control:
     loop_var: "package"
 
+- name: "Set list of running commands"
+  set_fact:
+    proc_commands: "ansible_facts | json_query('running_processes.processes[*].command')"
+
 - name: "Check for {{ amf_as_discovered_app.name }} processes"
   set_fact:
     amf_as_proc_count: "{{ amf_as_proc_count | int + 1 }}"
   with_items: "{{ amf_as_processes }}"
-  when: '"process" in ansible_facts | json_query("running_processes.processes[*].command")'
+  when: "process in proc_commands"
   loop_control:
     loop_var: "process"
 
