@@ -48,8 +48,6 @@ class ServiceScanService(BaseService):
     def gather_services(self):
         services = {}
         service_path = self.module.get_bin_path("service")
-        # if service_path is None:
-        #     return None
         initctl_path = self.module.get_bin_path("initctl")
         chkconfig_path = self.module.get_bin_path("chkconfig")
         # AIX support
