@@ -59,9 +59,9 @@
 # Modify these counts to suit your identification needs
 #  Here's some examples of checking conditions
   when:
-    - 'amf_as_svc_count | int >= 3'
+    - 'amf_as_svc_count | int >= 0'
     - 'amf_as_usr_count | int >= 1'
     - 'amf_as_grp_count | int >= 1'
-    - 'amf_as_path_count | int == 1'
-    - 'amf_as_pkg_count | int >= 4'
-    - 'amf_as_proc_count | int > 0'
+    - 'amf_as_path_count | int == 0'
+    - 'amf_as_pkg_count | int >= 0'
+    - 'amf_as_proc_count | int > 3'
