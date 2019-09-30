@@ -60,7 +60,7 @@
 - name: Debug proc_commands
   debug:
     var: proc_commands
-  verbosity: 1
+    verbosity: 1
 
 - name: "Identify application as {{ amf_as_discovered_app.name }}"
   set_fact:
