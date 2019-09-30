@@ -49,10 +49,9 @@
   set_fact:
     amf_as_proc_count: "{{ amf_as_proc_count | int + 1 }}"
   with_items: "{{ amf_as_processes }}"
-  when: 'process in ansible_facts | json_query("running_processes[*].processes.command")'
+  when: 'process in ansible_facts | json_query("running_processes.processes[*].command")'
   loop_control:
     loop_var: "process"
-
 
 - name: "Identify application as {{ amf_as_discovered_app.name }}"
   set_fact:
