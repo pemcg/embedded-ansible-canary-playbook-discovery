@@ -47,7 +47,7 @@
 
 - name: "Set list of running commands"
   set_fact:
-    proc_commands: "ansible_facts | json_query('running_processes.processes[*].command')"
+    proc_commands: "{{ ansible_facts | json_query('running_processes.processes[*].command') }}"
 
 - name: "Check for {{ amf_as_discovered_app.name }} processes"
   set_fact:
