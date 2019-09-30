@@ -99,11 +99,12 @@ def main():
         # conditional for OS type and set path if diverges from Linux
         passwd_file = open(path, 'rt')
         users = list()
-        for u in passwd_file:
+        for user_line in passwd_file:
             user = dict()
-            field = u.replace('\n', '').split(':')
-            # if len(field) > 0:
-            if isinstance(field, list):
+            field = user_line.replace('\n', '').split(':')
+            if len(field) != 7:
+                module.warn("Line in file {} is invalid: {}".format(path, user_line))
+            else:
                 user['user'] = field[0]
                 if field[1] == 'x' or field[1] == '!':
                     user['shadow'] = True
