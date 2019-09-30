@@ -57,6 +57,11 @@
   loop_control:
     loop_var: "process"
 
+- name: Debug proc_commands
+  debug:
+    var: proc_commands
+  verbosity: 1
+
 - name: "Identify application as {{ amf_as_discovered_app.name }}"
   set_fact:
     discovered_apps: "{{ discovered_apps | union([amf_as_discovered_app]) }}"
