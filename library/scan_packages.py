@@ -111,29 +111,29 @@ def aix_package_list():
         #  E -- Interim Fix
         # Field info:
         #Package Name:Fileset:Level:State:PTF Id:Fix State:Type:Description:Destination Dir.:Uninstaller:Message Catalog:Message Set:Message Number:Parent:Automatic:EFIX Locked:Install Path:Build Date
-        fields = line.split(':')
-        if len(fields) == 17:
-            installed_packages[fields[0]] = list()
-            package_details = dict(name=fields[0],
-                                    fileset=fields[1],
-                                    version=fields[2],
-                                    state=fields[3]
-                                    ptf_id=fields[4],
-                                    fix_state=fields[5],
-                                    type=fields[6],
-                                    description=fields[7],
-                                    destination_dir=fields[8],
-                                    uninstaller=fields[9],
-                                    message_catalog=fields[10],
-                                    message_set=fields[11],
-                                    message_number=fields[12],
-                                    parent=fields[13],
-                                    automatic=fields[14],
-                                    efix_locked=fields[15],
-                                    install_path=fields[16],
-                                    build_date=fields[17],
+        pkg = line.split(':')
+        if len(pkg) == 17:
+            installed_packages[pkg[0]] = list()
+            package_details = dict(name=pkg[0],
+                                    fileset=pkg[1],
+                                    version=pkg[2],
+                                    state=pkg[3],
+                                    ptf_id=pkg[4],
+                                    fix_state=pkg[5],
+                                    type=pkg[6],
+                                    description=pkg[7],
+                                    destination_dir=pkg[8],
+                                    uninstaller=pkg[9],
+                                    message_catalog=pkg[10],
+                                    message_set=pkg[11],
+                                    message_number=pkg[12],
+                                    parent=pkg[13],
+                                    automatic=pkg[14],
+                                    efix_locked=pkg[15],
+                                    install_path=pkg[16],
+                                    build_date=pkg[17],
                                     source='installp')
-            installed_packages[fields[0]].append(package_details)
+            installed_packages[pkg[0]].append(package_details)
         return installed_packages
 
 def main():
