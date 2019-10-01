@@ -62,6 +62,18 @@
     var: proc_commands
     verbosity: 1
 
+- name: "Debug counter variables"
+  debug:
+    var: item
+    verbosity: 1
+  with_items:
+    - 'amf_as_svc_count | int'
+    - 'amf_as_usr_count | int'
+    - 'amf_as_grp_count | int'
+    - 'amf_as_path_count | int'
+    - 'amf_as_pkg_count | int'
+    - 'amf_as_proc_count | int'
+
 - name: "Identify application as {{ amf_as_discovered_app.name }}"
   set_fact:
     discovered_apps: "{{ discovered_apps | union([amf_as_discovered_app]) }}"
