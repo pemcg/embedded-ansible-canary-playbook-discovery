@@ -94,7 +94,7 @@ def main():
         argument_spec = dict(os_family=dict(required=True))
     )
     ans_os = module.params['os_family']
-    if ans_os in ('RedHat', 'Suse', 'openSUSE Leap'):
+    if ans_os in ('RedHat', 'Suse', 'openSUSE Leap', 'AIX'):
         packages = rpm_package_list()
     elif ans_os == 'Debian':
         packages = deb_package_list()
