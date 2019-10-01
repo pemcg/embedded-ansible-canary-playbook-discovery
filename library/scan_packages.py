@@ -88,16 +88,64 @@ def deb_package_list():
             installed_packages[package_details['name']].append(package_details)
     return installed_packages
 
+def aix_package_list():
+    lslpp_path = self.module.get_bin_path("lslpp")
+    rc, stdout, stderr = self.module.run_command('%s -L -q -c' % lslpp_path, use_unsafe_shell=True)
+    installed_packages = dict()
+    for line in stdout.split('\n'):
+        # lslpp output key
+        # State codes:
+        #  A -- Applied.
+        #  B -- Broken.
+        #  C -- Committed.
+        #  E -- EFIX Locked.
+        #  O -- Obsolete.  (partially migrated to newer version)
+        #  ? -- Inconsistent State...Run lppchk -v.
+        #
+        # Type codes:
+        #  F -- Installp Fileset
+        #  P -- Product
+        #  C -- Component
+        #  T -- Feature
+        #  R -- RPM Package
+        #  E -- Interim Fix
+        # Field info:
+        #Package Name:Fileset:Level:State:PTF Id:Fix State:Type:Description:Destination Dir.:Uninstaller:Message Catalog:Message Set:Message Number:Parent:Automatic:EFIX Locked:Install Path:Build Date
+        fields = line.split(':')
+            if len(fields) == 17:
+                installed_packages[fields[0]] = list(dict(name=fields[0],
+                                                    fileset=fields[1],
+                                                    version=fields[2],
+                                                    state=fields[3]
+                                                    ptf_id=fields[4],
+                                                    fix_state=fields[5],
+                                                    type=fields[6],
+                                                    description=fields[7],
+                                                    destination_dir=fields[8],
+                                                    uninstaller=fields[9],
+                                                    message_catalog=fields[10],
+                                                    message_set=fields[11],
+                                                    message_number=fields[12],
+                                                    parent=fields[13],
+                                                    automatic=fields[14],
+                                                    efix_locked=fields[15],
+                                                    install_path=fields[16],
+                                                    build_date=fields[17],
+                                                    source='installp')
+                                                )
+        return installed_packages
 
 def main():
     module = AnsibleModule(
         argument_spec = dict(os_family=dict(required=True))
     )
     ans_os = module.params['os_family']
-    if ans_os in ('RedHat', 'Suse', 'openSUSE Leap', 'AIX'):
+    if ans_os in ('RedHat', 'Suse', 'openSUSE Leap'):
         packages = rpm_package_list()
-    elif ans_os == 'Debian':
+    if ans_os == 'Debian':
         packages = deb_package_list()
+    elif ans_os == 'AIX':
+        packages = aix_package_list()
     else:
         packages = None
 
