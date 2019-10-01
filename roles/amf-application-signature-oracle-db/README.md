@@ -1,5 +1,5 @@
 # amf-application-signature-oracle-db
-An Ansible Role that identifies an Oracel Database server as part of the Ansible Migration Factory Discovery process.
+An Ansible Role that identifies an Oracle Database server as part of the Ansible Migration Factory Discovery process.
 
 ## Variables
 | Variable Name | Description | Type |
