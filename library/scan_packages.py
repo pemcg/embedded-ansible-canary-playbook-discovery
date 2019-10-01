@@ -118,7 +118,6 @@ def aix_package_list(module):
                                     fileset=pkg[1],
                                     version=pkg[2],
                                     ptf_id=pkg[4],
-                                    fix_state=pkg[5],
                                     description=pkg[7],
                                     destination_dir=pkg[8],
                                     uninstaller=pkg[9],
@@ -161,6 +160,21 @@ def aix_package_list(module):
                 package_details['state'] = "inconsistent_state"
             else:
                 package_details['state'] = pkg[3]
+            # Fix States
+            if pkg[5] == 'A':
+                package_details['fix_state'] = "applied"
+            elif pkg[5] == 'B':
+                package_details['fix_state'] = "broken"
+            elif pkg[5] == 'C':
+                package_details['fix_state'] = "committed"
+            elif pkg[5] == 'E':
+                package_details['fix_state'] = "efix_locked"
+            elif pkg[5] == 'O':
+                package_details['fix_state'] = "obsolete"
+            elif pkg[5] == '?':
+                package_details['fix_state'] = "inconsistent_state"
+            else:
+                package_details['fix_state'] = pkg[5]
 
             installed_packages[pkg[0]].append(package_details)
     return installed_packages
