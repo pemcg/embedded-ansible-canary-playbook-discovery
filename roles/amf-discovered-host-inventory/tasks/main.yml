@@ -132,6 +132,22 @@
         var: "create_inv_host_result"
         verbosity: "1"
 
+
+    - name: "Ensure discovered host is not associated with groups from previous discovery run"
+      tower_host_manage_groups:
+        tower_username: "{{ tower_user }}"
+        tower_password: "{{ tower_pass }}"
+        tower_host: "{{ tower_url }}"
+        tower_verify_ssl: "{{ tower_verify_ssl }}"
+        name: "{{ ansible_fqdn }}"
+        inventory: "{{ discovered_host_inventory_name }}"
+        group: "*"
+        state: "absent"
+      delegate_to: "localhost"
+      connection: "local"
+      become: False
+      # when: "discovered_apps | length > 0"
+
     - name: "Ensure discovered host is associated with discovered applications"
       tower_host_manage_groups:
         tower_username: "{{ tower_user }}"
@@ -162,21 +178,6 @@
       connection: "local"
       become: False
       when: "discovered_apps | length < 1"
-
-    - name: "Ensure discovered host is not associated with {{ discovered_host_inventory_default_group.name }} from previous discovery"
-      tower_host_manage_groups:
-        tower_username: "{{ tower_user }}"
-        tower_password: "{{ tower_pass }}"
-        tower_host: "{{ tower_url }}"
-        tower_verify_ssl: "{{ tower_verify_ssl }}"
-        name: "{{ ansible_fqdn }}"
-        inventory: "{{ discovered_host_inventory_name }}"
-        group: "{{ discovered_host_inventory_default_group.name }}"
-        state: "absent"
-      delegate_to: "localhost"
-      connection: "local"
-      become: False
-      when: "discovered_apps | length > 0"
 
     # The following makes sure we have an app list for seeding the coalmine web-service
     - name: "Ensure discovered host is associated with {{ discovered_host_inventory_default_group.name }}"
