@@ -67,6 +67,30 @@ EXAMPLES = '''
     tower_verify_ssl: False
     tower_config_file: "~/tower_cli.cfg"
     state: "absent"
+
+- name: "Add a host to all groups in the inventory"
+  tower_host_manage_groups:
+    name: "webhost1"
+    group: "*"
+    inventory: "My Servers"
+    tower_username: "admin"
+    tower_password: "{{ pass_from_my_vault }}"
+    tower_host: "https://mytowerserver.mydomain.com"
+    tower_verify_ssl: False
+    tower_config_file: "~/tower_cli.cfg
+    state: "present"
+
+- name: "Remove a host from all groups in the inventory"
+  tower_host_manage_groups:
+    name: "webhost1"
+    group: "*"
+    inventory: "My Servers"
+    tower_username: "admin"
+    tower_password: "{{ pass_from_my_vault }}"
+    tower_host: "https://mytowerserver.mydomain.com"
+    tower_verify_ssl: False
+    tower_config_file: "~/tower_cli.cfg
+    state: "absent"
 '''
 
 RETURN = ''' # '''
