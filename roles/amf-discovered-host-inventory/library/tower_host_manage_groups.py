@@ -120,7 +120,7 @@ def main():
 
             # Find specific group
             if group == '*':
-                grp = groups.list(inventory=inventory)
+                grp = groups.list(inventory=inv['id'])
             else:
                 grp = groups.get(name=group, inventory=inv['id'])
                 params['group'] = grp['id']
