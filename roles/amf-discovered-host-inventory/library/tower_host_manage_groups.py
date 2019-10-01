@@ -120,14 +120,14 @@ def main():
 
             # Find specific group
             if group == '*':
-                grp = groups.list(inventory=inv['id'])
+                grp = groups.list(inventory=inv['id'], all_pages=true)
             else:
                 grp = groups.get(name=group, inventory=inv['id'])
                 params['group'] = grp['id']
 
             if state == "present":
                 if group == '*':
-                    for g in grp:
+                    for g in grp.results:
                         params['group'] = g['id']
                         result = hosts.associate(**params)
                         if result['changed']:
@@ -142,7 +142,7 @@ def main():
                         result['msg'] = name + ' is already associated with ' + group
             elif state == "absent":
                 if group == '*':
-                    for g in grp:
+                    for g in grp.results:
                         params['group'] = g['id']
                         result = hosts.disassociate(**params)
                         if result['changed']:
