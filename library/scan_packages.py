@@ -89,8 +89,8 @@ def deb_package_list():
     return installed_packages
 
 def aix_package_list():
-    lslpp_path = self.module.get_bin_path("lslpp")
-    rc, stdout, stderr = self.module.run_command('%s -L -q -c' % lslpp_path, use_unsafe_shell=True)
+    lslpp_path = module.get_bin_path("lslpp")
+    rc, stdout, stderr = module.run_command('%s -L -q -c' % lslpp_path, use_unsafe_shell=True)
     installed_packages = dict()
     for line in stdout.split('\n'):
         # lslpp output key
