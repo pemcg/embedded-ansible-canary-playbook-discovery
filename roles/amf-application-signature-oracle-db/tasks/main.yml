@@ -55,7 +55,7 @@
   with_items: "{{ amf_as_processes }}"
   when: process in proc_commands
   loop_control:
-    loop_var: "process"
+    loop_var: process
 
 - name: Debug proc_commands
   debug:
