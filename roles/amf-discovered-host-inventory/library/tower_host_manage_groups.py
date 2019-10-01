@@ -127,7 +127,7 @@ def main():
 
             if state == "present":
                 if group == '*':
-                    for g in grp.results:
+                    for g in grp['results']:
                         params['group'] = g['id']
                         result = hosts.associate(**params)
                         if result['changed']:
@@ -142,7 +142,7 @@ def main():
                         result['msg'] = name + ' is already associated with ' + group
             elif state == "absent":
                 if group == '*':
-                    for g in grp.results:
+                    for g in grp['results']:
                         params['group'] = g['id']
                         result = hosts.disassociate(**params)
                         if result['changed']:
