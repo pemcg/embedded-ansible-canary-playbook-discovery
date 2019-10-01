@@ -5,7 +5,8 @@
   set_fact:
     amf_as_path_check: ""
 
-- stat:
+- name: "Stat paths"
+  stat:
     path: "{{ path }}"
     follow: False
     get_attributes: False
@@ -14,7 +15,11 @@
     get_mime: False
   register: "amf_as_path_check"
 
+- name: "Debug paths list"
+  debug:
+    var: paths
+    
 - name: "Check if {{ amf_as_discovered_app.name }} application path exists"
   set_fact:
     amf_as_path_count: "{{ amf_as_path_count | int + 1 }}"
-  when: "amf_as_path_check.stat.exists"
+  when: "amf_as_path_check.stat.exists | bool"
