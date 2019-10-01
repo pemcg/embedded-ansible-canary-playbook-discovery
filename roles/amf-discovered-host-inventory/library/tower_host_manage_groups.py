@@ -119,21 +119,42 @@ def main():
             params['host'] = host['id']
 
             # Find specific group
-            grp = groups.get(name=group, inventory=inv['id'])
-            params['group'] = grp['id']
+            if group == '*':
+                grp = groups.get(inventory=inv['id'])
+            else:
+                grp = groups.get(name=group, inventory=inv['id'])
+                params['group'] = grp['id']
 
             if state == "present":
-                result = hosts.associate(**params)
-                if result['changed']:
-                    result['msg'] = 'Successfully associated ' + name + ' with ' + group
-                elif not result['changed']:
-                    result['msg'] = name + ' is already associated with ' + group
+                if group == '*':
+                    for g in grp:
+                        params['group'] = g['id']
+                        result = hosts.associate(**params)
+                        if result['changed']:
+                            result['msg'] = 'Successfully associated ' + name + ' with ' + g['name']
+                        elif not result['changed']:
+                            result['msg'] = name + ' is already associated with ' + g['name']
+                else:
+                    result = hosts.associate(**params)
+                    if result['changed']:
+                        result['msg'] = 'Successfully associated ' + name + ' with ' + group
+                    elif not result['changed']:
+                        result['msg'] = name + ' is already associated with ' + group
             elif state == "absent":
-                result = hosts.disassociate(**params)
-                if result['changed']:
-                    result['msg'] = 'Successfully disassociated ' + name + ' with ' + group
-                elif not result['changed']:
-                    result['msg'] = name + ' is already disassociated with ' + group
+                if group == '*':
+                    for g in grp:
+                        params['group'] = g['id']
+                        result = hosts.disassociate(**params)
+                        if result['changed']:
+                            result['msg'] = 'Successfully disassociated ' + name + ' with ' + g['name']
+                        elif not result['changed']:
+                            result['msg'] = name + ' is already disassociated with ' + g['name']
+                else:
+                    result = hosts.disassociate(**params)
+                    if result['changed']:
+                        result['msg'] = 'Successfully disassociated ' + name + ' with ' + group
+                    elif not result['changed']:
+                        result['msg'] = name + ' is already disassociated with ' + group
         except (exc.NotFound) as excinfo:
             module.fail_json(msg='Failed to update the host, not found: {0}'.format(excinfo), changed=False)
         except (exc.ConnectionError, exc.BadRequest, exc.NotFound) as excinfo:
