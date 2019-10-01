@@ -89,6 +89,7 @@ def deb_package_list():
     return installed_packages
 
 def aix_package_list():
+    module = module
     lslpp_path = module.get_bin_path("lslpp")
     rc, stdout, stderr = module.run_command('%s -L -q -c' % lslpp_path, use_unsafe_shell=True)
     installed_packages = dict()
@@ -146,7 +147,7 @@ def main():
     if ans_os == 'Debian':
         packages = deb_package_list()
     elif ans_os == 'AIX':
-        packages = aix_package_list()
+        packages = aix_package_list(module)
     else:
         packages = None
 
