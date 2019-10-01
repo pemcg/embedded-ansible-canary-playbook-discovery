@@ -134,7 +134,7 @@ def aix_package_list(module):
                                     build_date=pkg[17],
                                     source='installp')
             installed_packages[pkg[0]].append(package_details)
-        return installed_packages
+    return installed_packages
 
 def main():
     module = AnsibleModule(
