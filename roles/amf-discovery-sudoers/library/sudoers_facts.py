@@ -171,7 +171,10 @@ def main():
             # build multi-file output
             includes['include_directories'].append(include_dir)
             # Get list of all included sudoers files
-            includes['include_files'] += [join(include_dir, filename) for filename in os.listdir(include_dir) if isfile(join(include_dir, filename))]
+            try:
+                includes['include_files'] += [join(include_dir, filename) for filename in os.listdir(include_dir) if isfile(join(include_dir, filename))]
+            except:
+                pass
         elif not includes['include_files']:
             includes.pop('include_files')
 
