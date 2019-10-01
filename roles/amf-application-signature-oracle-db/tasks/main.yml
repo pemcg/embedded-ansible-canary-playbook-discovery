@@ -52,10 +52,10 @@
 - name: "Check for {{ amf_as_discovered_app.name }} processes"
   set_fact:
     amf_as_proc_count: "{{ amf_as_proc_count | int + 1 }}"
-  with_items: "{{ amf_as_processes }}"
-  when: proc_commands contains process
-  loop_control:
-    loop_var: process
+  with_nested: 
+    - "{{ amf_as_processes }}"
+    - "{{ proc_commands }}"
+  when: "item[0] in item[1]"
 
 - name: Debug proc_commands
   debug:
