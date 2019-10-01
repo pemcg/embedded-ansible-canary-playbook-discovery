@@ -49,6 +49,11 @@
   set_fact:
     proc_commands: "{{ ansible_facts | json_query('running_processes.processes[*].command') }}"
 
+- name: "Debug proc_commands"
+  debug:
+    var: "proc_commands"
+    verbosity: "1"
+
 - name: "Check for {{ amf_as_discovered_app.name }} processes"
   set_fact:
     amf_as_proc_count: "{{ amf_as_proc_count | int + 1 }}"
@@ -56,11 +61,6 @@
   with_nested:
       - "{{ amf_as_processes }}"
       - "{{ proc_commands }}"
-
-- name: "Debug proc_commands"
-  debug:
-    var: "proc_commands"
-    verbosity: "1"
 
 - name: "Debug application signature scoring counters"
   debug:
