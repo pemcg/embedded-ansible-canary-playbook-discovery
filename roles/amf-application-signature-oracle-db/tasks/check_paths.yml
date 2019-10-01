@@ -17,13 +17,13 @@
 
 - name: "Debug path variable"
   debug:
-    var: path
-    verbosity: 1
+    var: "path"
+    verbosity: "1"
 
 - name: "Debug amf_as_path_check variable"
   debug:
-    var: amf_as_path_check
-    verbosity: 1
+    var: "amf_as_path_check"
+    verbosity: "1"
 
 - name: "Check if {{ amf_as_discovered_app.name }} application path exists"
   set_fact:
@@ -32,5 +32,5 @@
 
 - name: "Debug amf_as_path_count variable"
   debug:
-    var: amf_as_path_count
-    verbosity: 1
+    var: "amf_as_path_count"
+    verbosity: "1"
