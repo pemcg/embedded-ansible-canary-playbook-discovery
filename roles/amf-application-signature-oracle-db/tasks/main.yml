@@ -53,36 +53,33 @@
   set_fact:
     amf_as_proc_count: "{{ amf_as_proc_count | int + 1 }}"
   when: "item[0] in item[1]"
-  with_nested: 
+  with_nested:
       - "{{ amf_as_processes }}"
       - "{{ proc_commands }}"
 
-- name: Debug proc_commands
+- name: "Debug proc_commands"
   debug:
-    var: proc_commands
-    verbosity: 1
+    var: "proc_commands"
+    verbosity: "1"
 
-- name: "Debug counter variables"
+- name: "Debug application signature scoring counters"
   debug:
-    var: item
-    verbosity: 1
-  with_items:
-    - "{{ amf_as_svc_count | int }}"
-    - "{{ amf_as_usr_count | int }}"
-    - "{{ amf_as_grp_count | int }}"
-    - "{{ amf_as_path_count | int }}"
-    - "{{ amf_as_pkg_count | int }}"
-    - "{{ amf_as_proc_count | int }}"
+    verbosity: "1"
+    msg:
+      - "amf_as_grp_count: {{ amf_as_grp_count | int }}"
+      - "amf_as_path_count: {{ amf_as_path_count | int }}"
+      - "amf_as_pkg_count: {{ amf_as_pkg_count | int }}"
+      - "amf_as_proc_count: {{ amf_as_proc_count | int }}"
+      - "amf_as_svc_count: {{ amf_as_svc_count | int }}"
+      - "amf_as_usr_count: {{ amf_as_usr_count | int }}"
 
 - name: "Identify application as {{ amf_as_discovered_app.name }}"
   set_fact:
     discovered_apps: "{{ discovered_apps | union([amf_as_discovered_app]) }}"
-# Modify these counts to suit your identification needs
-#  Here's some examples of checking conditions
   when:
-    - 'amf_as_svc_count | int >= 0'
-    - 'amf_as_usr_count | int >= 1'
-    - 'amf_as_grp_count | int >= 1'
-    - 'amf_as_path_count | int >= 1'
-    - 'amf_as_pkg_count | int >= 0'
-    - 'amf_as_proc_count | int > 3'
+    - "amf_as_svc_count | int >= 0"
+    - "amf_as_usr_count | int >= 1"
+    - "amf_as_grp_count | int >= 1"
+    - "amf_as_path_count | int >= 1"
+    - "amf_as_pkg_count | int >= 0"
+    - "amf_as_proc_count | int > 3"
