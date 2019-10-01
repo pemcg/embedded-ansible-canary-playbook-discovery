@@ -29,8 +29,3 @@
   set_fact:
     amf_as_path_count: "{{ amf_as_path_count | int + 1 }}"
   when: "amf_as_path_check.stat.exists | bool"
-
-- name: "Debug amf_as_path_count variable"
-  debug:
-    var: "amf_as_path_count"
-    verbosity: "1"
