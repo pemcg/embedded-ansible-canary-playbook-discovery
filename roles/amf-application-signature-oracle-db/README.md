@@ -11,12 +11,13 @@ An Ansible Role that identifies an Oracle Database server as part of the Ansible
 | amf_as_paths | List of paths to check the system for | list |
 | amf_as_packages | List of packages to check ansible_facts.packages for. | list |
 | amf_as_discovered_app | Dictionary containing the name of the application we are identifying and a description of the classification. The dictionary should contain a `name` and `desc` key | dictionary |
+| amf_as_processes | List of process names to check ansible_facts.running_processes.processes[*].command for.| list |
 
 ## Dependencies
 This Role depends on the Ansible Migration Factory Discovery playbook and its custom discovery roles to properly obtain data identifying an application.
 
 ## Returned Data
-The Role assumes that the fact discovered_apps has been initialized.  This Role will append a dictionary to the `discovered_apps` list with the keys `name` and `desc` (description).
+The Role assumes that the fact discovered_apps variable has been initialized.  This Role will append a dictionary to the `discovered_apps` list with the keys `name` and `desc` (description).
 
 These values are defined in [defaults/main.yml](defaults/main.yml) in the amf_as_discovered_app dictionary.
 
@@ -30,3 +31,4 @@ This is only returned when the defined conditions are met.
 
 ## Author Information
 [David Castellani](mailto:dave@redhat.com)
+[Andrew J. Huffman](mailto:huffy@redhat.com)
