@@ -117,10 +117,8 @@ def aix_package_list(module):
             package_details = dict(name=pkg[0],
                                     fileset=pkg[1],
                                     version=pkg[2],
-                                    state=pkg[3],
                                     ptf_id=pkg[4],
                                     fix_state=pkg[5],
-                                    type=pkg[6],
                                     description=pkg[7],
                                     destination_dir=pkg[8],
                                     uninstaller=pkg[9],
@@ -133,6 +131,37 @@ def aix_package_list(module):
                                     install_path=pkg[16],
                                     build_date=pkg[17],
                                     source='installp')
+            # Type codes
+            if pkg[6] == 'F':
+                package_details['type'] = "installp_fileset"
+            elif pkg[6] == 'P':
+                package_details['type'] = "product"
+            elif pkg[6] == 'C':
+                package_details['type'] = "component"
+            elif pkg[6] == 'T':
+                package_details['type'] = "feature"
+            elif pkg[6] == 'R':
+                package_details['type'] = "rpm"
+            elif pkg[6] == 'E':
+                package_details['type'] = "interim_fix"
+            else:
+                package_details['type'] = pkg[6]
+            # State codes
+            if pkg[3] == 'A':
+                package_details['state'] = "applied"
+            elif pkg[3] == 'B':
+                package_details['state'] = "broken"
+            elif pkg[3] == 'C':
+                package_details['state'] = "committed"
+            elif pkg[3] == 'E':
+                package_details['state'] = "efix_locked"
+            elif pkg[3] == 'O':
+                package_details['state'] = "obsolete"
+            elif pkg[3] == '?':
+                package_details['state'] = "inconsistent_state"
+            else:
+                package_details['state'] = pkg[3]
+
             installed_packages[pkg[0]].append(package_details)
     return installed_packages
 
