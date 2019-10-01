@@ -11,10 +11,7 @@ amf_as_paths:
   - "/etc/oratab"
   - "/etc/oraInst.loc"
 
-amf_as_packages:
-  - "pkg1"
-  - "pkg2"
-  - "pkg3"
+amf_as_packages: []
 
 amf_as_processes:
   - "ora_mmon_"
