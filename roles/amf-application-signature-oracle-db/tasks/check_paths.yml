@@ -15,10 +15,10 @@
     get_mime: False
   register: "amf_as_path_check"
 
-- name: "Debug paths list"
+- name: "Debug path variable"
   debug:
-    var: paths
-    
+    var: path
+
 - name: "Check if {{ amf_as_discovered_app.name }} application path exists"
   set_fact:
     amf_as_path_count: "{{ amf_as_path_count | int + 1 }}"
