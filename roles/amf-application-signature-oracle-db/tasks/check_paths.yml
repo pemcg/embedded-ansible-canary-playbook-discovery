@@ -1,5 +1,5 @@
 ---
-# Following task prevents possible junk data affecting check
+# Following task prevents possible junk data effecting check
 #   from previous loops
 - name: "Ensure clean path check variable"
   set_fact:
