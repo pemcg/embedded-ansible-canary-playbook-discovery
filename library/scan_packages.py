@@ -112,7 +112,7 @@ def aix_package_list(module):
         # Field info:
         #Package Name:Fileset:Level:State:PTF Id:Fix State:Type:Description:Destination Dir.:Uninstaller:Message Catalog:Message Set:Message Number:Parent:Automatic:EFIX Locked:Install Path:Build Date
         pkg = line.split(':')
-        if len(pkg) == 17:
+        if len(pkg) == 18:
             installed_packages[pkg[0]] = list()
             package_details = dict(name=pkg[0],
                                     fileset=pkg[1],
