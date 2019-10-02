@@ -1,6 +1,7 @@
 
 from ansible.module_utils.basic import AnsibleModule
 from ansible.module_utils.facts.system import distribution
+from ansible.module_utils.common.process import get_bin_path as fetch_binary
 import re
 
 class FactGatherer(AnsibleModule):
@@ -11,7 +12,8 @@ class FactGatherer(AnsibleModule):
 
     def findCommand(self, command):
         try:
-            return self.get_bin_path(command, True)
+            cmd = self.fetch_binary(command, False)
+            return cmd
         except Exception as e:
             self.warn(msg="Unable to find {} command: {}, is it installed?".format(command, e))
             self.exit_json(msg="Unable to find {} command: {}, is it installed?".format(command, e), skipped=True)
