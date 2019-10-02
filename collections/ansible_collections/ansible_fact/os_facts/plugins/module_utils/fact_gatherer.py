@@ -11,7 +11,7 @@ class FactGatherer(AnsibleModule):
 
     def findCommand(self, command):
         try:
-            return self.get_bin_path(command, True)
+            return self.get_bin_path(command, False)
         except Exception as e:
             self.warn(msg="Unable to find {} command: {}, is it installed?".format(command, e))
             self.exit_json(msg="Unable to find {} command: {}, is it installed?".format(command, e), skipped=True)
