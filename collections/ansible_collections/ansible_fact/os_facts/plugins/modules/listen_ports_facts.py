@@ -59,11 +59,10 @@ class NetstatGatherer(FactGatherer):
         try:
             rc, stdout, stderr = self.run_command([command, lsof_args])
         except Exception as e:
-            self.fail_json(msg="Failed to run {}: {}".format(command, e))
-
-        if rc != 0:
-            self.fail_json(msg='Failed to run {} successfully: {}'.format(command, rc))
-
+            self.warn(msg="Failed to run {}: {}".format(command, e))
+            if rc != 0:
+                self.warn(msg='Failed to run {} successfully: {}'.format(command, rc))
+            self.exit_json(**skipped=True, msg='Problem running {}. Return code from command: {}'.format(command, rc))
         if not self.parse_configs:
             self.exit_json(**{'lsof_stdout_lines': stdout.split('\n')})
 
