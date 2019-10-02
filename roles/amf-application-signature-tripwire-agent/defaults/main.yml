@@ -1,0 +1,23 @@
+---
+amf_as_services:
+  - "tripwire-axon-agent"
+  - "tw-eg-event-source"
+  - "tw-eg-service"
+
+amf_as_user_group:
+  users: []
+  groups: []
+
+amf_as_paths:
+  - "/opt/tripwire/agent"
+
+amf_as_packages: []
+
+amf_as_processes:
+  - "twagent"
+
+
+# Returned fields
+amf_as_discovered_app:
+  name: "Tripwire Agent"
+  desc: "Hosts identified as Tripwire Agent Servers"

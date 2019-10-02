@@ -1,0 +1,22 @@
+---
+amf_as_services: []
+
+amf_as_user_group:
+  users: []
+  groups: []
+
+amf_as_paths: []
+
+amf_as_packages: []
+
+
+amf_as_processes:
+  - "startWebLogic.sh"
+  - "startManagedWebLogic.sh"
+  - "weblogic.Server"
+  - "opmn"
+
+# Returned fields
+amf_as_discovered_app:
+  name: "Oracle Weblogic Server"
+  desc: "Hosts identified as Oracle Weblogic Servers"

@@ -1,0 +1,19 @@
+---
+amf_as_services: []
+
+amf_as_user_group:
+  users: []
+  groups: []
+
+amf_as_paths: []
+
+amf_as_packages: []
+
+
+amf_as_processes:
+  - "emwd.pl"
+
+# Returned fields
+amf_as_discovered_app:
+  name: "Oracle Enterprise Manager"
+  desc: "Hosts identified as Oracle Enterprise Manager Servers"
