@@ -1,0 +1,31 @@
+---
+# Following task prevents possible junk data effecting check
+#   from previous loops
+- name: "Ensure clean path check variable"
+  set_fact:
+    amf_as_path_check: ""
+
+- name: "Stat paths"
+  stat:
+    path: "{{ path }}"
+    follow: False
+    get_attributes: False
+    get_checksum: False
+    get_md5: False
+    get_mime: False
+  register: "amf_as_path_check"
+
+- name: "Debug path variable"
+  debug:
+    var: "path"
+    verbosity: "1"
+
+- name: "Debug amf_as_path_check variable"
+  debug:
+    var: "amf_as_path_check"
+    verbosity: "1"
+
+- name: "Check if {{ amf_as_discovered_app.name }} application path exists"
+  set_fact:
+    amf_as_path_count: "{{ amf_as_path_count | int + 1 }}"
+  when: "amf_as_path_check.stat.exists | bool"

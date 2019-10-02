@@ -1,0 +1,20 @@
+---
+amf_as_services: []
+
+amf_as_user_group:
+  users: []
+  groups:
+    - "wmsadmin"
+
+amf_as_paths: []
+
+amf_as_packages: []
+
+
+amf_as_processes:
+  - "PkManager.py"
+
+# Returned fields
+amf_as_discovered_app:
+  name: "Manhattan Warehouse Management"
+  desc: "Hosts identified as Manhattan Warehouse Management Servers"
