@@ -12,7 +12,7 @@ class FactGatherer(AnsibleModule):
 
     def findCommand(self, command):
         try:
-            cmd = self.fetch_binary(command, False)
+            cmd = fetch_binary(command, False)
             return cmd
         except Exception as e:
             self.warn(msg="Unable to find {} command: {}, is it installed?".format(command, e))
