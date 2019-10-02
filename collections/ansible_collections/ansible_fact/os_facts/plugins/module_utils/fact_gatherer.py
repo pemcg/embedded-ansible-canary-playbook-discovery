@@ -17,10 +17,10 @@ class FactGatherer(AnsibleModule):
                 return cmd
             else:
                 self.warn("Unable to find {} command. Is it installed?".format(command))
-                self.exit_json(msg="Unable to find {} command. Is it installed?".format(command), skipped=True)
+                self.exit_json(**{msg="Unable to find {} command. Is it installed?".format(command), skipped=True})
         except Exception as e:
             self.warn("Unable to find {} command: {}, is it installed?".format(command, e))
-            self.exit_json(msg="Unable to find {} command: {}, is it installed?".format(command, e), skipped=True)
+            self.exit_json(**{msg="Unable to find {} command: {}, is it installed?".format(command, e), skipped=True})
 
     ####### End Of Helper Methods ########
 
