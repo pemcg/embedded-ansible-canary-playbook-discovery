@@ -85,4 +85,4 @@
     - "amf_as_grp_count | int >= 0"
     - "amf_as_path_count | int >= 1"
     - "amf_as_pkg_count | int >= 0"
-    - "amf_as_proc_count | int > 1"
+    - "amf_as_proc_count | int >= 1"
