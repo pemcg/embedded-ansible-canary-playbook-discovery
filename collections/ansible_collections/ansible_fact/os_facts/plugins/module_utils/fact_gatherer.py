@@ -16,9 +16,8 @@ class FactGatherer(AnsibleModule):
             if cmd is not None:
                 return cmd
             else:
-                # self.module.warn(msg="Unable to find {} command. Is it installed?".format(command))
+                # self.warn(msg="Unable to find {} command. Is it installed?".format(command))
                 self.exit_json(msg="Unable to find {} command. Is it installed?".format(command), skipped=True)
-
         except Exception as e:
             # self.warn(msg="Unable to find {} command: {}, is it installed?".format(command, e))
             self.exit_json(msg="Unable to find {} command: {}, is it installed?".format(command, e), skipped=True)
