@@ -1,0 +1,19 @@
+---
+amf_as_services: []
+
+amf_as_user_group:
+  users: []
+  groups: []
+
+amf_as_paths: []
+
+amf_as_packages: []
+
+
+amf_as_processes:
+  - "kuxagent"
+
+# Returned fields
+amf_as_discovered_app:
+  name: "IBM Tivoli Monitoring"
+  desc: "Hosts identified as IBM Tivoli Monitoring Servers"
