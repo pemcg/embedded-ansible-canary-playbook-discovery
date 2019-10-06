@@ -178,37 +178,38 @@ def main():
     facts = params['facts']
 
     # check services
-    if len(chk_services) > 0:
+    if len(chk_services) > 0 and facts.get('services'):
         for s in chk_services:
             if facts['services'][s]:
                 svc_count += 1
 
     # check users
-    if len(chk_users) > 0:
+    if len(chk_users) > 0 and facts.get('local_users'):
         user_expression = jmespath.compile('[*].user')
         for u in chk_users:
             if u in user_expression.search(facts['local_users']):
                 user_count += 1
 
     # check groups
-    if len(chk_groups) > 0:
+    if len(chk_groups) > 0 and facts.get('local_groups'):
         group_expression = jmespath.compile('[*].group')
         for g in chk_groups:
             if g in group_expression.search(facts['local_groups']):
                 group_count += 1
 
     # check packages
-    if len(chk_packages) > 0:
+    if len(chk_packages) > 0 and facts.get('packages'):
         for p in chk_packages:
-            if facts.get('packages', {}).get(p):
+            if facts['packages'][p]:
                 pkg_count += 1
 
     # check processes
-    if len(chk_processes) > 0:
+    if len(chk_processes) > 0 and len(facts['running_processes']['processes']) > 0:
         proc_expression = jmespath.compile('[*].command')
         for p in chk_processes:
-            if p in proc_expression.search(facts['running_processes']['processes']):
-                proc_count += 1
+            for proc in proc_expression.search(facts['running_processes']['processes']):
+                if str(p) in str(proc):
+                    proc_count += 1
 
     # check ports
     # if len(chk_ports) > 0:
@@ -235,7 +236,7 @@ def main():
         module.exit_json(**result)
     else:
         # not identified
-        result['msg'] = {'user_count': user_count, 'group_count': group_count,'svc_count': svc_count, 'port_count': port_count, 'proc_count': proc_count, 'pkg_count': pkg_count, 'path_count': path_count}
+        result['msg'] = {'user_count': user_count, 'group_count': group_count,'svc_count': svc_count, 'port_count': port_count, 'proc_count': proc_count, 'pkg_count': pkg_count, 'path_count': path_count, 'proc_query': proc_expression.search(facts['running_processes']['processes'])}
         result['skipped'] = True
         module.exit_json(**result)
 if __name__ == '__main__':
