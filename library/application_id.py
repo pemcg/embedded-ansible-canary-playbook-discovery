@@ -9,12 +9,12 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 
 DOCUMENTATION = '''
 ---
-module: scan_processes
-short_description: Collects currently running processes on a system
+module: application_id
+short_description: Identifies running applications by a scoring system
 version_added: "2.8"
 description:
-    - "Collects the currently running processes on a system at the time the module is run."
-    - "This module presents the currently running proceses as ansible_facts"
+    - "A set of users, groups, processes, ports, paths, packages, and services, along with collected ansible_facts, the application name and description to tag with, and acceptable scores for each category are passed into the module"
+    - "This module returns the application name and description as ansible_facts['discovered_apps']"
 output_ps_stdout_lines:
     description:
         - Whether or not to output the collected standard out lines from the 'ps auxww' command
