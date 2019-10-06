@@ -186,7 +186,7 @@ def main():
     ans_os = module.params['os_family']
     if ans_os in ('RedHat', 'Suse', 'openSUSE Leap'):
         packages = rpm_package_list()
-    if ans_os == 'Debian':
+    elif ans_os == 'Debian':
         packages = deb_package_list()
     elif ans_os == 'AIX':
         packages = aix_package_list(module)
@@ -196,7 +196,7 @@ def main():
     if packages is not None:
         results = dict(ansible_facts=dict(packages=packages))
     else:
-        results = dict(skipped=True, msg="Unsupported Distribution")
+        results = dict(skipped=True, msg="Unsupported Distribution: {}".format(ans_os))
     module.exit_json(**results)
 
 
