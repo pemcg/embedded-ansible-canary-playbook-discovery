@@ -327,10 +327,10 @@ def main():
                 path_count += 1
 
     # Scoring
-    if svc_count >= scores['services'] and user_count >= scores['users'] and \
-        group_count >= scores['groups'] and path_count >= scores['paths'] and \
-        pkg_count >= scores['packages'] and proc_count >= scores['processes'] and \
-        port_count >= scores['ports']:
+    if svc_count >= int(scores['services']) and user_count >= int(scores['users']) and \
+        group_count >= int(scores['groups']) and path_count >= int(scores['paths']) and \
+        pkg_count >= int(scores['packages']) and proc_count >= int(scores['processes']) and \
+        port_count >= int(scores['ports']):
         # App is identified
         if facts.get('discovered_apps') is None:
             discovered_apps = [app_id]
