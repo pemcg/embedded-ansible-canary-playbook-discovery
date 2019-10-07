@@ -13,9 +13,19 @@ amf_as_paths:
 
 amf_as_packages: []
 
+amf_as_ports: []
+
 amf_as_processes:
   - "twagent"
 
+amf_as_scores:
+  users: "0"
+  groups: "0"
+  services: "3"
+  paths: "1"
+  packages: "0"
+  ports: "0"
+  processes: "1"
 
 # Returned fields
 amf_as_discovered_app:

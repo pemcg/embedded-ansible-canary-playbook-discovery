@@ -12,9 +12,19 @@ amf_as_paths:
 amf_as_packages:
   - "BESClient"
 
+amf_as_ports: []
 
 amf_as_processes:
   - "BESClient"
+
+amf_as_scores:
+  users: "0"
+  groups: "0"
+  services: "0"
+  paths: "2"
+  packages: "1"
+  ports: "0"
+  processes: "1"
 
 # Returned fields
 amf_as_discovered_app:

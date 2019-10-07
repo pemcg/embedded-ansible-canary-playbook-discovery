@@ -8,7 +8,3 @@ echo "role amf-application-signature-$1" "created at" $path"/"$init_path/amf-app
 else
  :
 fi
-
-
-
-

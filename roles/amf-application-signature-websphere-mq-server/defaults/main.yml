@@ -16,6 +16,15 @@ amf_as_packages:
 amf_as_processes:
   - "amqzxma0"
 
+amf_as_scores:
+  users: "1"
+  groups: "1"
+  services: "0"
+  paths: "1"
+  packages: "1"
+  ports: "0"
+  processes: "1"
+
 # Returned fields
 amf_as_discovered_app:
   name: "WebSphere MQ server"

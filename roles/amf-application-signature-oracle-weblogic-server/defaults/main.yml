@@ -9,12 +9,22 @@ amf_as_paths: []
 
 amf_as_packages: []
 
+amf_as_ports: []
 
 amf_as_processes:
   - "startWebLogic.sh"
   - "startManagedWebLogic.sh"
   - "weblogic.Server"
   - "opmn"
+
+amf_as_scores:
+  users: "0"
+  groups: "0"
+  services: "0"
+  paths: "0"
+  packages: "0"
+  ports: "0"
+  processes: "4"
 
 # Returned fields
 amf_as_discovered_app:
