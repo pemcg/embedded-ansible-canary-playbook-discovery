@@ -283,7 +283,7 @@ def main():
     # check services
     if len(chk_services) > 0 and facts.get('services'):
         for s in chk_services:
-            if facts['services'][s]:
+            if facts['services'].get(s) is not None:
                 svc_count += 1
 
     # check users
@@ -309,7 +309,7 @@ def main():
     # check packages
     if len(chk_packages) > 0 and facts.get('packages'):
         for p in chk_packages:
-            if facts['packages'][p]:
+            if facts['packages'].get(p) is not None:
                 pkg_count += 1
 
     # check processes
@@ -348,7 +348,7 @@ def main():
         module.exit_json(**result)
     else:
         # not identified
-        result['msg'] = {'user_count': user_count, 'group_count': group_count,'svc_count': svc_count, 'port_count': port_count, 'proc_count': proc_count, 'pkg_count': pkg_count, 'path_count': path_count, 'proc_query': proc_expression.search(facts['running_processes']['processes'])}
+        result['msg'] = {'user_count': user_count, 'group_count': group_count,'svc_count': svc_count, 'port_count': port_count, 'proc_count': proc_count, 'pkg_count': pkg_count, 'path_count': path_count}
         result['skipped'] = True
         module.exit_json(**result)
 if __name__ == '__main__':
