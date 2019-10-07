@@ -14,56 +14,161 @@ short_description: Identifies running applications by a scoring system
 version_added: "2.8"
 description:
     - "A set of users, groups, processes, ports, paths, packages, and services, along with collected ansible_facts, the application name and description to tag with, and acceptable scores for each category are passed into the module"
-    - "This module returns the application name and description as ansible_facts['discovered_apps']"
-output_ps_stdout_lines:
+    - "This module returns the application name and description as ansible_facts['discovered_apps'].  If ansible_facts['discovered_apps'] already exists, this module will take the existing value and append any new values to it, otherwise the module will skip making no changes if an application is not identified with the scoring criteria provided."
+application:
     description:
-        - Whether or not to output the collected standard out lines from the 'ps auxww' command
-    default: False
-    required: False
-output_parsed_processes:
+        - Information to "tag" a system with if the system meets all conditions from the scores option.  This is a dictionary with a name and desc field.
+    type: dictionary
+    default: {}
+    required: True
+application.name:
     description:
-        - Whether or not to output parsed data from the 'ps auxww' command.
-    default: True
-    required: False
+        - Name of the application to tag the system with if all conditions from the scores parameter are satisfied.
+    type: string
+    required: True
+application.desc:
+    description:
+        - Description of the application to tag the system with if all conditions from the scores parameter are satisfied.
+    type: string
+    required: True
+users:
+    description:
+        - List of users to check when identifying a running application.
+    type: list
+    default: []
+    required: True
+groups:
+    description:
+        - List of groups to check when identifying a running application.
+    type: list
+    default: []
+    required: True
+packages:
+    description:
+        - List of packages to check when identifying a running application.
+    type: list
+    default: []
+    required: True
+paths:
+    description:
+        - List of paths to check when identifying a running application.
+    type: list
+    default: []
+    required: True
+ports:
+    description:
+        - List of listening ports to check when identifying a running application.
+    type: list
+    default: []
+    required: True
+processes:
+    description:
+        - List of processes to check when identifying a running application.  Can be a partial process name to keep generic across OS platforms.
+    type: list
+    default: []
+    required: True
+services:
+    description:
+        - List of services to check when identifying a running application.
+    type: list
+    default: []
+    required: True
+facts:
+    description:
+        - Dictionary of collected ansible_facts to perform the application identification against.  The expected format is based on ansible-fact and Ansible Migration Factory's discovery process.
+    type: dictionary
+    default: {}
+    required: True
+scores:
+    description:
+        - Dictionary of scores required to properly identify the running application.  Each category requires an integer that represents the minimum count that will satisfy a >= evaluation.
+        - As an example, if there are 2 users that could be present, but only 1 required to be present to identify an application, set the scores.users value to "1".
+    type: dictionary
+    default: {}
+    required: True
+scores.groups:
+    description:
+        - Integer that represents the minimum number of groups that must be present in order to identify an application.  The evaluation is performed by a >= check of this score.
+    type: integer
+    default: None
+    required: True
+scores.users:
+    description:
+        - Integer that represents the minimum number of users that must be present in order to identify an application.  The evaluation is performed by a >= check of this score.
+    type: integer
+    default: None
+    required: True
+scores.paths:
+    description:
+        - Integer that represents the minimum number of paths that must be present in order to identify an application.  The evaluation is performed by a >= check of this score.
+    type: integer
+    default: None
+    required: True
+scores.ports:
+    description:
+        - Integer that represents the minimum number of ports that must be present in order to identify an application.  The evaluation is performed by a >= check of this score.
+    type: integer
+    default: None
+    required: True
+scores.packages:
+    description:
+        - Integer that represents the minimum number of packages that must be present in order to identify an application.  The evaluation is performed by a >= check of this score.
+    type: integer
+    default: None
+    required: True
+scores.processes:
+    description:
+        - Integer that represents the minimum number of processes that must be present in order to identify an application.  The evaluation is performed by a >= check of this score.
+    type: integer
+    default: None
+    required: True
+scores.services:
+    description:
+        - Integer that represents the minimum number of services that must be present in order to identify an application.  The evaluation is performed by a >= check of this score.
+    type: integer
+    default: None
+    required: True
 author:
     - Andrew J. Huffman (@ahuffman)
 '''
 
 EXAMPLES = '''
-# Collect running processes and output parsed data
-- name: "Collect current running processes"
-  scan_processes:
-
-# Collect only standard out lines from the ps auxww command
-- name: "Collect process command output"
-  scan_processes:
-    output_ps_stdout_lines: True
-    output_parsed_processes: False
-
-# Collect both parsed process data and 'ps auxww' command standard out
-- name: "Collect all process data"
-  scan_processes:
-    output_ps_stdout_lines: True
+# Identify Oracle Database
+- name: "Identify Oracle Database Server"
+  application_id:
+    facts: "{{ ansible_facts }}"
+    services: []
+    users:
+      - "oracle"
+    groups:
+      - "dba"
+    paths:
+      - "/etc/oratab"
+      - "/etc/oraInst.loc"
+    packages: []
+    ports: []
+    processes:
+      - "ora_mmon_"
+      - "ora_pmon_"
+      - "ora_smon_"
+      - "tnslsnr"
+    application:
+      name: "Oracle Database"
+      desc: "Hosts identified as Oracle Database Servers"
+    scores:
+      users: 0
+      groups: 0
+      paths: 1
+      packages: 0
+      ports: 0
+      processes: 3
+      services: 0
 '''
 
 RETURN = '''
-running_processes:
-    processes:
-      - command: /usr/lib/systemd/systemd --switched-root --system --deserialize 33
-        cpu_percentage: '0.0'
-        memory_percentage: '0.0'
-        pid: '1'
-        resident_size: '5036'
-        start: Jul08
-        stat: Ss
-        teletype: '?'
-        time: '3:32'
-        user: root
-      ...
-    ps_stdout_lines:
-      - root         1  0.0  0.0 171628  5056 ?        Ss   Jul08   3:32 /usr/lib/systemd/systemd --switched-root --system --deserialize 33
-      ...
-    total_running_processes: 359
+ansible_facts['discovered_apps']:
+  - name: "Oracle Database"
+    desc: "Hosts identified as Oracle Database Servers"
 '''
 
 from ansible.module_utils.basic import AnsibleModule
