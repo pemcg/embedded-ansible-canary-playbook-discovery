@@ -173,8 +173,6 @@ ansible_facts['discovered_apps']:
 
 from ansible.module_utils.basic import AnsibleModule
 from os.path import exists
-import jmespath
-
 
 def main():
     module_args = dict(
@@ -290,16 +288,22 @@ def main():
 
     # check users
     if len(chk_users) > 0 and facts.get('local_users'):
-        user_expression = jmespath.compile('[*].user')
+        # build user list
+        user_list = list()
+        for u in facts['local_users']:
+            user_list.append(u['user'])
         for u in chk_users:
-            if u in user_expression.search(facts['local_users']):
+            if u in user_list:
                 user_count += 1
 
     # check groups
     if len(chk_groups) > 0 and facts.get('local_groups'):
-        group_expression = jmespath.compile('[*].group')
+        # build group list
+        group_list = list()
+        for g in facts['local_groups']:
+            group_list.append(g['group'])
         for g in chk_groups:
-            if g in group_expression.search(facts['local_groups']):
+            if g in group_list:
                 group_count += 1
 
     # check packages
@@ -310,9 +314,12 @@ def main():
 
     # check processes
     if len(chk_processes) > 0 and len(facts['running_processes']['processes']) > 0:
-        proc_expression = jmespath.compile('[*].command')
+        # build process list
+        proc_list = list()
+        for p in facts['running_processes']['processes']:
+            proc_list.append(p['command'])
         for p in chk_processes:
-            for proc in proc_expression.search(facts['running_processes']['processes']):
+            for proc in proc_list:
                 if str(p) in str(proc):
                     proc_count += 1
 
