@@ -29,11 +29,7 @@ This Role depends on the Ansible Migration Factory Discovery playbook and its cu
 ## Returned Data
 This Role will append a dictionary to the `ansible_facts.discovered_apps` list with the keys `name` and `desc` (description).  This data is used to tag the systems with the identified applications, based on application signature roles.
 
-These values are defined in [defaults/main.yml](defaults/main.yml) in the amf_as_discovered_app dictionary.
-
-```yaml
-discovered_apps: "{{ discovered_apps | union([amf_as_discovered_app]) }}"
-```
+These values are defined in [defaults/main.yml](defaults/main.yml) in the amf_as_discovered_app dictionary.  
 This is only returned when the defined conditions are met.
 
 ## License
