@@ -68,7 +68,8 @@ class NetstatGatherer(FactGatherer):
 
         re_listen_ports = re.compile(r'^(?P<name>[^\s]+)\s+(?P<pid>[0-9]+)\s+(?P<user>[^\s]+)\s+(?P<fd>\d+[^\s]+)\s+(?P<type>[^\s]+)\s+(?P<dev>[^\s]+)\s+(?P<size>[^\s]+)\s+(?P<protocol>[^\s]+)\s+(?P<address>[^:]+):(?P<port>[^\s]+)( \((?P<state>[^\(]+)\)){0,1}$')
 
-        listen_ports = []
+        tcp_listen_ports = list()
+        udp_listen_ports = list()
         for line in stdout.split('\n'):
             line_match = re_listen_ports.search(line)
             if line_match != None:
@@ -89,9 +90,12 @@ class NetstatGatherer(FactGatherer):
                 if port['protocol'] == 'UDP' or (port['protocol'] == 'TCP' and port['state'] == 'LISTEN'):
                     if port['address'] == '*':
                         port['address'] = '0.0.0.0'
-                    listen_ports.append(port)
+                if port['protocol'] == 'UDP':
+                    udp_listen_ports.append(port)
+                elif port['protocol'] == 'TCP':
+                    tcp_listen_ports.append(port)
 
-        self.exit_json(**{ 'ansible_facts': {'listening_ports': listen_ports} })
+        self.exit_json(**{ 'ansible_facts': {'tcp_listen': tcp_listen_ports, 'udp_listen': udp_listen_ports}})
 
     def doDarwin(self):
         self.runAndParseLSOF('+c0 -n -P -i')
