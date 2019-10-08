@@ -13,6 +13,8 @@ amf_as_paths:
 amf_as_packages:
   - "mqm.server.rte"
 
+amf_as_ports: []
+
 amf_as_processes:
   - "amqzxma0"
 
