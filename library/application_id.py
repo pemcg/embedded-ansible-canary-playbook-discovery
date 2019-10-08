@@ -291,7 +291,8 @@ def main():
         # build user list
         user_list = list()
         for u in facts['local_users']:
-            user_list.append(u['user'])
+            if u.get('user') is not None:
+                user_list.append(u['user'])
         for u in chk_users:
             if u in user_list:
                 user_count += 1
@@ -301,7 +302,8 @@ def main():
         # build group list
         group_list = list()
         for g in facts['local_groups']:
-            group_list.append(g['group'])
+            if g.get('group') is not None:
+                group_list.append(g['group'])
         for g in chk_groups:
             if g in group_list:
                 group_count += 1
@@ -317,7 +319,8 @@ def main():
         # build process list
         proc_list = list()
         for p in facts['running_processes']['processes']:
-            proc_list.append(p['command'])
+            if p.get('command') is not None:
+                proc_list.append(p['command'])
         for p in chk_processes:
             for proc in proc_list:
                 if str(p) in str(proc):
