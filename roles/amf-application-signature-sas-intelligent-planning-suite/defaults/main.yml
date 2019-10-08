@@ -2,8 +2,10 @@
 amf_as_services: []
 
 amf_as_user_group:
-  users: []
-  groups: []
+  users:
+    - "sas"
+  groups:
+    - "sas"
 
 amf_as_paths: []
 
@@ -14,11 +16,11 @@ amf_as_ports: []
 amf_as_processes:
   - "startSMPS.sh"
   - "httpd.worker"
-  - "sas"
+  - "SASWebServer"
 
 amf_as_scores:
-  users: "0"
-  groups: "0"
+  users: "1"
+  groups: "1"
   services: "0"
   paths: "0"
   packages: "0"
