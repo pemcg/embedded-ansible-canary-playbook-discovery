@@ -12,7 +12,7 @@ class FactGatherer(AnsibleModule):
 
     def findCommand(self, command):
         try:
-            cmd = fetch_binary(command, False)
+            cmd = fetch_binary(command, required=False, opt_dirs=["/opt/freeware/sbin"])
             if cmd is not None:
                 return cmd
             else:
