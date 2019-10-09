@@ -1,5 +1,5 @@
-# amf-application-signature-oracle-concurrent-manager
-An Ansible Role that identifies an Oracle Concurrent Manager server as part of the Ansible Migration Factory Discovery process.
+# amf-application-signature-ibm-sterling-commerce
+An Ansible Role that identifies an IBM Sterling Commerce server as part of the Ansible Migration Factory Discovery process.
 
 ## Variables
 | Variable Name | Description | Type |

@@ -1,5 +1,5 @@
-# amf-application-signature-websphere-mq-server
-An Ansible Role that identifies an WebSphere MQ server as part of the Ansible Migration Factory Discovery process.
+# amf-application-signature-ibm-storage-resource-agent
+An Ansible Role that identifies an IBM  Storage Resource agent server as part of the Ansible Migration Factory Discovery process.
 
 ## Variables
 | Variable Name | Description | Type |
@@ -29,7 +29,7 @@ This Role depends on the Ansible Migration Factory Discovery playbook and its cu
 ## Returned Data
 This Role will append a dictionary to the `ansible_facts.discovered_apps` list with the keys `name` and `desc` (description).  This data is used to tag the systems with the identified applications, based on application signature roles.
 
-These values are defined in [defaults/main.yml](defaults/main.yml) in the amf_as_discovered_app dictionary.  
+These values are defined in [defaults/main.yml](defaults/main.yml) in the amf_as_discovered_app dictionary.
 This is only returned when the defined conditions are met.
 
 ## License

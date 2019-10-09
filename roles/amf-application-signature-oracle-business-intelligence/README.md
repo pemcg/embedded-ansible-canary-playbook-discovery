@@ -1,5 +1,5 @@
 # amf-application-signature-oracle-business-intelligence
-An Ansible Role that identifies an ***YOUR APP NAME HERE*** server as part of the Ansible Migration Factory Discovery process.
+An Ansible Role that identifies an Oracle Business Intelligence server as part of the Ansible Migration Factory Discovery process.
 
 ## Variables
 | Variable Name | Description | Type |

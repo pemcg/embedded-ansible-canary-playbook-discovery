@@ -16,7 +16,7 @@ amf_as_processes:
   - "jboss"
 
 amf_as_scores:
-  users: "0"
+  users: "1"
   groups: "0"
   services: "0"
   paths: "0"
