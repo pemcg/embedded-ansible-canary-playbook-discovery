@@ -89,6 +89,16 @@
         #   Use 'unique' jinja filter to get unique entries compared to a
         #   default OS install
         #   This helps ID running applications by getting only a difference
+        - name: "Set pared down facts for application identification"
+          set_fact:
+            fact_subset:
+              services: "{{ ansible_facts.services | default({}) }}"
+              running_processes: "{{ ansible_facts.running_processes | default({}) }}"
+              packages: "{{ ansible_facts.packages | default({}) }}"
+              tcp_listeners: "{{ ansible_facts.tcp_listeners | default([]) }}"
+              udp_listeners: "{{ ansible_facts.udp_listeners | default([]) }}"
+              local_users: "{{ ansible_facts.local_users | default([]) }}"
+              local_groups: "{{ ansible_facts.local_groups | default([]) }}"
 
         # Plugable application signature interface
         - name: "Check application signatures | Unix/Linux"
@@ -102,7 +112,7 @@
         - name: "Debug discovered_apps value | post application signatures"
           debug:
             var: "discovered_apps"
-            verbosity: "1"
+            # verbosity: "1"
 
         - name: "Build discovered host inventory | Unix/Linux"
           include_role:
