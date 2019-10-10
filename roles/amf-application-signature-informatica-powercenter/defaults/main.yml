@@ -17,6 +17,7 @@ amf_as_ports: []
 amf_as_processes:
   - "pmserver"
   - "pmrepagent"
+  - "pmdtm"
 
 amf_as_scores:
   users: "0"
@@ -25,7 +26,7 @@ amf_as_scores:
   paths: "0"
   packages: "0"
   ports: "0"
-  processes: "2"
+  processes: "3"
 
 # Returned fields
 amf_as_discovered_app:
