@@ -100,6 +100,7 @@
 
     - debug:
         var: "vars_dir"
+        verbosity: "1"
 
     - name: "Dump collected facts to temporary directory"
       template:
@@ -118,7 +119,7 @@
         tower_password: "{{ tower_pass }}"
         tower_host: "{{ tower_url }}"
         tower_verify_ssl: "{{ tower_verify_ssl }}"
-        name: "{{ ansible_fqdn }}"
+        name: "{{ tower_client_node_name }}"
         inventory: "{{ discovered_host_inventory_name }}"
         enabled: True
         variables: "@{{ vars_dir }}/{{ inventory_hostname }}.txt"
@@ -139,7 +140,7 @@
         tower_password: "{{ tower_pass }}"
         tower_host: "{{ tower_url }}"
         tower_verify_ssl: "{{ tower_verify_ssl }}"
-        name: "{{ ansible_fqdn }}"
+        name: "{{ tower_client_node_name }}"
         inventory: "{{ discovered_host_inventory_name }}"
         group: "*"
         state: "absent"
@@ -154,7 +155,7 @@
         tower_password: "{{ tower_pass }}"
         tower_host: "{{ tower_url }}"
         tower_verify_ssl: "{{ tower_verify_ssl }}"
-        name: "{{ ansible_fqdn }}"
+        name: "{{ tower_client_node_name }}"
         inventory: "{{ discovered_host_inventory_name }}"
         group: "{{ item.name }}"
         state: "present"
@@ -170,7 +171,7 @@
         tower_password: "{{ tower_pass }}"
         tower_host: "{{ tower_url }}"
         tower_verify_ssl: "{{ tower_verify_ssl }}"
-        name: "{{ ansible_fqdn }}"
+        name: "{{ tower_client_node_name }}"
         inventory: "{{ discovered_host_inventory_name }}"
         group: "{{ discovered_host_inventory_default_group.name }}"
         state: "present"
