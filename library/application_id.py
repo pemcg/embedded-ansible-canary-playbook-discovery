@@ -241,8 +241,7 @@ def main():
         ),
         facts=dict(
             type='dict',
-            required=True,
-            no_log=True
+            required=True
         ),
         discovered_apps=dict(
             type='list',
