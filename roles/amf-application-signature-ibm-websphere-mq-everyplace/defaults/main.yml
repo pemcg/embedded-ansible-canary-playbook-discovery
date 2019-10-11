@@ -1,12 +1,15 @@
 ---
-amf_as_services: []
+amf_as_services:
+  - "example1.service"
+  - "example2.service"
 
 amf_as_user_group:
-  users: []
-  groups: []
+  users:
+    - "appuser"
+  groups:
+    - "appgroup"
 
-amf_as_paths:
-  - "/opt/MicroStrategy"
+amf_as_paths: []
 
 # not fully implemented yet, will probably need a name and version field
 ## currently only takes a package name (no versions)
@@ -16,18 +19,18 @@ amf_as_packages: []
 amf_as_ports: []
 
 amf_as_processes:
-  - "MSTRSvr"
+  - "MQeGateway.jar"
 
 amf_as_scores:
   users: "0"
   groups: "0"
   services: "0"
-  paths: "1"
+  paths: "0"
   packages: "0"
   ports: "0"
   processes: "1"
 
 # Returned fields
 amf_as_discovered_app:
-  name: "MicroStrategy Intelligence Server"
-  desc: "Hosts identified as MicroStrategy Intelligence Servers"
+  name: "IBM WebSphere MQ Everyplace"
+  desc: "Hosts identified as IBM WebSphere MQ Everyplace Servers"
