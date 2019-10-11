@@ -10,3 +10,5 @@ tower_pass: ""
 tower_url: ""
 tower_org: ""
 tower_verify_ssl: False
+# Configurable on how to name the host when adding it to the discovered hosts inventory
+tower_client_node_name: "{{ inventory_hostname }}"
