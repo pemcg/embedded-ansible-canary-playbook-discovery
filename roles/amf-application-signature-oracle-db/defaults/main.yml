@@ -2,10 +2,8 @@
 amf_as_services: []
 
 amf_as_user_group:
-  users:
-    - "oracle"
-  groups:
-    - "dba"
+  users: []
+  groups: []
 
 amf_as_paths:
   - "/etc/oratab"
@@ -22,7 +20,7 @@ amf_as_processes:
   - "tnslsnr"
 
 amf_as_scores:
-  users: "1"
+  users: "0"
   groups: "0"
   services: "0"
   paths: "1"

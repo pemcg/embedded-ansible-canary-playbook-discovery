@@ -13,7 +13,7 @@ amf_as_ports: []
 
 amf_as_processes:
   - "httpd.worker"
-  - "ohs"
+  - "oracle"
 
 amf_as_scores:
   users: "0"
