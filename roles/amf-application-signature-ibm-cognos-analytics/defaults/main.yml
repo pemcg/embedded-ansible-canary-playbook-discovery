@@ -20,13 +20,13 @@ amf_as_processes:
   - "CognosCMDerby.jar"
 
 amf_as_scores:
-  users: "1"
-  groups: "1"
-  services: "2"
+  users: "0"
+  groups: "0"
+  services: "0"
   paths: "1"
-  packages: "3"
-  ports: "1"
-  processes: "3"
+  packages: "0"
+  ports: "0"
+  processes: "2"
 
 # Returned fields
 amf_as_discovered_app:
