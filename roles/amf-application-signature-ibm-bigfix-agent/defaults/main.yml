@@ -29,4 +29,4 @@ amf_as_scores:
 # Returned fields
 amf_as_discovered_app:
   name: "IBM BigFix Agent"
-  desc: "Hosts identified as BigFix Agent"
+  desc: "Hosts identified as IBM BigFix Agent"
