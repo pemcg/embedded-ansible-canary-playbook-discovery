@@ -14,6 +14,7 @@ An Ansible Role to insert hosts that were scanned by the Ansible Migration Facto
 |tower_org|yes|Organization of the Ansible Tower, where the new discovery inventory will be created|""|string|
 |tower_url|yes|URL to the Ansible Tower server starting with 'https://'|""|string|
 |tower_verify_ssl|yes|Validate the Ansible Tower Server's SSL certificate|False|boolean|
+|tower_client_node_name|yes|Name to create the host in the "Discovered Hosts" inventory as.  If you choose to set this to "{{ ansible_fqdn }}" you will need double the Ansible Tower subscriptions if the names do not match.|"{{ inventory_hostname }}" | string |
 
 ## Example Playbook
 ```yaml
