@@ -7,10 +7,11 @@
         name: "net-tools"
         state: "installed"
       become: True
+      when: "discovery_install_prereqs | bool"
 
     - name: "Collect netstat facts"
       listen_ports_facts:
-  when: 'ansible_os_family == "RedHat"'
+  when: "ansible_os_family == 'RedHat'"
 
 # Returns ansible_facts['listening_ports'] (for now)
 - name: "Collect listen_ports_facts | AIX"
