@@ -1,5 +1,5 @@
 ---
-discovered_host_install_prereqs: False
+discovered_host_install_prereqs: True
 discovered_host_inventory_name: "Discovered Hosts"
 discovered_host_inventory_description: "Inventory of hosts scanned by the Ansible Migration Factory Discovery playbook"
 discovered_host_inventory_default_group:
