@@ -112,7 +112,7 @@
         - name: "Debug discovered_apps value | post application signatures"
           debug:
             var: "discovered_apps"
-            # verbosity: "1"
+            verbosity: "1"
 
         - name: "Build discovered host inventory | Unix/Linux"
           include_role:
