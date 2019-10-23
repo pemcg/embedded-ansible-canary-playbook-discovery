@@ -103,19 +103,6 @@ class NetstatGatherer(FactGatherer):
     def doAIX(self):
         self.runAndParseLSOF('+c0 -i -n -P')
 
-    #def doDarwin(self):
-    #    command = self.findCommand('lsof')
-    #    try:
-    #        rc, stdout, stderr = self.run_command([command, '+c0'])
-    #        with open('/tmp/john', 'w') as f:
-    #            f.write("RC\n{}".format(rc))
-    #            f.write("stdout\n{}".format(stdout))
-    #            f.write("stderr\n{}".format(stderr))
-    #        self.exit_json(**{ 'ansible_facts': {'listening_ports': stdout} })
-    #    except Exception as e:
-    #        self.fail_json(msg="Failed to run {}: {}".format(command, e))
-
-
     def __init__(self, argument_spec, **kwargs):
         # Call the parent constructor
         super(NetstatGatherer, self).__init__(argument_spec=argument_spec, **kwargs)
