@@ -8,17 +8,21 @@
         - name: "Ensure report directory exists"
           file:
             state: "directory"
-            path: "/var/lib/awx/reports"
+            path: "/root/reports"
             mode: "0755"
-            owner: "awx"
-            group: "awx"
+            owner: "root"
+            group: "root"
+          connection: "local"
+          become: True
 
         - name: "Create report"
           template:
             src: "simple_report.csv.j2"
-            dest: "/var/lib/awx/reports/simple_report.csv"
-            owner: "awx"
-            group: "awx"
+            dest: "/root/reports/simple_report.csv"
+            owner: "root"
+            group: "root"
             mode: "0644"
+          connection: "local"
+          become: True
       delegate_to: "localhost"
       run_once: True
