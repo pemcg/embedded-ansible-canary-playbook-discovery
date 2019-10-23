@@ -101,7 +101,7 @@ class NetstatGatherer(FactGatherer):
         self.runAndParseLSOF('+c0 -n -P -i')
 
     def doAIX(self):
-        self.runAndParseLSOF('+c0 -i 2 -n -P')
+        self.runAndParseLSOF('+c0 -i -n -P')
 
     #def doDarwin(self):
     #    command = self.findCommand('lsof')
