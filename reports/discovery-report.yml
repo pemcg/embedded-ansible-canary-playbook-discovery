@@ -1,0 +1,30 @@
+---
+- name: "Generate Discovery Report"
+  hosts: "all"
+  gather_facts: False
+  tasks:
+    - name: "Generate Discovery Report"
+      block:
+        - name: "Ensure report directory exists"
+          file:
+            state: "directory"
+            path: "/home/awx/reports"
+            mode: "0755"
+            owner: "awx"
+            group: "awx"
+          connection: "local"
+
+        - debug:
+            var: "groups | dict2items"
+            
+        - name: "Create report"
+          template:
+            src: "../templates/discovery_report.md.j2"
+            # dest: "/home/awx/reports/discovery_report.md"
+            dest: "/home/ahuffman/discovery_report.md"
+            owner: "awx"
+            group: "awx"
+            mode: "0644"
+          connection: "local"
+      delegate_to: "localhost"
+      run_once: True

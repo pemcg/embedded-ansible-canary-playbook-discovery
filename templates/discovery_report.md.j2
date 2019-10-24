@@ -1,0 +1,50 @@
+## Discovered Application Types
+
+{# to get total apps we subtract 2 from the total to account for built-in "all" and "ungrouped" #}
+**Total Number of Discovered Applications**: {{ groups | dict2items | length() - 2 }}
+
+| Application Name | Number of Associated Servers |
+| --- | --- |
+{% for app in groups | dict2items %}
+{% if app.key != 'all' and app.key != 'ungrouped' %}
+| [{{ app.key | regex_replace('_', ' ') }}](#{{ app.key | regex_replace('\s', '-') | lower() }}) | {{ app.value | length() }} |
+{% endif %}
+{% endfor %}
+
+## Servers By Application Type
+
+{% for app in groups | dict2items %}
+{% if app.key != 'all' and app.key != 'ungrouped' and app.value | length > 0 %}
+### {{ app.key | regex_replace('_', ' ') }}
+
+There {% if app.value | length > 1 %}were **{{ app.value | length }} servers**{% else %}was **1 server**{% endif %} found to be running {{ app.key | regex_replace('_', ' ') }}:
+
+| Hostname | FQDN | IPv4 Address |
+| --- | --- | --- |
+{% for host in app.value %}
+| [{{ host | lower() }}](#{{ host | lower }}) | {{ hostvars[host]['discovered_facts']['fqdn'] }} | {{ hostvars[host]['discovered_facts']['default_ipv4']['address'] }} |
+{% endfor %}
+
+
+{% endif %}
+{% endfor %}
+
+
+## All Discovered Servers
+
+**Total number of servers discovered:** {{ ansible_play_hosts_all | length }}
+
+| Hostname | FQDN | IPv4 Address |
+| --- | --- | --- |
+{% for host in ansible_play_hosts_all %}
+| [{{ host | lower() }}](#{{ host | lower }}) | {{ hostvars[host]['discovered_facts']['fqdn'] }} | {{ hostvars[host]['discovered_facts']['default_ipv4']['address'] }} |
+{% endfor %}
+
+
+## Discovered Host Details
+
+{% for host in ansible_play_hosts_all %}
+### {{ host | lower() }}
+
+
+{% endfor %}
