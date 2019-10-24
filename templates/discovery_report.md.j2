@@ -55,7 +55,7 @@ There {% if app.value | length > 1 %}were **{{ app.value | length }} servers**{%
 
 | CPU Count | CPU Cores | CPU Type | RAM (MB) | Swap (MB) |
 | --- | --- | --- | --- | --- |
-| {{ hostvars[host]['discovered_facts']['processor_count'] }} | {{ hostvars[host]['discovered_facts']['processor_cores'] }} | {{ hostvars[host]['discovered_facts']['memtotal_mb'] }} | {{ hostvars[host]['discovered_facts']['swaptotal_mb'] }} |
+| {{ hostvars[host]['discovered_facts']['processor_count'] }} | {{ hostvars[host]['discovered_facts']['processor_cores'] }} | {{ hostvars[host]['discovered_facts']['processor'] }} | {{ hostvars[host]['discovered_facts']['memtotal_mb'] }} | {{ hostvars[host]['discovered_facts']['swaptotal_mb'] | default(0) }} |
 
 
 
