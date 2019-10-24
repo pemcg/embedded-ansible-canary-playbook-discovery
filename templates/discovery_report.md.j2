@@ -37,7 +37,7 @@ There {% if app.value | length > 1 %}were **{{ app.value | length }} servers**{%
 | Hostname | FQDN | IPv4 Address |
 | --- | --- | --- |
 {% for host in ansible_play_hosts_all %}
-| [{{ host | lower() }}](#{{ host | lower }}) | {{ hostvars[host]['discovered_facts']['fqdn'] }} | {{ hostvars[host]['discovered_facts']['default_ipv4']['address'] }} |
+| [{{ host | lower() }}](#{{ host | lower }}) | {{ hostvars[host]['discovered_facts']['fqdn'] | lower() }} | {{ hostvars[host]['discovered_facts']['default_ipv4']['address'] }} |
 {% endfor %}
 
 
@@ -45,6 +45,29 @@ There {% if app.value | length > 1 %}were **{{ app.value | length }} servers**{%
 
 {% for host in ansible_play_hosts_all %}
 ### {{ host | lower() }}
+#### {{ host | lower() }}'s Server Details
+
+| Hostname | FQDN | IPv4 Address |
+| --- | --- | --- |
+| {{ host | lower() }} | {{ hostvars[host]['discovered_facts']['fqdn'] | lower() }} | {{ hostvars[host]['discovered_facts']['default_ipv4']['address'] }} |
+
+#### {{ host | lower() }}'s System Resources
+
+| CPU Count | CPU Cores | CPU Type | RAM (MB) | Swap (MB) |
+| --- | --- | --- | --- | --- |
+| {{ hostvars[host]['discovered_facts']['processor_count'] }} | {{ hostvars[host]['discovered_facts']['processor_cores'] }} | {{ hostvars[host]['discovered_facts']['memtotal_mb'] }} | {{ hostvars[host]['discovered_facts']['swaptotal_mb'] }} |
+
+
+
+#### {{ host | lower() }}'s Storage Resources
+
+| Mount Point | Disk Size Total (MB) | Disk Size Total (GB) | Disk Size Free (MB) | Disk Size Free (GB) | Filesystem Type | System Device |
+| --- | --- | --- | --- | --- | --- | --- |
+{% for mount in hostvars[host]['discovered_facts']['mounts'] %}
+{% if 'proc' not in mount['fstype'] and 'nfs' not in mount['fstype'] %}
+| {{ mount['mount'] }} | {{ mount['size_total'] | default(0) | int() / 1024 / 1024 }} | {{ mount['size_total'] | default(0) | int() / 1024 / 1024 / 1024 }} | {{ mount['size_available'] | default(0) | int() / 1024 / 1024 }} | {{ mount['size_available'] | default(0) | int() / 1024 / 1024 / 1024 }} | {{ mount['fstype'] }} | {{ mount['device'] }} |
+{% endif %}
+{% endfor %}
 
 
 {% endfor %}
