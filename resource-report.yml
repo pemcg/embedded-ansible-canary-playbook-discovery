@@ -16,8 +16,8 @@
 
         - name: "Create report"
           template:
-            src: "simple_report.csv.j2"
-            dest: "/home/awx/reports/simple_report.csv"
+            src: "resource_report.csv.j2"
+            dest: "/home/awx/reports/resource_report.csv"
             owner: "awx"
             group: "awx"
             mode: "0644"
