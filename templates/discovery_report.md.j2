@@ -5,7 +5,7 @@
 
 | Application Name | Number of Associated Servers |
 | --- | --- |
-{% for app in groups | dict2items %}
+{% for app in groups | dict2items | sort(attribute='key') %}
 {% if app.key != 'all' and app.key != 'ungrouped' %}
 {# we do the regex_replace stuff to fix any groups that get transformed due to invalid group names #}
 | [{{ app.key | regex_replace('_', ' ') }}](#{{ app.key | regex_replace('_', ' ') | regex_replace('\s', '-') | lower() }}) | {{ app.value | length() }} |
@@ -14,7 +14,7 @@
 
 ## Servers By Application Type
 
-{% for app in groups | dict2items %}
+{% for app in groups | dict2items | sort(attribute='key') %}
 {% if app.key != 'all' and app.key != 'ungrouped' and app.value | length > 0 %}
 ### {{ app.key | regex_replace('_', ' ') }}
 
@@ -22,7 +22,7 @@ There {% if app.value | length > 1 %}were **{{ app.value | length }} servers**{%
 
 | Hostname | FQDN | IPv4 Address |
 | --- | --- | --- |
-{% for host in app.value %}
+{% for host in app.value | sort %}
 | [{{ host | lower() }}](#{{ host | lower }}) | {{ hostvars[host]['discovered_facts']['fqdn'] }} | {{ hostvars[host]['discovered_facts']['default_ipv4']['address'] }} |
 {% endfor %}
 
@@ -34,11 +34,11 @@ There {% if app.value | length > 1 %}were **{{ app.value | length }} servers**{%
 ## All Discovered Servers
 
 {# following line does -1 to account for localhost target #}
-**Total number of servers discovered:** {{ groups['all'] | length -1 }}
+**Total number of servers discovered:** {{ groups['all'] | length - 1 }}
 
 | Hostname | FQDN | IPv4 Address |
 | --- | --- | --- |
-{% for host in groups['all'] %}
+{% for host in groups['all'] | sort %}
 {% if host != 'localhost' %}
 | [{{ host | lower() }}](#{{ host | lower }}) | {{ hostvars[host]['discovered_facts']['fqdn'] | lower() }} | {{ hostvars[host]['discovered_facts']['default_ipv4']['address'] }} |
 {% endif %}
@@ -68,7 +68,7 @@ There {% if app.value | length > 1 %}were **{{ app.value | length }} servers**{%
 
 | Mount Point | Disk Size Total (MB) | Disk Size Total (GB) | Disk Size Free (MB) | Disk Size Free (GB) | Filesystem Type | System Device |
 | --- | --- | --- | --- | --- | --- | --- |
-{% for mount in hostvars[host]['discovered_facts']['mounts'] %}
+{% for mount in hostvars[host]['discovered_facts']['mounts'] | sort(attribute='mount') %}
 {% if 'proc' not in mount['fstype'] and 'nfs' not in mount['fstype'] %}
 | {{ mount['mount'] }} | {{ mount['size_total'] | default(0) | int() / 1024 / 1024 }} | {{ mount['size_total'] | default(0) | int() / 1024 / 1024 / 1024 }} | {{ mount['size_available'] | default(0) | int() / 1024 / 1024 }} | {{ mount['size_available'] | default(0) | int() / 1024 / 1024 / 1024 }} | {{ mount['fstype'] }} | {{ mount['device'] }} |
 {% endif %}
