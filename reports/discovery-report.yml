@@ -6,11 +6,29 @@
   vars_files:
     - "../vars/discovery_vars.yml"
   tasks:
-    - name: "Create report"
-      template:
-        src: "../templates/discovery_report.md.j2"
-        dest: "/usr/share/nginx/html/discovery_report.md"
-        owner: "root"
-        group: "root"
-        mode: "0755"
+    - name: "Generate Report"
+      block:
+        - name: "Ensure markdown converter is installed"
+          package:
+            name: "discount"
+            state: "installed"
+
+        - name: "Create report"
+          template:
+            src: "../templates/discovery_report.md.j2"
+            dest: "/usr/share/nginx/html/discovery_report.md"
+            owner: "root"
+            group: "root"
+            mode: "0755"
+
+        - name: "Convert report to html"
+          command: "markdown -f githubtags -f fencedcode -f toc -T -o /usr/share/nginx/html/index.html /usr/share/nginx/html/discovery_report.md"
+
+        - name: "Ensure proper report permissions"
+          file:
+            path: "/usr/share/nginx/html/index.html"
+            owner: "root"
+            group: "root"
+            mode: "0755"
+            state: "file"
       delegate_to: "{{ discovery_report_server }}"
