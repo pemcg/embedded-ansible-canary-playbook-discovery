@@ -28,5 +28,6 @@
 
         - name: "Copy report to {{ discovery_report_server }}"
           command: "scp /home/awx/reports/discovery_report.md root@{{ discovery_report_server }}:/var/www/html/"
+          connection: "local"
       delegate_to: "localhost"
       run_once: True
