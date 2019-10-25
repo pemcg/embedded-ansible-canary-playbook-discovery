@@ -1,5 +1,6 @@
 ---
 amf_webservice_host: ""
+# Following 4 options for custom webservice
 ws_db_name: "coalmine"
 pg_user: "postgres"
 pg_group: "postgres"
