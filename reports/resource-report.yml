@@ -9,7 +9,7 @@
     - name: "Create report"
       template:
         src: "../templates/resource_report.csv.j2"
-        dest: "/var/www/html/resource_report.csv"
+        dest: "/usr/share/nginx/html/resource_report.csv"
         owner: "root"
         group: "root"
         mode: "0755"
