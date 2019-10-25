@@ -10,3 +10,6 @@ proc_stdout: False
 discovered_host_install_prereqs: False
 # Set the following to True if you have permission from customer to install packages on the hosts
 discovery_install_prereqs: False
+# Set this on your report job templates and make sure you have ssh keys setup to access the report server
+## If targeting an isolated instance group you should have a key set from the isolated instances to the report server
+discovery_report_server: ""

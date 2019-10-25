@@ -22,7 +22,10 @@
             dest: "/home/awx/reports/resource_report.csv"
             owner: "awx"
             group: "awx"
-            mode: "0644"
+            mode: "0755"
           connection: "local"
-      delegate_to: "{{ discovery_report_server }}"
+
+        - name: "Copy report to {{ discovery_report_server }}"
+          command: "scp /home/awx/reports/resource_report.csv root@{{ discovery_report_server }}:/var/www/html/"
+      delegate_to: "localhost"
       run_once: True

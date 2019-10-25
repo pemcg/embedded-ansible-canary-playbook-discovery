@@ -16,9 +16,6 @@
             group: "awx"
           connection: "local"
 
-        - debug:
-            var: "groups | dict2items"
-
         - name: "Create report"
           template:
             src: "../templates/discovery_report.md.j2"
@@ -26,7 +23,10 @@
             dest: "/home/ahuffman/discovery_report.md"
             owner: "awx"
             group: "awx"
-            mode: "0644"
+            mode: "0755"
           connection: "local"
-      delegate_to: "{{ discovery_report_server }}"
+
+        - name: "Copy report to {{ discovery_report_server }}"
+          command: "scp /home/awx/reports/discovery_report.md root@{{ discovery_report_server }}:/var/www/html/"
+      delegate_to: "localhost"
       run_once: True
