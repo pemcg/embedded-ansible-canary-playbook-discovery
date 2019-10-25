@@ -19,8 +19,7 @@
         - name: "Create report"
           template:
             src: "../templates/discovery_report.md.j2"
-            # dest: "/home/awx/reports/discovery_report.md"
-            dest: "/home/ahuffman/discovery_report.md"
+            dest: "/home/awx/reports/discovery_report.md"
             owner: "awx"
             group: "awx"
             mode: "0755"
