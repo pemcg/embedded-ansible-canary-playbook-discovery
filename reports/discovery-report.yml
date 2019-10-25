@@ -9,7 +9,7 @@
     - name: "Create report"
       template:
         src: "../templates/discovery_report.md.j2"
-        dest: "/var/www/html/discovery_report.md"
+        dest: "/usr/share/nginx/html/discovery_report.md"
         owner: "root"
         group: "root"
         mode: "0755"
