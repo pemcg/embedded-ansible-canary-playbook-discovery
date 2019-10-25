@@ -6,29 +6,11 @@
   vars_files:
     - "../vars/discovery_vars.yml"
   tasks:
-    - name: "Ensure home directory exists"
-      file:
-        state: "directory"
-        path: "/home/awx"
-        mode: "0700"
-        owner: "awx"
-        group: "awx"
-
-    - name: "Ensure report directory exists"
-      file:
-        state: "directory"
-        path: "/home/awx/reports"
-        mode: "0755"
-        owner: "awx"
-        group: "awx"
-
     - name: "Create report"
       template:
         src: "../templates/discovery_report.md.j2"
-        dest: "/home/awx/reports/discovery_report.md"
-        owner: "awx"
-        group: "awx"
+        dest: "/var/www/html/discovery_report.md"
+        owner: "root"
+        group: "root"
         mode: "0755"
-
-    - name: "Copy report to {{ discovery_report_server }}"
-      command: "scp /home/awx/reports/discovery_report.md root@{{ discovery_report_server }}:/var/www/html/"
+      delegate_to: "{{ discovery_report_server }}"
