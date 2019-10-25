@@ -2,6 +2,8 @@
 - name: "Ansible Migration Factory - Report"
   hosts: "all"
   gather_facts: False
+  vars_files:
+    - "../vars/discovery_vars.yml"
   tasks:
     - name: "Generate report"
       block:
@@ -9,7 +11,7 @@
           file:
             state: "directory"
             path: "/home/awx/reports"
-            mode: "0755"
+            mode: "0700"
             owner: "awx"
             group: "awx"
           connection: "local"
@@ -22,5 +24,5 @@
             group: "awx"
             mode: "0644"
           connection: "local"
-      delegate_to: "localhost"
+      delegate_to: "{{ discovery_report_server }}"
       run_once: True

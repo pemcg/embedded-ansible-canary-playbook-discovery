@@ -2,6 +2,8 @@
 - name: "Generate Discovery Report"
   hosts: "all"
   gather_facts: False
+  vars_files:
+    - "../vars/discovery_vars.yml"
   tasks:
     - name: "Generate Discovery Report"
       block:
@@ -16,7 +18,7 @@
 
         - debug:
             var: "groups | dict2items"
-            
+
         - name: "Create report"
           template:
             src: "../templates/discovery_report.md.j2"
@@ -26,5 +28,5 @@
             group: "awx"
             mode: "0644"
           connection: "local"
-      delegate_to: "localhost"
+      delegate_to: "{{ discovery_report_server }}"
       run_once: True
