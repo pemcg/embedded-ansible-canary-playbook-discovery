@@ -33,18 +33,22 @@ There {% if app.value | length > 1 %}were **{{ app.value | length }} servers**{%
 
 ## All Discovered Servers
 
-**Total number of servers discovered:** {{ ansible_play_hosts_all | length }}
+{# following line does -1 to account for localhost target #}
+**Total number of servers discovered:** {{ groups['all'] | length }}
 
 | Hostname | FQDN | IPv4 Address |
 | --- | --- | --- |
-{% for host in ansible_play_hosts_all %}
+{% for host in groups['all'] %}
+{% if host != 'localhost' %}
 | [{{ host | lower() }}](#{{ host | lower }}) | {{ hostvars[host]['discovered_facts']['fqdn'] | lower() }} | {{ hostvars[host]['discovered_facts']['default_ipv4']['address'] }} |
+{% endif %}
 {% endfor %}
 
 
 ## Discovered Host Details
 
-{% for host in ansible_play_hosts_all %}
+{% for host in groups['all'] %}
+{% if host != 'localhost' %}
 ### {{ host | lower() }}
 #### {{ host | lower() }}'s Server Details
 
@@ -71,4 +75,5 @@ There {% if app.value | length > 1 %}were **{{ app.value | length }} servers**{%
 {% endfor %}
 
 
+{% endif %}
 {% endfor %}
