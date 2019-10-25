@@ -29,5 +29,5 @@ amf_as_scores:
 
 # Returned fields
 amf_as_discovered_app:
-  name: "IBM  Storage Resource agent"
-  desc: "Hosts identified as IBM  Storage Resource agent Servers"
+  name: "IBM  Storage Resource Agent"
+  desc: "Hosts identified as IBM Storage Resource Agent Servers"
