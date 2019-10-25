@@ -30,5 +30,5 @@ amf_as_scores:
 
 # Returned fields
 amf_as_discovered_app:
-  name: "IBM TSM server"
+  name: "IBM TSM Server"
   desc: "Hosts identified as IBM TSM Servers"
