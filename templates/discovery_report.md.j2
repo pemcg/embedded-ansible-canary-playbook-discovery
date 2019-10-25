@@ -34,7 +34,7 @@ There {% if app.value | length > 1 %}were **{{ app.value | length }} servers**{%
 ## All Discovered Servers
 
 {# following line does -1 to account for localhost target #}
-**Total number of servers discovered:** {{ groups['all'] | length }}
+**Total number of servers discovered:** {{ groups['all'] | length -1 }}
 
 | Hostname | FQDN | IPv4 Address |
 | --- | --- | --- |
