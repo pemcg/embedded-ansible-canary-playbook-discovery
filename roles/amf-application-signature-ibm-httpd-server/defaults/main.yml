@@ -30,5 +30,5 @@ amf_as_scores:
 
 # Returned fields
 amf_as_discovered_app:
-  name: "BM HTTPD server"
-  desc: "Hosts identified as BM HTTPD Servers"
+  name: "IBM HTTPD Server"
+  desc: "Hosts identified as IBM HTTPD Servers"
