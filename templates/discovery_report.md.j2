@@ -58,9 +58,9 @@ There {% if app.value | length > 1 %}were **{{ app.value | length }} servers**{%
 
 #### {{ host | lower() }}'s System Resources
 
-| CPU Count | CPU Cores | CPU Type | RAM (MB) | Swap (MB) |
-| --- | --- | --- | --- | --- |
-| {{ hostvars[host]['discovered_facts']['processor_count'] }} | {{ hostvars[host]['discovered_facts']['processor_cores'] }} | {{ hostvars[host]['discovered_facts']['processor'] }} | {{ hostvars[host]['discovered_facts']['memtotal_mb'] }} | {{ hostvars[host]['discovered_facts']['swaptotal_mb'] }} |
+| CPU Count | CPU Cores | CPU Type | RAM (MB) | RAM (GB) | Swap (MB) | Swap (GB) |
+| --- | --- | --- | --- | --- | --- | --- |
+| {{ hostvars[host]['discovered_facts']['processor_count'] }} | {{ hostvars[host]['discovered_facts']['processor_cores'] }} | {{ hostvars[host]['discovered_facts']['processor'] }} | {{ hostvars[host]['discovered_facts']['memtotal_mb'] }} | {{ hostvars[host]['discovered_facts']['memtotal_mb'] | int() / 1024 }} | {{ hostvars[host]['discovered_facts']['swaptotal_mb'] }} | hostvars[host]['discovered_facts']['swaptotal_mb'] | int() / 1024 }} |
 
 
 
