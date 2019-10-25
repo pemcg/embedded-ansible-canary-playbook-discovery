@@ -8,7 +8,7 @@
 {% for app in groups | dict2items | sort(attribute='key') %}
 {% if app.key != 'all' and app.key != 'ungrouped' %}
 {# we do the regex_replace stuff to fix any groups that get transformed due to invalid group names #}
-| [{{ app.key | regex_replace('_', ' ') }}](#{{ app.key | regex_replace('_', ' ') | regex_replace('\s', '-') | lower() }}) | {{ app.value | length() }} |
+| [{{ app.key | regex_replace('_', ' ') }}](#{{ app.key | regex_replace('_', ' ') | regex_replace('\s', '-') | regex_replace('-', '-2d-') | lower() }}) | {{ app.value | length() }} |
 {% endif %}
 {% endfor %}
 
@@ -23,7 +23,7 @@ There {% if app.value | length > 1 %}were **{{ app.value | length }} servers**{%
 | Hostname | FQDN | IPv4 Address |
 | --- | --- | --- |
 {% for host in app.value | sort %}
-| [{{ host | lower() }}](#{{ host | lower }}) | {{ hostvars[host]['discovered_facts']['fqdn'] }} | {{ hostvars[host]['discovered_facts']['default_ipv4']['address'] }} |
+| [{{ host | lower() }}](#{{ host | regex_replace('-','-2d-') | lower }}) | {{ hostvars[host]['discovered_facts']['fqdn'] }} | {{ hostvars[host]['discovered_facts']['default_ipv4']['address'] }} |
 {% endfor %}
 
 
@@ -40,7 +40,7 @@ There {% if app.value | length > 1 %}were **{{ app.value | length }} servers**{%
 | --- | --- | --- |
 {% for host in groups['all'] | sort %}
 {% if host != 'localhost' %}
-| [{{ host | lower() }}](#{{ host | lower }}) | {{ hostvars[host]['discovered_facts']['fqdn'] | lower() }} | {{ hostvars[host]['discovered_facts']['default_ipv4']['address'] }} |
+| [{{ host | lower() }}](#{{ host | regex_replace('-', '-2d-') | lower }}) | {{ hostvars[host]['discovered_facts']['fqdn'] | lower() }} | {{ hostvars[host]['discovered_facts']['default_ipv4']['address'] }} |
 {% endif %}
 {% endfor %}
 
