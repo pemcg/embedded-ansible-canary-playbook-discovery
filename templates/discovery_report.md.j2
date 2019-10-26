@@ -8,7 +8,7 @@
 {% for app in groups | dict2items | sort(attribute='key') %}
 {% if app.key != 'all' and app.key != 'ungrouped' %}
 {# we do the regex_replace stuff to fix any groups that get transformed due to invalid group names #}
-| [{{ app.key | regex_replace('_', ' ') }}](#{{ app.key | regex_replace('_', ' ') | regex_replace('\s', '-') | regex_replace('-', '-2d-') | lower() }}) | {{ app.value | length() }} |
+| [{{ app.key | regex_replace('_', ' ') }}](#{{ app.key | regex_replace('_', ' ') | regex_replace('\s', '-') | lower() }}) | {{ app.value | length() }} |
 {% endif %}
 {% endfor %}
 
