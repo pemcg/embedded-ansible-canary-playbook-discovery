@@ -60,7 +60,7 @@ There {% if app.value | length > 1 %}were **{{ app.value | length }} servers**{%
 
 | CPU Count | CPU Cores | CPU Type | RAM (MB) | RAM (GB) | Swap (MB) | Swap (GB) |
 | --- | --- | --- | --- | --- | --- | --- |
-| {{ hostvars[host]['discovered_facts']['processor_count'] }} | {{ hostvars[host]['discovered_facts']['processor_cores'] }} | {{ hostvars[host]['discovered_facts']['processor'] }} | {{ hostvars[host]['discovered_facts']['memtotal_mb'] }} | {{ hostvars[host]['discovered_facts']['memtotal_mb'] | int() / 1024 }} | {{ hostvars[host]['discovered_facts']['swaptotal_mb'] }} | {{ hostvars[host]['discovered_facts']['swaptotal_mb'] | int() / 1024 }} |
+| {{ hostvars[host]['discovered_facts']['processor_count'] }} | {{ hostvars[host]['discovered_facts']['processor_cores'] }} | {{ hostvars[host]['discovered_facts']['processor'] }} | {{ hostvars[host]['discovered_facts']['memtotal_mb'] }} | {{ hostvars[host]['discovered_facts']['memtotal_mb'] / 1024 | int }} | {{ hostvars[host]['discovered_facts']['swaptotal_mb'] }} | {{ hostvars[host]['discovered_facts']['swaptotal_mb'] / 1024 | int }} |
 
 
 
@@ -70,7 +70,7 @@ There {% if app.value | length > 1 %}were **{{ app.value | length }} servers**{%
 | --- | --- | --- | --- | --- | --- | --- |
 {% for mount in hostvars[host]['discovered_facts']['mounts'] | sort(attribute='mount') %}
 {% if 'proc' not in mount['fstype'] and 'nfs' not in mount['fstype'] %}
-| {{ mount['mount'] }} | {{ mount['size_total'] | default(0) | int() / 1024 / 1024 }} | {{ mount['size_total'] | default(0) | int() / 1024 / 1024 / 1024 }} | {{ mount['size_available'] | default(0) | int() / 1024 / 1024 }} | {{ mount['size_available'] | default(0) | int() / 1024 / 1024 / 1024 }} | {{ mount['fstype'] }} | {{ mount['device'] }} |
+| {{ mount['mount'] }} | {{ mount['size_total'] | default(0) | int() / 1024 / 1024 }} | {{ mount['size_total'] | default(0) / 1024 / 1024 / 1024 | round(precision=00) }} | {{ mount['size_available'] | default(0) / 1024 / 1024 | round(precision=00) }} | {{ mount['size_available'] | default(0) / 1024 / 1024 / 1024 | round(precision=00) }} | {{ mount['fstype'] }} | {{ mount['device'] }} |
 {% endif %}
 {% endfor %}
 
