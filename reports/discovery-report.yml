@@ -4,7 +4,7 @@
   gather_facts: False
   connection: "local"
   vars_files:
-    - "../vars/discovery_vars.yml"
+    - "vars/report.yml"
   tasks:
     - name: "Generate Report"
       block:
@@ -15,20 +15,20 @@
 
         - name: "Create report"
           template:
-            src: "../templates/discovery_report.md.j2"
-            dest: "/usr/share/nginx/html/discovery_report.md"
-            owner: "root"
-            group: "root"
-            mode: "0755"
+            src: "discovery_report.md.j2"
+            dest: "{{ rpt_base_path }}/discovery_report.md"
+            owner: "{{ rpt_owner }}"
+            group: "{{ rpt_group }}"
+            mode: "{{ rpt_mode }}"
 
         - name: "Convert report to html"
-          command: "markdown -f githubtags -f fencedcode -f toc -T -o /usr/share/nginx/html/index.html /usr/share/nginx/html/discovery_report.md"
+          command: "markdown -f githubtags -f fencedcode -f toc -T -o {{ rpt_base_path}}/index.html {{ rpt_base_path }}/discovery_report.md"
 
         - name: "Ensure proper report permissions"
           file:
             path: "/usr/share/nginx/html/index.html"
-            owner: "root"
-            group: "root"
-            mode: "0755"
+            owner: "{{ rpt_owner }}"
+            group: "{{ rpt_group }}"
+            mode: "{{ rpt_mode }}"
             state: "file"
       delegate_to: "{{ discovery_report_server }}"

@@ -4,13 +4,13 @@
   gather_facts: False
   connection: "local"
   vars_files:
-    - "../vars/discovery_vars.yml"
+    - "vars/report.yml"
   tasks:
     - name: "Create report"
       template:
-        src: "../templates/resource_report.csv.j2"
-        dest: "/usr/share/nginx/html/resource_report.csv"
-        owner: "root"
-        group: "root"
-        mode: "0755"
+        src: "resource_report.csv.j2"
+        dest: "{{ rpt_base_path }}/resource_report.csv"
+        owner: "{{ rpt_owner }}"
+        group: "{{ rpt_group }}"
+        mode: "{{ rpt_mode }}"
       delegate_to: "{{ discovery_report_server }}"

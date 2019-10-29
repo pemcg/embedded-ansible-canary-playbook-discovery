@@ -63,7 +63,6 @@ There {% if app.value | length > 1 %}were **{{ app.value | length }} servers**{%
 | {{ hostvars[host]['discovered_facts']['processor_count'] }} | {{ hostvars[host]['discovered_facts']['processor_cores'] }} | {{ hostvars[host]['discovered_facts']['processor'] }} | {{ hostvars[host]['discovered_facts']['memtotal_mb'] }} | {{ hostvars[host]['discovered_facts']['memtotal_mb'] / 1024 }} | {{ hostvars[host]['discovered_facts']['swaptotal_mb'] }} | {{ hostvars[host]['discovered_facts']['swaptotal_mb'] / 1024 }} |
 
 
-
 #### {{ host | lower() }}'s Storage Resources
 
 | Mount Point | Disk Size Total (MB) | Disk Size Total (GB) | Disk Size Free (MB) | Disk Size Free (GB) | Filesystem Type | System Device |
@@ -73,6 +72,52 @@ There {% if app.value | length > 1 %}were **{{ app.value | length }} servers**{%
 | {{ mount['mount'] }} | {{ mount['size_total'] | default(0) | float | human_readable(unit='M') }} | {{ mount['size_total'] | default(0) | float | human_readable(unit='G') }} | {{ mount['size_available'] | default(0) | float | human_readable(unit='M') }} | {{ mount['size_available'] | default(0) | human_readable(unit='G') }} | {{ mount['fstype'] }} | {{ mount['device'] }} |
 {% endif %}
 {% endfor %}
+
+
+#### {{ host | lower() }}'s Local Groups
+| Group | GID | Members |
+| --- | --- | --- |
+{% for g in hostvars[host]['discovered_facts']['local_groups'] | sort(attribute='group') %}
+| {{ g.group }} | {{ g.gid }} | {% for m in g.members | sort() %}{{ m }}<br/>{% endfor %} |
+{% endfor %}
+
+
+#### {{ host | lower() }}'s Local Users
+| User | UID | GID | Home | Shell | Comment |
+| --- | --- | --- | --- | --- | --- |
+{% for u in hostvars[host]['discovered_facts']['local_users'] | sort(attribute='user') %}
+| {{ u.user }} | {{ u.uid }} | {{ u.gid }} | {{ u.home }} | {{ u.shell }} | {{ u.comment }} |
+{% endfor %}
+
+
+#### {{ host | lower() }}'s Environment Variables
+| Variable | Value |
+| --- | --- |
+{% for v in hostvars[host]['discovered_facts']['env'] | dict2items | sort(attribute='key') %}
+| {{ v.key }} | {{ v.value }} |
+{% endfor %}
+
+#### {{ host | lower() }}'s Cron Schedules
+| Path | Command | Minute | Hour | Day of Month | Month | Day of Week |
+| --- | --- | --- | --- | --- | --- | --- |
+{% for p in hostvars[host]['discovered_facts']['cron']['files'] | sort(attribute='path') %}
+{# following condition to prevent empty configs from being reported #}
+{% if p.data.schedules | length > 0 and p.data.variables | length < 1 %}
+{% for s in p.data.schedules %}
+| {{ p.path }} | {{ s.command }} | {{ s.minute }} | {{ s.hour }} | {{ s.day_of_month }} | {{ s.month }} | {{ s.day_of_week }} |
+{% endfor %}
+{% endif %}
+{% endfor %}
+
+
+{% if hostvars[host]['discovered_facts']['cron']['files'] | json_query('[*].data.variables[*]') flatten | length > 0 %}
+#### {{ host | lower() }}'s Cron Scripts
+| Path | Shell | Variables | Script Content |
+| --- | --- | --- | --- |
+{# TODO: Handle the files that are actually scripts instead of schedules #}
+{% endif %}
+
+
 
 
 {% endif %}
