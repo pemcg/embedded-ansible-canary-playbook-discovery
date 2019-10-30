@@ -1,5 +1,4 @@
 ## Discovered Application Types
-
 {# to get total apps we subtract 2 from the total to account for built-in "all" and "ungrouped" #}
 **Total Number of Discovered Applications**: {{ groups | dict2items | length() - 2 }}
 
@@ -13,7 +12,6 @@
 {% endfor %}
 
 ## Servers By Application Type
-
 {% for app in groups | dict2items | sort(attribute='key') %}
 {% if app.key != 'all' and app.key != 'ungrouped' and app.value | length > 0 %}
 ### {{ app.key | regex_replace('_', ' ') }}
@@ -38,7 +36,7 @@ There {% if app.value | length > 1 %}were **{{ app.value | length }} servers**{%
 
 | Hostname | FQDN | IPv4 Address |
 | --- | --- | --- |
-{% for host in groups['all'] | sort %}
+{% for host in groups['all'] | sort() %}
 {% if host != 'localhost' %}
 | [{{ host | lower() }}](#{{ host | regex_replace('-', '-2d-') | lower }}) | {{ hostvars[host]['discovered_facts']['fqdn'] | lower() }} | {{ hostvars[host]['discovered_facts']['default_ipv4']['address'] }} |
 {% endif %}
@@ -50,26 +48,61 @@ There {% if app.value | length > 1 %}were **{{ app.value | length }} servers**{%
 {% for host in groups['all'] %}
 {% if host != 'localhost' %}
 ### {{ host | lower() }}
-#### {{ host | lower() }}'s Server Details
+{{ host }} was found to be running **{{ hostvars[host]['discovered_facts']['discovered_apps'] | length }}** known application(s).  
 
-| Hostname | FQDN | IPv4 Address |
-| --- | --- | --- |
-| {{ host | lower() }} | {{ hostvars[host]['discovered_facts']['fqdn'] | lower() }} | {{ hostvars[host]['discovered_facts']['default_ipv4']['address'] }} |
+#### {{ host | lower() }}'s Server Details
+| Hostname | FQDN | IPv4 Address | Operating System | Architecture | Discovered Running Applications |
+| --- | --- | --- | --- | --- | --- |
+| {{ host | lower() }} | {{ hostvars[host]['discovered_facts']['fqdn'] | lower() }} | {{ hostvars[host]['discovered_facts']['default_ipv4']['address'] }} | {{ hostvars[host]['discovered_facts']['distribution'] }} {{ hostvars[host]['discovered_facts']['distribution_version'] }} | {{ hostvars[host]['discovered_facts']['architecture'] }} | {% for a in hostvars[host]['discovered_facts']['discovered_apps'] %}[{{ a['name'] }}](#{{ a['name'] | regex_replace('_', ' ') | regex_replace('\s', '-') | lower() }})<br/>{% endfor %}|
 
 #### {{ host | lower() }}'s System Resources
-
 | CPU Count | CPU Cores | CPU Type | RAM (MB) | RAM (GB) | Swap (MB) | Swap (GB) |
 | --- | --- | --- | --- | --- | --- | --- |
 | {{ hostvars[host]['discovered_facts']['processor_count'] }} | {{ hostvars[host]['discovered_facts']['processor_cores'] }} | {{ hostvars[host]['discovered_facts']['processor'] }} | {{ hostvars[host]['discovered_facts']['memtotal_mb'] }} | {{ hostvars[host]['discovered_facts']['memtotal_mb'] / 1024 }} | {{ hostvars[host]['discovered_facts']['swaptotal_mb'] }} | {{ hostvars[host]['discovered_facts']['swaptotal_mb'] / 1024 }} |
 
 
 #### {{ host | lower() }}'s Storage Resources
-
-| Mount Point | Disk Size Total (MB) | Disk Size Total (GB) | Disk Size Free (MB) | Disk Size Free (GB) | Filesystem Type | System Device |
-| --- | --- | --- | --- | --- | --- | --- |
+| Mount Point | Disk Size Total (MB) | Disk Size Total (GB) | Disk Size Free (MB) | Disk Size Free (GB) | Filesystem Type | System Device | Mount Options |
+| --- | --- | --- | --- | --- | --- | --- | --- |
 {% for mount in hostvars[host]['discovered_facts']['mounts'] | sort(attribute='mount') %}
 {% if 'proc' not in mount['fstype'] and 'nfs' not in mount['fstype'] %}
-| {{ mount['mount'] }} | {{ mount['size_total'] | default(0) | float | human_readable(unit='M') }} | {{ mount['size_total'] | default(0) | float | human_readable(unit='G') }} | {{ mount['size_available'] | default(0) | float | human_readable(unit='M') }} | {{ mount['size_available'] | default(0) | human_readable(unit='G') }} | {{ mount['fstype'] }} | {{ mount['device'] }} |
+| {{ mount['mount'] }} | {{ mount['size_total'] | default(0) | float | human_readable(unit='M') }} | {{ mount['size_total'] | default(0) | float | human_readable(unit='G') }} | {{ mount['size_available'] | default(0) | float | human_readable(unit='M') }} | {{ mount['size_available'] | default(0) | human_readable(unit='G') }} | {{ mount['fstype'] }} | {{ mount['device'] }} | {{ mount['options'] }} |
+{% endif %}
+{% endfor %}
+
+
+#### {{ host | lower() }}'s Logical Volume Group Configuration
+| Volume Group Name | Physical Volumes |
+| --- | --- |
+{% for g in hostvars[host]['discovered_facts']['vgs'] | dict2items | sort(attribute='key') %}
+| {{ g.key }} | {% for pv in g.value %}{{ pv['pv_name'] }}<br/>{% endfor %} |
+{% endfor %}
+
+#### {{ host | lower() }}'s Logical Volume Configuration
+| Logical Volume Name | Label | Filesystem Type |
+| --- | --- | --- |
+{% for v in hostvars[host]['discovered_facts']['devices'] | dict2items | sort(attribute='key') %}
+{% if v.value['type'] == "Logical volume" %}
+| {{ v.key }} | {{ v.value['attributes']['label'] }} | {{ v.value['attributes']['type'] }} |
+{% endif %}
+{% endfor %}
+
+
+#### {{ host | lower() }}'s Network Configuration
+| Interface | Protocol Version | Type | Device | Address | Net Mask | Network | Broadcast | MAC Address | MTU | Flags |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+{% for i in hostvars[host]['discovered_facts']['interfaces'] | sort() %}
+{# grab ipv4 data #}
+{% if hostvars[host]['discovered_facts'][i]['ipv4'] | length > 0 %}
+{% for ip in hostvars[host]['discovered_facts'][i]['ipv4'] %}
+| {{ i }} | IPv4 | {{ hostvars[host]['discovered_facts'][i]['type'] }} | {{ hostvars[host]['discovered_facts'][i]['device'] }} | {{ ip['address'] }} | {{ ip['netmask'] }} | {{ ip['network'] }} | {{ ip['broadcast'] }} | {{ hostvars[host]['discovered_facts'][i]['macaddress'] }} | {{ hostvars[host]['discovered_facts'][i]['mtu'] }} | {{ hostvars[host]['discovered_facts'][i]['flags'] | join('<br/>') }} |
+{% endfor %}
+{% endif %}
+{# grab ipv6 data #}
+{% if hostvars[host]['discovered_facts'][i]['ipv6'] | length > 0 %}
+{% for ip in hostvars[host]['discovered_facts'][i]['ipv6'] %}
+| {{ i }} | IPv6 | {{ hostvars[host]['discovered_facts'][i]['type'] }} | {{ hostvars[host]['discovered_facts'][i]['device'] }} | {{ ip['address'] }} | N/A | N/A | N/A | {{ hostvars[host]['discovered_facts'][i]['macaddress'] }} | {{ hostvars[host]['discovered_facts'][i]['mtu'] }} | {{ hostvars[host]['discovered_facts'][i]['flags'] | join('<br/>') }} |
+{% endfor %}
 {% endif %}
 {% endfor %}
 
@@ -97,6 +130,29 @@ There {% if app.value | length > 1 %}were **{{ app.value | length }} servers**{%
 | {{ v.key }} | {{ v.value }} |
 {% endfor %}
 
+
+#### {{ host | lower() }}'s Installed Packages
+| Package Name | Version | Description | Source |
+| --- | --- | --- | --- |
+{% for p in hostvars[host]['discovered_facts']['packages'] | dict2items | sort(attribute='key') %}
+{% if p.value | length() > 0 %}
+{% for v in p.value | sort(attribute='version') %}
+| {{ p.key }} | {{ v['version'] }} | {{ v['description'] }} | {{ v['source'] }} |
+{% endfor %}
+{% else %}
+| {{ p.key }} | {{ p.value[0]['version'] }} | {{ p.value[0]['description'] }} | {{ p.value[0]['source'] }} |
+{% endif %}
+{% endfor %}
+
+
+#### {{ host | lower() }}'s Services
+| Service Name | State | Source |
+| --- | --- | --- |
+{% for s in hostvars[host]['discovered_facts']['services'] | dict2items | sort(attribute='key') %}
+| {{ s.key }} | {{ s.value['state'] }} | {{ s.value['source'] }} |
+{% endfor %}
+
+
 #### {{ host | lower() }}'s Cron Schedules
 | Path | Command | Minute | Hour | Day of Month | Month | Day of Week |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -110,15 +166,18 @@ There {% if app.value | length > 1 %}were **{{ app.value | length }} servers**{%
 {% endfor %}
 
 
-{% if hostvars[host]['discovered_facts']['cron']['files'] | json_query('[*].data.variables[*]') flatten | length > 0 %}
+{% if hostvars[host]['discovered_facts']['cron']['files'] | json_query('[*].data.variables[*]') | flatten | length > 0 %}
 #### {{ host | lower() }}'s Cron Scripts
-| Path | Shell | Variables | Script Content |
+| Path | Script Shell | Script Variables | Script Content |
 | --- | --- | --- | --- |
-{# TODO: Handle the files that are actually scripts instead of schedules #}
+{% for c in hostvars[host]['discovered_facts']['cron']['files'] | sort(attribute='path') %}
+{% if c['data']['variables'] | length > 0 %}
+| {{ c['path'] }} | {{ c['data']['shell'] }} | {% for v in c['data']['variables'] %}{{ v.key }}="{{ v.value }}"<br/>{% endfor %} | {{ c['configuration'] | join('<br/>') }} |
+{% endif %}
+{% endfor %}
 {% endif %}
 
 
-
-
+{# End of Host Details Section #}
 {% endif %}
 {% endfor %}
