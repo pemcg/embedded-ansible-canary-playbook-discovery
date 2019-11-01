@@ -87,8 +87,8 @@
 
         - name: "Set Legacy Groups"
           set_fact:
-            ansible_facts['legacy_groups']: "{{ group_names }}"
- 
+            legacy_groups: "{{ group_names }}"
+
         # TODO:
         # Based on what OS, take the baseline list for each fact type
         #   Use 'unique' jinja filter to get unique entries compared to a
