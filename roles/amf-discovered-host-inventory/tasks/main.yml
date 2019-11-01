@@ -80,7 +80,9 @@
         inventory: "{{ discovered_host_inventory_name }}"
         source: "manual"
         state: "present"
-      with_items: "{{ discovered_apps }}"
+      with_items:
+        - "{{ discovered_apps }}"
+        - "{{ legacy_groups }}"
       when: "discovered_apps | length > 0"
       delegate_to: "localhost"
       connection: "local"
@@ -163,7 +165,9 @@
       delegate_to: "localhost"
       connection: "local"
       become: False
-      with_items: "{{ discovered_apps }}"
+      with_items:
+        - "{{ discovered_apps }}"
+        - "{{ legacy_groups }}"
       when: "discovered_apps | length > 0"
 
     - name: "Ensure discovered host is associated with {{ discovered_host_inventory_default_group.name }}"
