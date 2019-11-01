@@ -186,10 +186,12 @@
       connection: "local"
       become: False
       with_items:
-        - "{{ discovered_apps }}"
+        - "{{ discovered_apps | default([]) }}"
         - "{{ legacy_groups }}"
       when:
-        - "discovered_apps | length > 0"
+        # account for default ansible inventory groups
+        - "item != 'ungrouped'"
+        - "item != 'all'"
 
     - name: "Ensure discovered host is associated with {{ discovered_host_inventory_default_group.name }}"
       tower_host_manage_groups:
