@@ -34,7 +34,7 @@ There {% if app.value | length > 1 %}were **{{ app.value | length }} servers**{%
 {% if legacy_groups | default([]) | length > 0 %}
 ## Servers By Environment
 {% for g in groups | dict2items %}
-{% if g.key != 'all' and g.key != 'ungrouped' and g.key in g.key in report_legacy_groups %}
+{% if g.key != 'all' and g.key != 'ungrouped' and g.key in g.key in report_legacy_groups and g.value | length > 0 %}
 ### {{ g.key | regex_replace('_', ' ') }}
 | Hostname | FQDN | IPv4 Address |
 | --- | --- | --- |
