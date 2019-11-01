@@ -1,11 +1,13 @@
 ## Discovered Application Types
 {# to get total apps we subtract 2 from the total to account for built-in "all" and "ungrouped" #}
-**Total Number of Discovered Applications**: {{ groups | dict2items | length() - 2 }}
+{# we also have to account for legacy_groups #}
+{% set not_apps = legacy_groups | default([]) | length + 2 %}
+**Total Number of Discovered Applications**: {{ groups | dict2items | length() - not_apps }}
 
 | Application Name | Number of Associated Servers |
 | --- | --- |
 {% for app in groups | dict2items | sort(attribute='key') %}
-{% if app.key != 'all' and app.key != 'ungrouped' %}
+{% if app.key != 'all' and app.key != 'ungrouped' and app.key not in legacy_groups | default([]) %}
 {# we do the regex_replace stuff to fix any groups that get transformed due to invalid group names #}
 | [{{ app.key | regex_replace('_', ' ') }}](#{{ app.key | regex_replace('_', ' ') | regex_replace('\s', '-') | lower() }}) | {{ app.value | length() }} |
 {% endif %}
@@ -13,7 +15,7 @@
 
 ## Servers By Application Type
 {% for app in groups | dict2items | sort(attribute='key') %}
-{% if app.key != 'all' and app.key != 'ungrouped' and app.value | length > 0 %}
+{% if app.key != 'all' and app.key != 'ungrouped' and app.key not in legacy_groups | default([]) and app.value | length > 0 %}
 ### {{ app.key | regex_replace('_', ' ') }}
 
 There {% if app.value | length > 1 %}were **{{ app.value | length }} servers**{% else %}was **1 server**{% endif %} found to be running {{ app.key | regex_replace('_', ' ') }}:
@@ -29,8 +31,24 @@ There {% if app.value | length > 1 %}were **{{ app.value | length }} servers**{%
 {% endfor %}
 
 
-## All Discovered Servers
+{% if legacy_groups | default([]) | length > 0 %}
+## Servers By Environment
+{% for g in groups | dict2items %}
+{% if g.key != 'all' and g.key != 'ungrouped' and g.key in g.key in report_legacy_groups %}
+### {{ g.key | regex_replace('_', ' ') }}
+| Hostname | FQDN | IPv4 Address |
+| --- | --- | --- |
+{% for host in g.value | sort %}
+| [{{ host | lower() }}](#{{ host | regex_replace('-','-2d-') | lower }}) | {{ hostvars[host]['discovered_facts']['fqdn'] }} | {{ hostvars[host]['discovered_facts']['default_ipv4']['address'] }} |
+{% endfor %}
 
+
+{% endif %}
+{% endfor %}
+{% endif %}
+
+
+## All Discovered Servers
 {# following line does -1 to account for localhost target #}
 **Total number of servers discovered:** {{ groups['all'] | length - 1 }}
 
@@ -48,7 +66,7 @@ There {% if app.value | length > 1 %}were **{{ app.value | length }} servers**{%
 {% for host in groups['all'] %}
 {% if host != 'localhost' %}
 ### {{ host | lower() }}
-{{ host }} was found to be running **{{ hostvars[host]['discovered_facts']['discovered_apps'] | length }}** known application(s).  
+{{ host }} was found to be running **{{ hostvars[host]['discovered_facts']['discovered_apps'] | length }}** known application(s).
 
 #### {{ host | lower() }}'s Server Details
 | Hostname | FQDN | IPv4 Address | Operating System | Architecture | Discovered Running Applications |
@@ -110,16 +128,17 @@ There {% if app.value | length > 1 %}were **{{ app.value | length }} servers**{%
 #### {{ host | lower() }}'s Local Groups
 | Group | GID | Members |
 | --- | --- | --- |
-{% for g in hostvars[host]['discovered_facts']['local_groups'] | sort(attribute='group') %}
-| {{ g.group }} | {{ g.gid }} | {% for m in g.members | sort() %}{{ m }}<br/>{% endfor %} |
+{% for g in hostvars[host]['discovered_facts']['local_groups'] %}
+| {{ g['group'] }} | {{ g['gid'] }} | {% for m in g['members'] | sort() %}{{ m }}<br/>{% endfor %} |
 {% endfor %}
 
 
+{# re-add local users here when we figure out what's wrong with them #}
 #### {{ host | lower() }}'s Local Users
 | User | UID | GID | Home | Shell | Comment |
 | --- | --- | --- | --- | --- | --- |
 {% for u in hostvars[host]['discovered_facts']['local_users'] | sort(attribute='user') %}
-| {{ u.user }} | {{ u.uid }} | {{ u.gid }} | {{ u.home }} | {{ u.shell }} | {{ u.comment }} |
+| {{ u['user'] }} | {{ u['uid'] }} | {{ u['gid'] }} | {{ u['home'] }} | {{ u['shell'] }} | {{ u['comment'] }} |
 {% endfor %}
 
 
