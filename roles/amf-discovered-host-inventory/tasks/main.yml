@@ -88,6 +88,26 @@
       connection: "local"
       become: False
 
+    - name: "Ensure legacy inventory groups exist in Ansible Tower Inventory"
+      tower_group:
+        tower_username: "{{ tower_user }}"
+        tower_password: "{{ tower_pass }}"
+        tower_host: "{{ tower_url }}"
+        tower_verify_ssl: "{{ tower_verify_ssl }}"
+        name: "{{ item }}"
+        inventory: "{{ discovered_host_inventory_name }}"
+        source: "manual"
+        state: "present"
+      with_items:
+        - "{{ legacy_groups }}"
+      when:
+        # account for default ansible inventory groups
+        - "item != 'ungrouped'"
+        - "item != 'all'"
+      delegate_to: "localhost"
+      connection: "local"
+      become: False
+
     - name: "Create temporary directory to store host variables"
       tempfile:
         state: "directory"
@@ -152,7 +172,7 @@
       become: False
       # when: "discovered_apps | length > 0"
 
-    - name: "Ensure discovered host is associated with discovered applications"
+    - name: "Ensure discovered host is associated with discovered applications and legacy groups"
       tower_host_manage_groups:
         tower_username: "{{ tower_user }}"
         tower_password: "{{ tower_pass }}"
@@ -168,7 +188,8 @@
       with_items:
         - "{{ discovered_apps }}"
         - "{{ legacy_groups }}"
-      when: "discovered_apps | length > 0"
+      when:
+        - "discovered_apps | length > 0"
 
     - name: "Ensure discovered host is associated with {{ discovered_host_inventory_default_group.name }}"
       tower_host_manage_groups:

@@ -88,6 +88,7 @@
         - name: "Set Legacy Groups"
           set_fact:
             legacy_groups: "{{ group_names }}"
+            cacheable: True
 
         # TODO:
         # Based on what OS, take the baseline list for each fact type
