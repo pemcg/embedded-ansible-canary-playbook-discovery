@@ -5,7 +5,7 @@
 - name: "Ansible Migration Factory - Discovery"
   hosts: "all"
   gather_facts: False
-  strategy: "free"
+  # strategy: "free"
   vars_files:
     - "vars/discovery_vars.yml"
   pre_tasks:
