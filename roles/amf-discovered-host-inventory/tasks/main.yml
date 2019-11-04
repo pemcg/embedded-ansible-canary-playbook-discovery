@@ -108,22 +108,22 @@
       connection: "local"
       become: False
 
-    - name: "Create temporary directory to store host variables"
-      tempfile:
-        state: "directory"
-      register: "temp_vars_dir"
-      delegate_to: "localhost"
-      connection: "local"
-      run_once: True
-      become: False
-
-    - name: "Set temporary directory path"
-      set_fact:
-        vars_dir: "{{ temp_vars_dir.path }}"
-
-    - debug:
-        var: "vars_dir"
-        verbosity: "1"
+    # - name: "Create temporary directory to store host variables"
+    #   tempfile:
+    #     state: "directory"
+    #   register: "temp_vars_dir"
+    #   delegate_to: "localhost"
+    #   connection: "local"
+    #   run_once: True
+    #   become: False
+    #
+    # - name: "Set temporary directory path"
+    #   set_fact:
+    #     vars_dir: "{{ temp_vars_dir.path }}"
+    #
+    # - debug:
+    #     var: "vars_dir"
+    #     verbosity: "1"
 
     - name: "Dump collected facts to temporary directory"
       template:
@@ -219,11 +219,11 @@
         var: "discovered_apps"
         verbosity: "1"
 
-  always:
-    - name: "Cleanup temporary variables directory"
-      file:
-        path: "{{ vars_dir }}"
-        state: "absent"
-      delegate_to: "localhost"
-      run_once: True
-      become: False
+  # always:
+  #   - name: "Cleanup temporary variables directory"
+  #     file:
+  #       path: "{{ vars_dir }}"
+  #       state: "absent"
+  #     delegate_to: "localhost"
+  #     run_once: True
+  #     become: False
