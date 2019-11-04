@@ -203,6 +203,79 @@ There {% if app.value | length > 1 %}were **{{ app.value | length }} servers**{%
 {% endif %}
 
 
+#### {{ host | lower() }}'s Sudo Configuration Details
+{% for f in hostvars[host]['discovered_facts']['sudoers']['sudoers_files'] %}
+##### {{ host | lower() }}'s Sudo Defaults - {{ f['path'] }}
+| Sudoers File Path | Defaults |
+| --- | --- |
+{% if f['defaults'] is defined %}
+| {{ f['path'] }} | {% for d in f['defaults'] %}{{ d }}<br/>{% endfor %} |
+{% else %}
+| {{ f['path'] }} | N/A |
+{% endif %}
+
+
+##### {{ host | lower() }}'s Sudo User Specifications - {{ f['path'] }}
+| Sudoers File Path | Users | Hosts | Operators | Tags | Commands |
+| --- | --- | --- | --- | --- | --- |
+{% for s in f['user_specifications'] %}
+{# prevent empty dicts #}
+{% if s['users'] is defined and s['hosts'] is defined and s['operators'] is defined and s['commands'] is defined %}
+| {{ f['path'] }} | {% if s['users'] is defined %}{% for u in s['users'] %}{{ u }}<br/>{% endfor %}{% endif %} | {% if s['hosts'] is defined %}{% for h in s['hosts'] %}{{ h }}<br/>{% endfor %}{% endif %} | {% if s['operators'] is defined %}{% for o in s['operators'] %}{{ o }}<br/>{% endfor %}{% endif %} | {% if s['tags'] is defined %}{% for t in s['tags'] %}{{ t }}<br/>{% endfor %}{% endif %} | {% if s['commands'] is defined %}{% for c in s['commands'] %}{{ c }}<br/>{% endfor %}{% endif %} |
+{% endif %}
+{% endfor %}
+
+
+##### {{ host | lower() }}'s Sudo Command Aliases - {{ f['path'] }}
+| Sudoers File Path | Command Alias Name | Commands |
+| --- | --- | --- |
+{% if f['aliases']['cmnd_alias'] is defined %}
+{% for ca in f['aliases']['cmnd_alias'] %}
+| {{ f['path'] }} | {{ ca['name'] }} | {% for c in ca['commands'] %}'{{ c }}'<br/>{% endfor %} |
+{% endfor %}
+{% else %}
+| {{ f['path'] }} | N/A | N/A |
+{% endif %}
+
+
+##### {{ host | lower() }}'s Sudo Host Aliases - {{ f['path'] }}
+| Sudoers File Path | Host Alias Name | Hosts |
+| --- | --- | --- |
+{% if f['aliases']['host_alias'] is defined %}
+{% for ha in f['aliases']['host_alias'] %}
+| {{ f['path'] }} | {{ ha['name'] }} | {% for h in ha['hosts'] %}'{{ h }}'<br/>{% endfor %} |
+{% endfor %}
+{% else %}
+| {{ f['path'] }} | N/A | N/A |
+{% endif %}
+
+
+##### {{ host | lower() }}'s Sudo Run-As Aliases - {{ f['path'] }}
+| Sudoers File Path | Run-As Alias Name | Users |
+| --- | --- | --- |
+{% if f['aliases']['runas_alias'] is defined %}
+{% for ra in f['aliases']['runas_alias'] %}
+| {{ f['path'] }} | {{ ra['name'] }} | {% for u in ra['users'] %}'{{ u }}'<br/>{% endfor %} |
+{% endfor %}
+{% else %}
+| {{ f['path'] }} | N/A | N/A |
+{% endif %}
+
+
+##### {{ host | lower() }}'s Sudo User Aliases - {{ f['path'] }}
+| Sudoers File Path | User Alias Name | Users |
+| --- | --- | --- |
+{% if f['aliases']['user_alias'] is defined %}
+{% for ua in f['aliases']['user_alias'] %}
+| {{ f['path'] }} | {{ ua['name'] }} | {% for u in ua['users'] %}'{{ u }}'<br/>{% endfor %} |
+{% endfor %}
+{% else %}
+| {{ f['path'] }} | N/A | N/A |
+{% endif %}
+{# End of sudoers data #}
+{% endfor %}
+
+
 {# End of Host Details Section #}
 {% endif %}
 {% endfor %}
