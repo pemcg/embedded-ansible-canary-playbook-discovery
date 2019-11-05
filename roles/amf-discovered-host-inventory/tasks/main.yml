@@ -172,7 +172,7 @@
       become: False
       # when: "discovered_apps | length > 0"
 
-    - name: "Ensure discovered host is associated with discovered applications and legacy groups"
+    - name: "Ensure discovered host is associated with discovered applications"
       tower_host_manage_groups:
         tower_username: "{{ tower_user }}"
         tower_password: "{{ tower_pass }}"
@@ -187,6 +187,22 @@
       become: False
       with_items:
         - "{{ discovered_apps | default([]) }}"
+      when: "discovered_apps | length > 0"
+
+    - name: "Ensure discovered host is associated with legacy groups"
+      tower_host_manage_groups:
+        tower_username: "{{ tower_user }}"
+        tower_password: "{{ tower_pass }}"
+        tower_host: "{{ tower_url }}"
+        tower_verify_ssl: "{{ tower_verify_ssl }}"
+        name: "{{ tower_client_node_name }}"
+        inventory: "{{ discovered_host_inventory_name }}"
+        group: "{{ item }}"
+        state: "present"
+      delegate_to: "localhost"
+      connection: "local"
+      become: False
+      with_items:
         - "{{ legacy_groups }}"
       when:
         # account for default ansible inventory groups
