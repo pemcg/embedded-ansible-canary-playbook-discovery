@@ -124,6 +124,15 @@
     #     var: "vars_dir"
     #     verbosity: "1"
 
+    - name: "Ensure dump directory exists"
+      file:
+        path: "{{ vars_dir }}"
+        state: "directory"
+      delegate_to: "localhost"
+      connection: "local"
+      run_once: True
+      become: False
+
     - name: "Dump collected facts to temporary directory"
       template:
         src: "vars_file.j2"
