@@ -80,28 +80,58 @@
         inventory: "{{ discovered_host_inventory_name }}"
         source: "manual"
         state: "present"
-      with_items: "{{ discovered_apps }}"
+      with_items:
+        - "{{ discovered_apps }}"
       when: "discovered_apps | length > 0"
       delegate_to: "localhost"
       connection: "local"
       become: False
 
-    - name: "Create temporary directory to store host variables"
-      tempfile:
+    - name: "Ensure legacy inventory groups exist in Ansible Tower Inventory"
+      tower_group:
+        tower_username: "{{ tower_user }}"
+        tower_password: "{{ tower_pass }}"
+        tower_host: "{{ tower_url }}"
+        tower_verify_ssl: "{{ tower_verify_ssl }}"
+        name: "{{ item }}"
+        inventory: "{{ discovered_host_inventory_name }}"
+        source: "manual"
+        state: "present"
+      with_items:
+        - "{{ legacy_groups }}"
+      when:
+        # account for default ansible inventory groups
+        - "item != 'ungrouped'"
+        - "item != 'all'"
+      delegate_to: "localhost"
+      connection: "local"
+      become: False
+
+    # - name: "Create temporary directory to store host variables"
+    #   tempfile:
+    #     state: "directory"
+    #   register: "temp_vars_dir"
+    #   delegate_to: "localhost"
+    #   connection: "local"
+    #   run_once: True
+    #   become: False
+    #
+    # - name: "Set temporary directory path"
+    #   set_fact:
+    #     vars_dir: "{{ temp_vars_dir.path }}"
+    #
+    # - debug:
+    #     var: "vars_dir"
+    #     verbosity: "1"
+
+    - name: "Ensure dump directory exists"
+      file:
+        path: "{{ vars_dir }}"
         state: "directory"
-      register: "temp_vars_dir"
       delegate_to: "localhost"
       connection: "local"
       run_once: True
       become: False
-
-    - name: "Set temporary directory path"
-      set_fact:
-        vars_dir: "{{ temp_vars_dir.path }}"
-
-    - debug:
-        var: "vars_dir"
-        verbosity: "1"
 
     - name: "Dump collected facts to temporary directory"
       template:
@@ -163,8 +193,29 @@
       delegate_to: "localhost"
       connection: "local"
       become: False
-      with_items: "{{ discovered_apps }}"
+      with_items:
+        - "{{ discovered_apps | default([]) }}"
       when: "discovered_apps | length > 0"
+
+    - name: "Ensure discovered host is associated with legacy groups"
+      tower_host_manage_groups:
+        tower_username: "{{ tower_user }}"
+        tower_password: "{{ tower_pass }}"
+        tower_host: "{{ tower_url }}"
+        tower_verify_ssl: "{{ tower_verify_ssl }}"
+        name: "{{ tower_client_node_name }}"
+        inventory: "{{ discovered_host_inventory_name }}"
+        group: "{{ item }}"
+        state: "present"
+      delegate_to: "localhost"
+      connection: "local"
+      become: False
+      with_items:
+        - "{{ legacy_groups }}"
+      when:
+        # account for default ansible inventory groups
+        - "item != 'ungrouped'"
+        - "item != 'all'"
 
     - name: "Ensure discovered host is associated with {{ discovered_host_inventory_default_group.name }}"
       tower_host_manage_groups:
@@ -192,11 +243,11 @@
         var: "discovered_apps"
         verbosity: "1"
 
-  always:
-    - name: "Cleanup temporary variables directory"
-      file:
-        path: "{{ vars_dir }}"
-        state: "absent"
-      delegate_to: "localhost"
-      run_once: True
-      become: False
+  # always:
+  #   - name: "Cleanup temporary variables directory"
+  #     file:
+  #       path: "{{ vars_dir }}"
+  #       state: "absent"
+  #     delegate_to: "localhost"
+  #     run_once: True
+  #     become: False

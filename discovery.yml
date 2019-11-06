@@ -5,6 +5,7 @@
 - name: "Ansible Migration Factory - Discovery"
   hosts: "all"
   gather_facts: False
+  # strategy: "free"
   vars_files:
     - "vars/discovery_vars.yml"
   pre_tasks:
@@ -83,6 +84,11 @@
           debug:
             var: "ansible_facts"
             verbosity: "1"
+
+        - name: "Set Legacy Groups"
+          set_fact:
+            legacy_groups: "{{ group_names }}"
+            cacheable: True
 
         # TODO:
         # Based on what OS, take the baseline list for each fact type

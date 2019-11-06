@@ -105,17 +105,17 @@ def main():
             if len(field) != 7:
                 module.warn("Line in file {} is invalid: {}".format(path, user_line))
             else:
-                user['user'] = field[0]
-                if field[1] == 'x' or field[1] == '!':
+                user['user'] = str(field[0])
+                if field[1] == 'x' or str(field[1]) == '!':
                     user['shadow'] = True
                 else:
                     user['shadow'] = False
-                    user['encrypted_password'] = field[1]
-                user['uid'] = field[2]
-                user['gid'] = field[3]
-                user['comment'] = field[4]
-                user['home'] = field[5]
-                user['shell'] = field[6]
+                    user['encrypted_password'] = str(field[1])
+                user['uid'] = str(field[2])
+                user['gid'] = str(field[3])
+                user['comment'] = str(field[4])
+                user['home'] = str(field[5])
+                user['shell'] = str(field[6])
             users.append(user)
         passwd_file.close()
         return users
@@ -129,15 +129,15 @@ def main():
                 user = dict()
                 field = u.replace('\n', '').split(':')
                 if len(field) > 0:
-                    user['user'] = field[0]
-                    user['encrypted_password'] = field[1]
-                    user['last_pw_change'] = field[2]
-                    user['min_pw_age'] = field[3]
-                    user['max_pw_age'] = field[4]
-                    user['pw_warning_days'] = field[5]
-                    user['pw_inactive_days'] = field[6]
-                    user['account_expiration'] = field[7]
-                    user['reserved'] = field[8]
+                    user['user'] = str(field[0])
+                    user['encrypted_password'] = str(field[1])
+                    user['last_pw_change'] = str(field[2])
+                    user['min_pw_age'] = str(field[3])
+                    user['max_pw_age'] = str(field[4])
+                    user['pw_warning_days'] = str(field[5])
+                    user['pw_inactive_days'] = str(field[6])
+                    user['account_expiration'] = str(field[7])
+                    user['reserved'] = str(field[8])
                 susers.append(user)
             shadow_file.close()
         except:
@@ -154,15 +154,15 @@ def main():
             group = dict()
             field = g.replace('\n', '').split(':')
             if len(field) > 0:
-                group['group'] = field[0]
-                if field[1] == 'x' or field[1] == '!':
+                group['group'] = str(field[0])
+                if str(field[1]) == 'x' or str(field[1]) == '!':
                     group['gshadow'] = True
                 else:
-                    group['encrypted_password'] = field[1]
+                    group['encrypted_password'] = str(field[1])
                     group['gshadow'] = False
-                group['gid'] = field[2]
-                if field[3] != '':
-                    members = field[3].split(',')
+                group['gid'] = str(field[2])
+                if str(field[3]) != '':
+                    members = str(field[3]).split(',')
                 else:
                     members = list()
                 group['members'] = members
@@ -179,15 +179,15 @@ def main():
                 sgroup = dict()
                 field = g.replace('\n', '').split(':')
                 if len(field) > 0:
-                    sgroup['group'] = field[0]
-                    sgroup['encrypted_password'] = field[1]
-                    if field[2] != '':
-                        administrators = field[2].split(',')
+                    sgroup['group'] = str(field[0])
+                    sgroup['encrypted_password'] = str(field[1])
+                    if str(field[2]) != '':
+                        administrators = str(field[2]).split(',')
                     else:
                         administrators = list()
                     sgroup['administrators'] = administrators
-                    if field[3] != '':
-                        members = field[3].split(',')
+                    if str(field[3]) != '':
+                        members = str(field[3]).split(',')
                     else:
                         members = list()
                     sgroup['members'] = members
