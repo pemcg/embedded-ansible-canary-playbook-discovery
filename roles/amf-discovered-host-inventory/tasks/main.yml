@@ -158,6 +158,9 @@
       delegate_to: "localhost"
       connection: "local"
       register: "create_inv_host_result"
+      retries: 5
+      delay: 15
+      until: "create_inv_host_result is succeeded"
       become: False
 
     - debug:
