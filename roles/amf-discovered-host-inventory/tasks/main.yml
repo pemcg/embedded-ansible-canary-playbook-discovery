@@ -81,7 +81,7 @@
         source: "manual"
         state: "present"
       with_items:
-        - "{{ discovered_apps }}"
+        - "{{ discovered_apps | default([]) }}"
       when: "discovered_apps | length > 0"
       delegate_to: "localhost"
       connection: "local"
@@ -98,7 +98,7 @@
         source: "manual"
         state: "present"
       with_items:
-        - "{{ legacy_groups }}"
+        - "{{ legacy_groups | default([]) }}"
       when:
         # account for default ansible inventory groups
         - "item != 'ungrouped'"
