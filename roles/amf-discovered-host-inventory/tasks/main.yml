@@ -81,7 +81,7 @@
         source: "manual"
         state: "present"
       with_items:
-        - "{{ discovered_apps }}"
+        - "{{ discovered_apps | default([]) }}"
       when: "discovered_apps | length > 0"
       delegate_to: "localhost"
       connection: "local"
@@ -98,7 +98,7 @@
         source: "manual"
         state: "present"
       with_items:
-        - "{{ legacy_groups }}"
+        - "{{ legacy_groups | default([]) }}"
       when:
         # account for default ansible inventory groups
         - "item != 'ungrouped'"
@@ -158,6 +158,9 @@
       delegate_to: "localhost"
       connection: "local"
       register: "create_inv_host_result"
+      retries: 5
+      delay: 15
+      until: "create_inv_host_result is succeeded"
       become: False
 
     - debug:
@@ -230,13 +233,13 @@
       delegate_to: "localhost"
       connection: "local"
       become: False
-      when: "discovered_apps | length < 1"
+      when: "discovered_apps|default('') | length < 1"
 
     # The following makes sure we have an app list for seeding the coalmine web-service
     - name: "Ensure discovered host is associated with {{ discovered_host_inventory_default_group.name }}"
       set_fact:
         discovered_apps: "[{{ discovered_host_inventory_default_group }}]"
-      when: "discovered_apps | length < 1"
+      when: "discovered_apps|default('') | length < 1"
 
     - name: "Debug discovered applications list"
       debug:
