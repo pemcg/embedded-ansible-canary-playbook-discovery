@@ -125,6 +125,12 @@ There {% if app.value | length > 1 %}were **{{ app.value | length }} servers**{%
 {% endfor %}
 
 
+#### {{ host | lower() }}'s Name Server Configuration
+| Nameservers | Default Domain | Search Domains |
+| --- | --- | --- |
+| {% for ns in hostvars[host]['discovered_facts']['dns']['nameservers'] %}{{ ns }}<br/>{% endfor %} | {{ hostvars[host]['discovered_facts']['dns']['domain'] }} | {% if hostvars[host]['discovered_facts']['dns']['search'] is defined %}{% for sd in hostvars[host]['discovered_facts']['dns']['search'] %}{{ sd }}<br/>{% endfor %}{% else %}N/A{% endif %} |
+
+
 #### {{ host | lower() }}'s Local Groups
 | Group | GID | Members |
 | --- | --- | --- |
@@ -148,12 +154,6 @@ There {% if app.value | length > 1 %}were **{{ app.value | length }} servers**{%
 {% for v in hostvars[host]['discovered_facts']['env'] | dict2items | sort(attribute='key') %}
 | {{ v.key }} | {{ v.value }} |
 {% endfor %}
-
-
-#### {{ host | lower() }}'s Name Server Configuration
-| Nameservers | Default Domain | Search Domains |
-| --- | --- | --- |
-| {% for ns in hostvars[host]['discovered_facts']['dns']['nameservers'] %}{{ ns }}<br/>{% endfor %} | {{ hostvars[host]['discovered_facts']['dns']['domain'] }} | {% if hostvars[host]['discovered_facts']['dns']['search'] is defined %}{% for sd in hostvars[host]['discovered_facts']['dns']['search'] %}{{ sd }}<br/>{% endfor %}{% else %}N/A{% endif %} |
 
 
 #### {{ host | lower() }}'s Installed Packages
