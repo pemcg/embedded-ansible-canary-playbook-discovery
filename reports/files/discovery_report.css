@@ -1,0 +1,16 @@
+body {
+  font-family: "Overpass Light", "Arial";
+}
+
+table {
+  font-family: "Overpass Light", "Arial";
+  border-collapse: collapse;
+  width: 80%;
+  margin: 0 auto;
+}
+
+td, th {
+  border: 2px solid black;
+  padding: 8px;
+  border-collapse: collapse;
+}
