@@ -116,7 +116,7 @@ def main():
                 user['comment'] = str(field[4])
                 user['home'] = str(field[5])
                 user['shell'] = str(field[6])
-            users.append(user)
+                users.append(user)
         passwd_file.close()
         return users
 
