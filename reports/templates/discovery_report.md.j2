@@ -9,13 +9,13 @@
 {% for app in groups | dict2items | sort(attribute='key') %}
 {% if app.key != 'all' and app.key != 'ungrouped' and app.key not in legacy_groups | default([]) %}
 {# we do the regex_replace stuff to fix any groups that get transformed due to invalid group names #}
-| [{{ app.key | regex_replace('_', ' ') }}](#{{ app.key | regex_replace('_', ' ') | regex_replace('\s', '-') | lower() }}) | {{ app.value | length() }} |
+| [{{ app.key | regex_replace('_', ' ') }}](#{{ app.key | regex_replace('_', ' ') | regex_replace('\s', '-') | lower() }}) | {{ app.value | length() | int }} |
 {% endif %}
 {% endfor %}
 
 ## Servers By Application Type
 {% for app in groups | dict2items | sort(attribute='key') %}
-{% if app.key != 'all' and app.key != 'ungrouped' and app.key not in legacy_groups | default([]) and app.value | length > 0 %}
+{% if app.key != 'all' and app.key != 'ungrouped' and app.key not in legacy_groups | default([]) and app.value | length | int > 0 %}
 ### {{ app.key | regex_replace('_', ' ') }}
 
 There {% if app.value | length | int > 1 %}were **{{ app.value | length }} servers**{% else %}was **1 server**{% endif %} found to be running {{ app.key | regex_replace('_', ' ') }}:
@@ -31,10 +31,10 @@ There {% if app.value | length | int > 1 %}were **{{ app.value | length }} serve
 {% endfor %}
 
 
-{% if legacy_groups | default([]) | length > 0 %}
+{% if legacy_groups | default([]) | length | int > 0 %}
 ## Servers By Environment
 {% for g in groups | dict2items %}
-{% if g.key != 'all' and g.key != 'ungrouped' and g.key in g.key in report_legacy_groups and g.value | length > 0 %}
+{% if g.key != 'all' and g.key != 'ungrouped' and g.key in g.key in report_legacy_groups and g.value | length | int > 0 %}
 ### {{ g.key | regex_replace('_', ' ') }}
 | Hostname | FQDN | IPv4 Address |
 | --- | --- | --- |
@@ -63,21 +63,23 @@ There {% if app.value | length | int > 1 %}were **{{ app.value | length }} serve
 
 ## Discovered Host Details
 
+
 {% for host in groups['all'] %}
 {% if host != 'localhost' %}
 ### {{ host | lower() }}
 {{ host }} was found to be running **{{ hostvars[host]['discovered_facts']['discovered_apps'] | length | int }}** known application(s).
 
-#### {{ host | lower() }}'s Server Details
 
+#### {{ host | lower() }}'s Server Details
 | Hostname | FQDN | IPv4 Address | Operating System | Architecture | Discovered Running Applications |
 | --- | --- | --- | --- | --- | --- |
-| {{ host | lower() }} | {{ hostvars[host]['discovered_facts']['fqdn'] | lower() }} | {{ hostvars[host]['discovered_facts']['default_ipv4']['address'] }} | {{ hostvars[host]['discovered_facts']['distribution'] }} {{ hostvars[host]['discovered_facts']['distribution_version'] }} | {{ hostvars[host]['discovered_facts']['architecture'] }} | {% for a in hostvars[host]['discovered_facts']['discovered_apps'] %}[{{ a['name'] }}](#{{ a['name'] | regex_replace('_', ' ') | regex_replace('\s', '-') | lower() }})<br/>{% endfor %}|
+| {{ host | lower() }} | {{ hostvars[host]['discovered_facts']['fqdn'] | lower() }} | {{ hostvars[host]['discovered_facts']['default_ipv4']['address'] }} | {{ hostvars[host]['discovered_facts']['distribution'] }} {{ hostvars[host]['discovered_facts']['distribution_version'] }} | {{ hostvars[host]['discovered_facts']['architecture'] }} | {% for a in hostvars[host]['discovered_facts']['discovered_apps'] %}[{{ a['name'] }}](#{{ a['name'] | regex_replace('_', ' ') | regex_replace('\s', '-') | lower() }})<br/>{% endfor %} |
+
 
 #### {{ host | lower() }}'s System Resources
 | CPU Count | CPU Cores | CPU Type | RAM (MB) | RAM (GB) | Swap (MB) | Swap (GB) |
 | --- | --- | --- | --- | --- | --- | --- |
-| {{ hostvars[host]['discovered_facts']['processor_count'] }} | {{ hostvars[host]['discovered_facts']['processor_cores'] }} | {{ hostvars[host]['discovered_facts']['processor'] }} | {{ hostvars[host]['discovered_facts']['memtotal_mb'] }} | {{ hostvars[host]['discovered_facts']['memtotal_mb'] / 1024 }} | {{ hostvars[host]['discovered_facts']['swaptotal_mb'] }} | {{ hostvars[host]['discovered_facts']['swaptotal_mb'] / 1024 }} |
+| {{ hostvars[host]['discovered_facts']['processor_count'] }} | {{ hostvars[host]['discovered_facts']['processor_cores'] }} | {{ hostvars[host]['discovered_facts']['processor'] }} | {{ hostvars[host]['discovered_facts']['memtotal_mb'] }} | {{ hostvars[host]['discovered_facts']['memtotal_mb'] | int / 1024 }} | {{ hostvars[host]['discovered_facts']['swaptotal_mb'] }} | {{ hostvars[host]['discovered_facts']['swaptotal_mb'] | int / 1024 }} |
 
 
 #### {{ host | lower() }}'s Storage Resources
@@ -96,6 +98,7 @@ There {% if app.value | length | int > 1 %}were **{{ app.value | length }} serve
 {% for g in hostvars[host]['discovered_facts']['vgs'] | dict2items | sort(attribute='key') %}
 | {{ g.key }} | {% for pv in g.value %}{{ pv['pv_name'] }}<br/>{% endfor %} |
 {% endfor %}
+
 
 #### {{ host | lower() }}'s Logical Volume Configuration
 | Logical Volume Name | Label | Filesystem Type |
@@ -143,13 +146,9 @@ There {% if app.value | length | int > 1 %}were **{{ app.value | length }} serve
 #### {{ host | lower() }}'s Local Users
 | User | UID | GID | Home | Shell | Comment |
 | --- | --- | --- | --- | --- | --- |
-{% if hostvars[host]['discovered_facts']['local_users'] is defined %}
-{% for u in hostvars[host]['discovered_facts']['local_users'] | sort('user') %}
-{% if u['user'] is defined and u['uid'] is defined and u['gid'] is defined and u['home'] is defined and u['shell'] is defined and u['comment'] is defined %}
+{% for u in hostvars[host]['discovered_facts']['local_users'] %}
 | {{ u['user'] }} | {{ u['uid'] }} | {{ u['gid'] }} | {{ u['home'] }} | {{ u['shell'] }} | {{ u['comment'] }} |
-{% endif %}
 {% endfor %}
-{% endif %}
 
 
 #### {{ host | lower() }}'s Environment Variables
@@ -183,7 +182,6 @@ There {% if app.value | length | int > 1 %}were **{{ app.value | length }} serve
 
 
 #### {{ host | lower() }}'s Cron Schedules
-
 | Path | Command | Minute | Hour | Day of Month | Month | Day of Week |
 | --- | --- | --- | --- | --- | --- | --- |
 {% for p in hostvars[host]['discovered_facts']['cron']['files'] | sort(attribute='path') %}
@@ -209,6 +207,8 @@ There {% if app.value | length | int > 1 %}were **{{ app.value | length }} serve
 
 
 #### {{ host | lower() }}'s Sudo Configuration Details
+
+
 {% for f in hostvars[host]['discovered_facts']['sudoers']['sudoers_files'] %}
 ##### {{ host | lower() }}'s Sudo Defaults - {{ f['path'] }}
 | Sudoers File Path | Defaults |
