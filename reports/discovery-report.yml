@@ -12,8 +12,8 @@
       loop_control:
         loop_var: "host"
 
-    - name: "Generate Report"
-      block:
+    # - name: "Generate Report"
+    #   block:
         # - name: "Ensure markdown converter is installed"
         #   package:
         #     name: "pandoc"
@@ -45,4 +45,4 @@
         #     group: "{{ rpt_group }}"
         #     mode: "{{ rpt_mode }}"
         #     state: "file"
-      delegate_to: "{{ discovery_report_server }}"
+      # delegate_to: "{{ discovery_report_server }}"
