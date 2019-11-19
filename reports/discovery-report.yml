@@ -6,7 +6,7 @@
   vars_files:
     - "vars/report.yml"
   tasks:
-    - name: "Test"
+    - name: "Validate discovered_facts prior to Report Generation"
       include_tasks: "tasks/vars_check.yml"
       with_items: "{{ groups['all'] }}"
       loop_control:
