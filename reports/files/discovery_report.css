@@ -2,6 +2,11 @@ body {
   font-family: "Overpass Light", "Arial";
 }
 
+thead {
+  background-color: darkred;
+  color: white;
+}
+
 table {
   font-family: "Overpass Light", "Arial";
   border-collapse: collapse;
