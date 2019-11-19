@@ -37,7 +37,9 @@
             mode: "{{ rpt_mode }}"
 
         - name: "Convert report to html"
-          command: "pandoc -s -c {{ rpt_base_path }}/discovery_report.css -o {{ rpt_base_path }}/index.html {{ rpt_base_path }}/discovery_report.md -M title:'Discovery Report'"
+          command: "pandoc -s -c 'discovery_report.css' -o 'index.html' 'discovery_report.md' -M title:'Discovery Report'"
+          args:
+            chdir: "{{ rpt_base_path }}"
 
         - name: "Ensure proper report permissions"
           file:
