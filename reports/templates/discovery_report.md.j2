@@ -1,8 +1,8 @@
 ## Discovered Application Types
 {# to get total apps we subtract 2 from the total to account for built-in "all" and "ungrouped" #}
 {# we also have to account for legacy_groups #}
-{% set not_apps = legacy_groups | default([]) | length + 2 %}
-**Total Number of Discovered Applications**: {{ groups | dict2items | length() - not_apps }}
+{% set not_apps = legacy_groups | default([]) | length | int + 2 %}
+**Total Number of Discovered Applications**: {{ groups | dict2items | length() | int - not_apps | int }}
 
 | Application Name | Number of Associated Servers |
 | --- | --- |
@@ -18,7 +18,7 @@
 {% if app.key != 'all' and app.key != 'ungrouped' and app.key not in legacy_groups | default([]) and app.value | length > 0 %}
 ### {{ app.key | regex_replace('_', ' ') }}
 
-There {% if app.value | length > 1 %}were **{{ app.value | length }} servers**{% else %}was **1 server**{% endif %} found to be running {{ app.key | regex_replace('_', ' ') }}:
+There {% if app.value | length | int > 1 %}were **{{ app.value | length }} servers**{% else %}was **1 server**{% endif %} found to be running {{ app.key | regex_replace('_', ' ') }}:
 
 | Hostname | FQDN | IPv4 Address |
 | --- | --- | --- |
@@ -50,7 +50,7 @@ There {% if app.value | length > 1 %}were **{{ app.value | length }} servers**{%
 
 ## All Discovered Servers
 {# following line does -1 to account for localhost target #}
-**Total number of servers discovered:** {{ groups['all'] | length - 1 }}
+**Total number of servers discovered:** {{ groups['all'] | length | int - 1 }}
 
 | Hostname | FQDN | IPv4 Address |
 | --- | --- | --- |
@@ -66,7 +66,7 @@ There {% if app.value | length > 1 %}were **{{ app.value | length }} servers**{%
 {% for host in groups['all'] %}
 {% if host != 'localhost' %}
 ### {{ host | lower() }}
-{{ host }} was found to be running **{{ hostvars[host]['discovered_facts']['discovered_apps'] | length }}** known application(s).
+{{ host }} was found to be running **{{ hostvars[host]['discovered_facts']['discovered_apps'] | length | int }}** known application(s).
 
 #### {{ host | lower() }}'s Server Details
 
