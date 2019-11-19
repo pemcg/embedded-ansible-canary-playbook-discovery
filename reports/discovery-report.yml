@@ -11,38 +11,39 @@
       with_items: "{{ groups['all'] }}"
       loop_control:
         loop_var: "host"
+      when: "not rpt_skip_validator | bool"
 
-    # - name: "Generate Report"
-    #   block:
-        # - name: "Ensure markdown converter is installed"
-        #   package:
-        #     name: "pandoc"
-        #     state: "installed"
-        #
-        # - name: "Ensure CSS is available"
-        #   copy:
-        #     src: "discovery_report.css"
-        #     dest: "{{ rpt_base_path }}/discovery_report.css"
-        #     owner: "{{ rpt_owner }}"
-        #     group: "{{ rpt_group }}"
-        #     mode: "{{ rpt_mode }}"
-        #
-        # - name: "Create Markdown report"
-        #   template:
-        #     src: "discovery_report.md.j2"
-        #     dest: "{{ rpt_base_path }}/discovery_report.md"
-        #     owner: "{{ rpt_owner }}"
-        #     group: "{{ rpt_group }}"
-        #     mode: "{{ rpt_mode }}"
-        #
-        # - name: "Convert report to html"
-        #   command: "pandoc -s -c {{ rpt_base_path }}/discovery_report.css -o index.html discovery_report.md -M title:'Discovery Report'"
-        #
-        # - name: "Ensure proper report permissions"
-        #   file:
-        #     path: "{{ rpt_base_path }}/index.html"
-        #     owner: "{{ rpt_owner }}"
-        #     group: "{{ rpt_group }}"
-        #     mode: "{{ rpt_mode }}"
-        #     state: "file"
-      # delegate_to: "{{ discovery_report_server }}"
+    - name: "Generate Report"
+      block:
+        - name: "Ensure markdown converter is installed"
+          package:
+            name: "pandoc"
+            state: "installed"
+
+        - name: "Ensure CSS is available"
+          copy:
+            src: "discovery_report.css"
+            dest: "{{ rpt_base_path }}/discovery_report.css"
+            owner: "{{ rpt_owner }}"
+            group: "{{ rpt_group }}"
+            mode: "{{ rpt_mode }}"
+
+        - name: "Create Markdown report"
+          template:
+            src: "discovery_report.md.j2"
+            dest: "{{ rpt_base_path }}/discovery_report.md"
+            owner: "{{ rpt_owner }}"
+            group: "{{ rpt_group }}"
+            mode: "{{ rpt_mode }}"
+
+        - name: "Convert report to html"
+          command: "pandoc -s -c {{ rpt_base_path }}/discovery_report.css -o {{ rpt_base_path }}/index.html {{ rpt_base_path }}/discovery_report.md -M title:'Discovery Report'"
+
+        - name: "Ensure proper report permissions"
+          file:
+            path: "{{ rpt_base_path }}/index.html"
+            owner: "{{ rpt_owner }}"
+            group: "{{ rpt_group }}"
+            mode: "{{ rpt_mode }}"
+            state: "file"
+      delegate_to: "{{ discovery_report_server }}"
