@@ -5,6 +5,7 @@
   when:
     - "hostvars[host]['discovered_facts']['local_users'] is defined"
     - "host != 'localhost'"
+  ignore_errors: True
 
 - name: "{{ host }} | Check local_users data"
   debug:
@@ -14,3 +15,4 @@
     loop_var: "user"
     label: "{{ user['uid'] }}"
   when: "host != 'localhost'"
+  ignore_errors: True
