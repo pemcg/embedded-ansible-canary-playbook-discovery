@@ -15,27 +15,33 @@
       run_once: True
       when: 'discovered_host_install_prereqs | bool'
 
-    - debug:
+    - name: "Debug Tower API username"
+      debug:
         var: "tower_user"
         verbosity: "1"
 
-    - debug:
+    - name: "Debug Tower API URL"
+      debug:
         var: "tower_url"
         verbosity: "1"
 
-    - debug:
+    - name: "Debug Tower Verfify SSL boolean"
+      debug:
         var: "tower_verify_ssl"
         verbosity: "1"
 
-    - debug:
+    - name: "Debug Tower organization"
+      debug:
         var: "tower_org"
         verbosity: "1"
 
-    - debug:
+    - name: "Debug discovered host inventory name"
+      debug:
         var: "discovered_host_inventory_name"
         verbosity: "1"
 
-    - debug:
+    - name: "Debug discovered host inventory description"
+      debug:
         var: "discovered_host_inventory_description"
         verbosity: "1"
 
@@ -239,7 +245,7 @@
     - name: "Ensure discovered host is associated with {{ discovered_host_inventory_default_group.name }}"
       set_fact:
         discovered_apps: "[{{ discovered_host_inventory_default_group }}]"
-      when: "discovered_apps|default('') | length < 1"
+      when: "discovered_apps|default([]) | length < 1"
 
     - name: "Debug discovered applications list"
       debug:
