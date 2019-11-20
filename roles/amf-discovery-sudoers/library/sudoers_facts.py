@@ -329,8 +329,13 @@ def main():
         return user_spec
 
     def get_config_lines(path):
-        # Read sudoers file
-        all_lines = open(path, 'r')
+        # Read sudoers file and skip if it does not exist
+        try:
+            all_lines = open(path, 'r')
+        except:
+            result['message'] = "/etc/sudoers was not able to be opened.  It either exists or you do not have proper permission to read it."
+            result['skipped'] = True
+            module.exit_json(**result)
         # Initialize empty return dict
         sudoer_file = dict()
         # Initialize aliases vars
