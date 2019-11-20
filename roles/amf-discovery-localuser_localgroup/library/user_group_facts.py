@@ -153,7 +153,9 @@ def main():
         for g in group_file:
             group = dict()
             field = g.replace('\n', '').split(':')
-            if len(field) > 0:
+            if len(field) != 4:
+                module.warn("Line in file {} is invalid: {}".format(path, g))
+            else:
                 group['group'] = str(field[0])
                 if str(field[1]) == 'x' or str(field[1]) == '!':
                     group['gshadow'] = True
@@ -166,7 +168,7 @@ def main():
                 else:
                     members = list()
                 group['members'] = members
-            groups.append(group)
+                groups.append(group)
         group_file.close()
         return groups
 
