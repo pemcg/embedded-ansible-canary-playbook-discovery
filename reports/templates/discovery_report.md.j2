@@ -23,7 +23,7 @@ There {% if app.value | length | int > 1 %}were **{{ app.value | length }} serve
 | Hostname | FQDN | IPv4 Address |
 | --- | --- | --- |
 {% for host in app.value | sort %}
-| [{{ host | lower() }}](#{{ host | regex_replace('-','-2d-') | lower }}) | {{ hostvars[host]['discovered_facts']['fqdn'] }} | {{ hostvars[host]['discovered_facts']['default_ipv4']['address'] }} |
+| [{{ host | lower() }}](#{{ host | lower }}) | {{ hostvars[host]['discovered_facts']['fqdn'] }} | {{ hostvars[host]['discovered_facts']['default_ipv4']['address'] }} |
 {% endfor %}
 
 
@@ -39,7 +39,7 @@ There {% if app.value | length | int > 1 %}were **{{ app.value | length }} serve
 | Hostname | FQDN | IPv4 Address |
 | --- | --- | --- |
 {% for host in g.value | sort %}
-| [{{ host | lower() }}](#{{ host | regex_replace('-','-2d-') | lower }}) | {{ hostvars[host]['discovered_facts']['fqdn'] }} | {{ hostvars[host]['discovered_facts']['default_ipv4']['address'] }} |
+| [{{ host | lower() }}](#{{ host | lower }}) | {{ hostvars[host]['discovered_facts']['fqdn'] }} | {{ hostvars[host]['discovered_facts']['default_ipv4']['address'] }} |
 {% endfor %}
 
 
@@ -56,7 +56,7 @@ There {% if app.value | length | int > 1 %}were **{{ app.value | length }} serve
 | --- | --- | --- |
 {% for host in groups['all'] | sort() %}
 {% if host != 'localhost' %}
-| [{{ host | lower() }}](#{{ host | regex_replace('-', '-2d-') | lower }}) | {{ hostvars[host]['discovered_facts']['fqdn'] | lower() }} | {{ hostvars[host]['discovered_facts']['default_ipv4']['address'] }} |
+| [{{ host | lower() }}](#{{ host | lower }}) | {{ hostvars[host]['discovered_facts']['fqdn'] | lower() }} | {{ hostvars[host]['discovered_facts']['default_ipv4']['address'] }} |
 {% endif %}
 {% endfor %}
 
