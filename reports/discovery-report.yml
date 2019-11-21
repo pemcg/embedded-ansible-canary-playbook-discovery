@@ -59,7 +59,7 @@
           ignore_errors: True
 
         - name: "Convert report to html | top-level"
-          command: "pandoc --toc --toc-depth=6 -f markdown -t html -s -c 'discovery_report.css' -o 'index.html' 'discovery_report.md' -M title:'Discovery Report'"
+          command: "pandoc --toc --toc-depth=6 -f markdown -t html -s -c 'discovery_report.css' -o 'index.html' 'discovery_report.md' -M title:'Discovery Report{%if rpt_customer != '' %} - Prepared for {{ rpt_customer }}{% endif %}'"
           args:
             chdir: "{{ rpt_base_path }}"
 
