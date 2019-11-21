@@ -15,10 +15,10 @@
 
     - name: "Generate Report"
       block:
-        # - name: "Ensure markdown converter is installed"
-        #   package:
-        #     name: "pandoc"
-        #     state: "installed"
+        - name: "Ensure markdown converter is installed"
+          package:
+            name: "pandoc"
+            state: "installed"
 
         - name: "Ensure CSS is available"
           copy:
