@@ -1,7 +1,7 @@
 ## {{ host | lower() }}'s Server Details
-| Hostname | FQDN | IPv4 Address | Operating System | Architecture | Discovered Running Applications |
-| --- | --- | --- | --- | --- | --- |
-| {{ host | lower() }} | {{ hostvars[host]['discovered_facts']['fqdn'] | lower() }} | {{ hostvars[host]['discovered_facts']['default_ipv4']['address'] }} | {{ hostvars[host]['discovered_facts']['distribution'] }} {{ hostvars[host]['discovered_facts']['distribution_version'] }} | {{ hostvars[host]['discovered_facts']['architecture'] }} | {% for g in hostvars[host]['group_names'] %}{% if g != 'all' and g != 'ungrouped' and g not in legacy_groups | default([]) %}[{{ g | regex_replace('_', ' ') }}](../index.html#{{ g | regex_replace('_', ' ') | regex_replace('\s', '-') | lower() }})<br/>{% endif %}{% endfor %} |
+| Hostname | FQDN | IPv4 Address | Operating System | Architecture | Discovered Running Applications | Environment |
+| --- | --- | --- | --- | --- | --- | --- |
+| {{ host | lower() }} | {{ hostvars[host]['discovered_facts']['fqdn'] | lower() }} | {{ hostvars[host]['discovered_facts']['default_ipv4']['address'] }} | {{ hostvars[host]['discovered_facts']['distribution'] }} {{ hostvars[host]['discovered_facts']['distribution_version'] }} | {{ hostvars[host]['discovered_facts']['architecture'] }} | {% for g in hostvars[host]['group_names'] %}{% if g != 'all' and g != 'ungrouped' and g not in legacy_groups | default([]) %}[{{ g | regex_replace('_', ' ') }}](../index.html#{{ g | regex_replace('_', ' ') | regex_replace('\s', '-') | lower() }})<br/>{% endif %}{% endfor %} | {% for g in hostvars[host]['group_names'] %}{% if g != 'all' and g != 'ungrouped' and g in report_legacy_groups %}[{{ g | regex_replace('_', ' ') }}](../index.html#{{ g | regex_replace('_','-') }})<br/>{% endif %}{% endfor %} |
 
 
 ## {{ host | lower() }}'s System Resources
