@@ -18,7 +18,7 @@
 {% if app.key != 'all' and app.key != 'ungrouped' and app.key not in legacy_groups | default([]) and app.value | length | int > 0 %}
 ### {{ app.key | regex_replace('_', ' ') }}
 
-There {% if app.value | length | int > 1 %}were **{{ app.value | length }} servers**{% else %}was **1 server**{% endif %} found to be running {{ app.key | regex_replace('_', ' ') }}:
+There {% if app.value | length | int > 1 %}were **{{ app.value | length }} servers**{% else %}was **1 server**{% endif %} found to be running **{{ app.key | regex_replace('_', ' ') }}**:
 
 | Hostname | FQDN | IPv4 Address |
 | --- | --- | --- |
@@ -50,7 +50,9 @@ There {% if app.value | length | int > 1 %}were **{{ app.value | length }} serve
 
 ## All Discovered Servers
 {# following line does -1 to account for localhost target #}
-**Total number of servers discovered:** {{ groups['all'] | length | int - 1 }}
+Total number of servers Discovered: **{{ groups['all'] | length | int - 1 }}**
+
+Click on a server's hostname for server configuration details:
 
 | Hostname | FQDN | IPv4 Address |
 | --- | --- | --- |
