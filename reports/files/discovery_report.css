@@ -13,21 +13,21 @@ img.head {
 
 img.details-head {
   height: auto;
-  width: 5%;
+  width: 7%;
   float: right;
   margin-left: auto;
-  margin-right: 2%;
-  margin-top: -20px;
+  margin-right: 1%;
+  margin-top: -50px;
 }
 
 img.foot {
-  height: 10%;
-  width: 10%;
+  height: auto;
+  width: 7%;
   float: right;
   margin-left: auto;
   margin-right: 1%;
   margin-top: 15px;
-  margin-bottom: 10px;
+  margin-bottom: 30px;
 }
 
 ul {
