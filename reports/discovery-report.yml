@@ -28,13 +28,25 @@
             group: "{{ rpt_group }}"
             mode: "{{ rpt_mode }}"
 
-        - name: "Ensure hosts directory is created"
+        - name: "Ensure directories are created"
           file:
-            path: "{{ rpt_base_path }}/hosts"
+            path: "{{ rpt_base_path }}/{{ item }}"
             state: "directory"
             owner: "{{ rpt_owner }}"
             group: "{{ rpt_group }}"
             mode: "{{ rpt_mode }}"
+          with_items:
+            - "hosts"
+            - "img"
+
+        - name: "Ensure report images are in place"
+          copy:
+            src: "{{ item }}"
+            dest: "{{ rpt_base_path }}/img/{{ item }}"
+            owner: "{{ rpt_owner }}"
+            group: "{{ rpt_group }}"
+            mode: "{{ rpt_mode }}"
+          with_items: "{{ rpt_images }}"
 
         - name: "Create Markdown report | top-level"
           template:
@@ -89,6 +101,48 @@
             group: "{{ rpt_group }}"
             mode: "{{ rpt_mode }}"
             state: "file"
+          with_items: "{{ groups['all'] }}"
+          loop_control:
+            loop_var: "host"
+            label: "{{ rpt_base_path }}/hosts/{{ host | lower }}.html"
+          when: "host != 'localhost'"
+
+        - name: "Inject header image to index.html"
+          lineinfile:
+            path: "{{ rpt_base_path }}/index.html"
+            insertafter: "^<body>"
+            line: '<img src="img/RH_Consulting_header_2700x750_grey.png" alt="Red Hat Consulting" class="head">'
+            regexp: '<img src="img/RH_Consulting_header_2700x750_grey.png" alt="Red Hat Consulting" class="head">'
+            state: "present"
+
+        - name: "Inject footer image to index.html"
+          lineinfile:
+            path: "{{ rpt_base_path }}/index.html"
+            insertbefore: "^</body>"
+            line: '<img src="img/RedHat-Header.png" alt="Red Hat" class="foot">'
+            regexp: '<img src="img/RedHat-Header.png" alt="Red Hat" class="foot">'
+            state: "present"
+
+        - name: "Inject header image for server-details"
+          lineinfile:
+            path: "{{ rpt_base_path }}/hosts/{{ host | lower }}.html"
+            insertafter: "^<body>"
+            line: '<img src="../img/RedHat-Header.png" alt="Red Hat" class="details-head">'
+            regexp: '<img src="../img/RedHat-Header.png" alt="Red Hat" class="details-head">'
+            state: "present"
+          with_items: "{{ groups['all'] }}"
+          loop_control:
+            loop_var: "host"
+            label: "{{ rpt_base_path }}/hosts/{{ host | lower }}.html"
+          when: "host != 'localhost'"
+
+        - name: "Inject footer image for server-details"
+          lineinfile:
+            path: "{{ rpt_base_path }}/hosts/{{ host | lower }}.html"
+            insertbefore: "^</body>"
+            line: '<img src="../img/RedHat-Header.png" alt="Red Hat" class="foot">'
+            regexp: '<img src="../img/RedHat-Header.png" alt="Red Hat" class="foot">'
+            state: "present"
           with_items: "{{ groups['all'] }}"
           loop_control:
             loop_var: "host"

@@ -2,6 +2,34 @@ body {
   font-family: "Overpass Light", "Arial";
 }
 
+h1.title {
+  margin-top: 75px;
+}
+
+img.head {
+  width: 100%;
+  height: 40%;
+}
+
+img.details-head {
+  height: auto;
+  width: 5%;
+  float: right;
+  margin-left: auto;
+  margin-right: 2%;
+  margin-top: -20px;
+}
+
+img.foot {
+  height: 10%;
+  width: 10%;
+  float: right;
+  margin-left: auto;
+  margin-right: 1%;
+  margin-top: 15px;
+  margin-bottom: 10px;
+}
+
 ul {
   list-style-type: none;
   font-family: "Overpass Light", "Arial";
@@ -39,7 +67,9 @@ table {
   font-family: "Overpass Light", "Arial";
   border-collapse: collapse;
   width: 90% !important;
-  margin: 0 auto;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 60px;
 }
 
 thead {
