@@ -194,8 +194,6 @@
 {% else %}
 | {{ f['path'] }} | N/A | N/A |
 {% endif %}
-{# End of sudoers data #}
-{% endfor %}
 
 
 ### {{ host | lower() }}'s Sudo User Specifications - {{ f['path'] }}
@@ -206,4 +204,6 @@
 {% if s['users'] is defined and s['hosts'] is defined and s['operators'] is defined and s['commands'] is defined %}
 | {{ f['path'] }} | {% if s['users'] is defined %}{% for u in s['users'] %}{{ u }}<br/>{% endfor %}{% endif %} | {% if s['hosts'] is defined %}{% for h in s['hosts'] %}{{ h }}<br/>{% endfor %}{% endif %} | {% if s['operators'] is defined %}{% for o in s['operators'] %}{{ o }}<br/>{% endfor %}{% endif %} | {% if s['tags'] is defined %}{% for t in s['tags'] %}{{ t }}<br/>{% endfor %}{% endif %} | {% if s['commands'] is defined %}{% for c in s['commands'] %}{{ c }}<br/>{% endfor %}{% endif %} |
 {% endif %}
+{% endfor %}
+{# End of sudoers data #}
 {% endfor %}
