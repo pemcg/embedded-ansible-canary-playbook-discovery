@@ -20,7 +20,7 @@
 {% endfor %}
 
 
-## {{ host | lower() }}'s Logical Volume Group Configuration
+### {{ host | lower() }}'s Logical Volume Group Configuration
 | Volume Group Name | Physical Volumes |
 | --- | --- |
 {% for g in hostvars[host]['discovered_facts']['vgs'] | dict2items | sort(attribute='key') %}
@@ -28,7 +28,7 @@
 {% endfor %}
 
 
-## {{ host | lower() }}'s Logical Volume Configuration
+### {{ host | lower() }}'s Logical Volume Configuration
 | Logical Volume Name | Label | Filesystem Type |
 | --- | --- | --- |
 {% for v in hostvars[host]['discovered_facts']['devices'] | dict2items | sort(attribute='key') %}
@@ -62,8 +62,8 @@
 | --- | --- | --- |
 | {% for ns in hostvars[host]['discovered_facts']['dns']['nameservers'] %}{{ ns }}<br/>{% endfor %} | {{ hostvars[host]['discovered_facts']['dns']['domain'] | default('') }} | {% if hostvars[host]['discovered_facts']['dns']['search'] is defined %}{% for sd in hostvars[host]['discovered_facts']['dns']['search'] %}{{ sd }}<br/>{% endfor %}{% else %}N/A{% endif %} |
 
-
-## {{ host | lower() }}'s Local Groups
+## {{ host | lower() }}'s Local Groups and Users
+### {{ host | lower() }}'s Local Groups
 | Group | GID | Members |
 | --- | --- | --- |
 {% for g in hostvars[host]['discovered_facts']['local_groups'] %}
@@ -71,7 +71,7 @@
 {% endfor %}
 
 
-## {{ host | lower() }}'s Local Users
+### {{ host | lower() }}'s Local Users
 | User | UID | GID | Home | Shell | Comment |
 | --- | --- | --- | --- | --- | --- |
 {% for u in hostvars[host]['discovered_facts']['local_users'] %}
