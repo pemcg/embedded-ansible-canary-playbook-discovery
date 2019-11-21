@@ -38,7 +38,7 @@ a:active {
 table {
   font-family: "Overpass Light", "Arial";
   border-collapse: collapse;
-  width: 90%;
+  width: 90% !important;
   margin: 0 auto;
 }
 
