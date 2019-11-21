@@ -93,6 +93,7 @@
             group: "{{ rpt_group }}"
             mode: "{{ rpt_mode }}"
             state: "file"
+          ignore_errors: True
 
         - name: "Ensure proper report permissions | server-details"
           file:
@@ -106,6 +107,7 @@
             loop_var: "host"
             label: "{{ rpt_base_path }}/hosts/{{ host | lower }}.html"
           when: "host != 'localhost'"
+          ignore_errors: True
 
         - name: "Inject header image to index.html"
           lineinfile:
@@ -114,6 +116,7 @@
             line: '<img src="img/RH_Consulting_header_2700x750_grey.png" alt="Red Hat Consulting" class="head">'
             regexp: '<img src="img/RH_Consulting_header_2700x750_grey.png" alt="Red Hat Consulting" class="head">'
             state: "present"
+          ignore_errors: True
 
         - name: "Inject footer image to index.html"
           lineinfile:
@@ -122,6 +125,7 @@
             line: '<img src="img/RedHat-Header.png" alt="Red Hat" class="foot">'
             regexp: '<img src="img/RedHat-Header.png" alt="Red Hat" class="foot">'
             state: "present"
+          ignore_errors: True
 
         - name: "Inject header image for server-details"
           lineinfile:
@@ -135,6 +139,7 @@
             loop_var: "host"
             label: "{{ rpt_base_path }}/hosts/{{ host | lower }}.html"
           when: "host != 'localhost'"
+          ignore_errors: True
 
         - name: "Inject footer image for server-details"
           lineinfile:
@@ -148,4 +153,5 @@
             loop_var: "host"
             label: "{{ rpt_base_path }}/hosts/{{ host | lower }}.html"
           when: "host != 'localhost'"
+          ignore_errors: True
       delegate_to: "{{ discovery_report_server }}"
