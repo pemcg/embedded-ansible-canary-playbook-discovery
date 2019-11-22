@@ -128,7 +128,7 @@
 | --- | --- | --- | --- |
 {% for c in hostvars[host]['discovered_facts']['cron']['files'] | sort(attribute='path') %}
 {% if c['data']['variables'] | length > 0 %}
-| {{ c['path'] }} | {{ c['data']['shell'] }} | {% for v in c['data']['variables'] %}{{ v.key }}="{{ v.value }}"<br/>{% endfor %} | {{ c['configuration'] | join('<br/>') }} |
+| {{ c['path'] }} | {{ c['data']['shell'] }} | {% if c['data']['variables'] | length | int > 0 %}{% for v in c['data']['variables'] %}{{ v.name }}="{{ v.value }}"<br/>{% endfor %}{% else %}N/A{% endif %} | {{ c['configuration'] | join('<br/>') }} |
 {% endif %}
 {% endfor %}
 {% endif %}
@@ -137,6 +137,7 @@
 ## {{ host | lower() }}'s Sudo Configuration Details
 
 
+{% if hostvars[host]['discovered_facts']['sudoers'] | default({}) %}
 {% for f in hostvars[host]['discovered_facts']['sudoers']['sudoers_files'] %}
 ### {{ host | lower() }}'s Sudo Defaults - {{ f['path'] }}
 | Sudoers File Path | Defaults |
@@ -207,3 +208,6 @@
 {% endfor %}
 {# End of sudoers data #}
 {% endfor %}
+{% else %}
+There was no Sudo configuration Discovered for this system.
+{% endif %}
