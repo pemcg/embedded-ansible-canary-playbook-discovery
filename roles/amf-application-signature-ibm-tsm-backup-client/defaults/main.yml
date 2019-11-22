@@ -30,5 +30,5 @@ amf_as_scores:
 
 # Returned fields
 amf_as_discovered_app:
-  name: "IBM TSM Backup client"
+  name: "IBM TSM Backup Client"
   desc: "Hosts identified as IBM TSM Backup client Servers"
