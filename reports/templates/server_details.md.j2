@@ -211,3 +211,28 @@
 {% else %}
 There was no Sudo configuration Discovered for this system.
 {% endif %}
+
+
+## {{ host | lower() }}'s Connecting Ports
+### UDP Connections
+{% if hostvars[host]['discovered_facts']['udp_listen'] | default([]) %}
+| Protocol | Address | State | Program Name | PID | Port | Type | User |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+{% for c in hostvars[host]['discovered_facts']['udp_listen'] | sort(attribute='type') %}
+| {{ c['protocol'] }} | {{ c['address'] }} | {{ c['state'] | default('') }} | {{ c['name'] }} | {{ c['pid'] }} | {{ c['port'] }} | {{ c['type'] }} | {{ c['user'] }} |
+{% endfor %}
+{% else %}
+There was no UDP Connection data obtained from this system.
+{% endif %}
+
+
+### TCP Connections
+{% if hostvars[host]['discovered_facts']['tcp_listen'] | default([]) %}
+| Protocol | Address | State | Program Name | PID | Port | Type | User |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+{% for c in hostvars[host]['discovered_facts']['tcp_listen'] | sort(attribute='type') %}
+| {{ c['protocol'] }} | {{ c['address'] }} | {{ c['state'] | default('') }} | {{ c['name'] }} | {{ c['pid'] }} | {{ c['port'] }} | {{ c['type'] }} | {{ c['user'] }} |
+{% endfor %}
+{% else %}
+There was no TCP Connection data obtained from this system.
+{% endif %}
