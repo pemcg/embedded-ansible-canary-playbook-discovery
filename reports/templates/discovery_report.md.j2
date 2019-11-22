@@ -31,19 +31,17 @@ There {% if app.value | length | int > 1 %}were **{{ app.value | length }} serve
 {% endfor %}
 
 
-{% if legacy_groups | default([]) | length | int > 0 %}
+{% if report_legacy_groups | default([]) | length | int > 0 and legacy_groups | default([]) | length | int > 0 %}
 ## Servers By Environment
-{% for g in groups | dict2items %}
-{% if g.key != 'all' and g.key != 'ungrouped' and g.key in g.key in report_legacy_groups and g.value | length | int > 0 %}
-### {{ g.key | regex_replace('_', ' ') }}
+{% for g in report_legacy_groups | default([]) %}
+### {{ g | regex_replace('_', ' ') }}
 | Hostname | FQDN | IPv4 Address |
 | --- | --- | --- |
-{% for host in g.value | sort %}
+{% for host in groups[g] | sort %}
 | [{{ host | lower() }}](hosts/{{ host | lower }}.html) | {{ hostvars[host]['discovered_facts']['fqdn'] }} | {{ hostvars[host]['discovered_facts']['default_ipv4']['address'] }} |
 {% endfor %}
 
 
-{% endif %}
 {% endfor %}
 {% endif %}
 
