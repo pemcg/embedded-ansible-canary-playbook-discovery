@@ -10,3 +10,7 @@ proc_stdout: False
 discovered_host_install_prereqs: False
 # Set the following to True if you have permission from customer to install packages on the hosts
 discovery_install_prereqs: False
+tower_user: admin
+tower_org: Default
+tower_url: "https://localhost"
+tower_verify_ssl: False

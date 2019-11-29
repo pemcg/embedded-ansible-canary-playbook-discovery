@@ -1,5 +1,0 @@
----
-tower_user: admin
-tower_org: Default
-tower_url: "https://localhost"
-tower_verify_ssl: false
