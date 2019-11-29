@@ -8,6 +8,7 @@
   # strategy: "free"
   vars_files:
     - "vars/discovery_vars.yml"
+    - "vars/vault.yml"
   pre_tasks:
     # ignore facter facts
     - name: "Gather facts"
