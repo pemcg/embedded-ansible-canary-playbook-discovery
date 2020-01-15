@@ -18,7 +18,7 @@
 
     - debug:
         var: "ansible_facts"
-        verbosity: "1"
+        verbosity: "2"
   tasks:
     - name: "Unix/Linux"
       block:
@@ -84,7 +84,7 @@
         - name: "Debug all facts"
           debug:
             var: "ansible_facts"
-            verbosity: "1"
+            verbosity: "2"
 
         - name: "Set Legacy Groups"
           set_fact:
