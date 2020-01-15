@@ -121,9 +121,6 @@
             var: "discovered_apps"
             verbosity: "1"
 
-        - name: "Build discovered host inventory | Unix/Linux"
-          include_role:
-            name: "amf-discovered-host-inventory"
       when: 'ansible_os_family != "Windows"'
       become: True
 
