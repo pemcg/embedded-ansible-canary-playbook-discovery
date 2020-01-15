@@ -2,13 +2,13 @@
 # Original awx project scan facts playbook and Ansible modules can be found:
 #   https://github.com/ansible/awx-facts-playbooks
 
-- name: "Ansible Migration Factory - Discovery"
+- name: "Embedded Ansible Migration Factory - Discovery"
   hosts: "all"
   gather_facts: False
   # strategy: "free"
   vars_files:
     - "vars/discovery_vars.yml"
-    - "vars/vault.yml"
+  #  - "vars/vault.yml"
   pre_tasks:
     # ignore facter facts
     - name: "Gather facts"
@@ -127,12 +127,3 @@
       when: 'ansible_os_family != "Windows"'
       become: True
 
-    # - name: "Seed Coalmine web-service"
-    #   include_role:
-    #     name: "amf-seed-coalmine"
-    #
-    # - name: "Push data to Coalmine"
-    #   include_role:
-    #     name: "amf-push-coalmine-data"
-        # apply:
-        #   delegate_to: "localhost"
