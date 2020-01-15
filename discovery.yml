@@ -29,7 +29,7 @@
               register: "pwd_result"
               changed_when: False
 
-            - name: "Get list of Disovery Roles"
+            - name: "Get list of Discovery Roles"
               find:
                 recurse: False
                 paths:
@@ -39,7 +39,7 @@
                 use_regex: True
               register: "discovery_roles_found"
 
-            - name: "Get list of Disovery Application Signature Roles"
+            - name: "Get list of Discovery Application Signature Roles"
               find:
                 recurse: False
                 paths:
