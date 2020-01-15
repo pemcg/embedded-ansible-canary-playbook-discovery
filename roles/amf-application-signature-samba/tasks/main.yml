@@ -17,7 +17,7 @@
 - name: "Debug application_id_out counters for verification"
   debug:
     var: "application_id_out"
-    verbosity: "1"
+    verbosity: "2"
 
 - name: "Debug discovered applications"
   debug:
