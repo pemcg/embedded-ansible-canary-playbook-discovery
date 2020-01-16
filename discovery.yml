@@ -132,7 +132,7 @@
             action: assign
             data:
               resources:
-                - { category: discovered_apps, name: {{ item.tag_name }} }
+                - { category: 'discovered_apps', name: {{ item.tag_name }} }
           with_items: "{{ discovered_apps }}"
 
       when: 'ansible_os_family != "Windows"'
