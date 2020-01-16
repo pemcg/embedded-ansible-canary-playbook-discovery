@@ -125,12 +125,7 @@
           debug:
             var: "discovered_apps"
             verbosity: "1"
-            
-        - name: "Dump tag path"
-          debug:
-            msg: "/managed/discovered_apps/{{ item.tag_name }}"
-          with_items: "{{ discovered_apps }}"
-          
+                     
         - name: "Tag VM with discovered applications"
           manageiq_vmdb:
             href: "href_slug::{{ vm_href_slug }}/tags"
@@ -138,8 +133,14 @@
             data:
               category: 'discovered_apps'
               name: "{{ item.tag_name }}"
-                #- path: "/managed/discovered_apps/{{ item.tag_name }}"
           with_items: "{{ discovered_apps }}"
+          
+        - name: "Add process list as custom attribute"
+          manageiq_vmdb:
+            href: "href_slug::{{ vm_href_slug }}/custom_attributes"
+            data:
+              name: 'Running Processes'
+              value: "{{ running_processes }}"
 
       when: 'ansible_os_family != "Windows"'
       become: True
