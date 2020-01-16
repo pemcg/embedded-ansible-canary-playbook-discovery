@@ -128,18 +128,18 @@
 
         - name: "Get the API's VM object"
           manageiq_vmdb:
-            href: "{{ vm_href_slug }}"
+            href: "{{ vm_href_slug }}/tags"
           register: vm
 
         - name: "Tag VM with discovered applications"
           manageiq_vmdb:
-            vmdb: "{{ vm }}/tags"
+            vmdb: "{{ vm }}"
             action: assign
             data:
               resource:
                 category: discovered_apps
-                name: "{{ item }}"
-          with_items: "{{ discovered_apps.tag_name }}"
+                name: "{{ item.tag_name }}"
+          with_items: "{{ discovered_apps }}"
 
       when: 'ansible_os_family != "Windows"'
       become: True
