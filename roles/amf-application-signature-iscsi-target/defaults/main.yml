@@ -1,0 +1,31 @@
+---
+amf_as_services:
+  - "target.service"
+
+amf_as_user_group:
+  users: []
+  groups: []
+
+amf_as_paths: []
+
+amf_as_packages: 
+  - "targetcli"
+
+amf_as_ports: []
+
+amf_as_processes: []
+
+amf_as_scores:
+  users: "0"
+  groups: "0"
+  services: "1"
+  paths: "0"
+  packages: "1"
+  ports: "0"
+  processes: "0"
+
+# Returned fields
+amf_as_discovered_app:
+  name: "iSCSI Target Server"
+  tag_name: "iscsi_target_server"
+  desc: "Hosts identified as iSCSI Target Server Servers"
