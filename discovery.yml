@@ -124,8 +124,13 @@
         - name: "Debug discovered_apps value | post application signatures"
           debug:
             var: "discovered_apps"
-            verbosity: "1"           
-
+            verbosity: "1"
+            
+        - name: "Dump tag path"
+          debug:
+            msg: "/managed/discovered_apps/{{ item.tag_name }}"
+          with_items: "{{ discovered_apps }}"
+          
         - name: "Tag VM with discovered applications"
           manageiq_vmdb:
             href: "href_slug::{{ vm_href_slug }}/tags"
