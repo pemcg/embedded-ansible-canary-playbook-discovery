@@ -30,4 +30,5 @@ amf_as_scores:
 # Returned fields
 amf_as_discovered_app:
   name: "Apache HTTP Server"
+  tag_name: "apache_http_server"
   desc: "Hosts identified as Apache HTTP Server Servers"

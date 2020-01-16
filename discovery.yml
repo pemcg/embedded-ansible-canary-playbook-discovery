@@ -5,7 +5,12 @@
 - name: "Embedded Ansible Migration Factory - Discovery"
   hosts: "all"
   gather_facts: False
-  # strategy: "free"
+  vars:
+    - manageiq_validate_certs: false
+
+  roles:
+    - manageiq-core.manageiq-vmdb
+
   vars_files:
     - "vars/discovery_vars.yml"
   #  - "vars/vault.yml"
@@ -119,7 +124,22 @@
         - name: "Debug discovered_apps value | post application signatures"
           debug:
             var: "discovered_apps"
-            verbosity: "1"
+            verbosity: "1"           
+
+        - name: "Get the API's VM object"
+          manageiq_vmdb:
+            href: "{{ vm_href_slug }}"
+          register: vm
+
+        - name: "Tag VM with discovered applications"
+          manageiq_vmdb:
+            vmdb: "{{ vm }}/tags"
+            action: assign
+            data:
+              resources:
+                category: discovered_apps
+                name: "{{ item.tag_name }}"
+          with_items: "{{ discovered_apps }}"
 
       when: 'ansible_os_family != "Windows"'
       become: True

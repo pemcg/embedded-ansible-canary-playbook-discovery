@@ -32,4 +32,5 @@ amf_as_scores:
 # Returned fields
 amf_as_discovered_app:
   name: "Samba"
+  tag_name: "samba_server"
   desc: "Hosts identified as Samba Servers"
