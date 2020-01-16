@@ -128,7 +128,8 @@
                      
         - name: "Tag VM with discovered applications"
           manageiq_vmdb:
-            href: "href_slug::{{ vm_href_slug }}/tags"
+            #href: "href_slug::{{ vm_href_slug }}/tags
+            href: "{{ vm_href_slug }}/tags"
             action: assign
             data:
               category: 'discovered_apps'
@@ -138,6 +139,7 @@
         - name: "Add process list as custom attribute"
           manageiq_vmdb:
             href: "href_slug::{{ vm_href_slug }}/custom_attributes"
+            action: add
             data:
               name: 'Running Processes'
               value: "{{ running_processes }}"
