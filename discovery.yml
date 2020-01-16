@@ -136,8 +136,9 @@
             href: "href_slug::{{ vm_href_slug }}/tags"
             action: assign
             data:
-              resources:
-                - path: "/managed/discovered_apps/{{ item.tag_name }}"
+              category: 'discovered_apps'
+              name: "{{ item.tag_name }}"
+                #- path: "/managed/discovered_apps/{{ item.tag_name }}"
           with_items: "{{ discovered_apps }}"
 
       when: 'ansible_os_family != "Windows"'
