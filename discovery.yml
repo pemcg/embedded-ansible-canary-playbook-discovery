@@ -136,10 +136,10 @@
             vmdb: "{{ vm }}/tags"
             action: assign
             data:
-              resources:
+              resource:
                 category: discovered_apps
-                name: item.tag_name
-          with_items: "{{ discovered_apps }}"
+                name: "{{ item }}"
+          with_items: "{{ discovered_apps.tag_name }}"
 
       when: 'ansible_os_family != "Windows"'
       become: True
