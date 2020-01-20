@@ -134,7 +134,7 @@
               category: 'discovered_apps'
               name: "{{ item.tag_name }}"
           with_items: "{{ discovered_apps }}"
-          when: 'discovered_apps | length > 0'
+          when: discovered_apps is defined
           
         - name: "Add process list as custom attribute"
           manageiq_vmdb:
